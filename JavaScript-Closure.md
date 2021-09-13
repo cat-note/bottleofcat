@@ -6,7 +6,7 @@
 
 但既然是打基础，我觉着有疑惑的概念还是得摸清楚为好，遂决定写这样一篇小笔记。有可能会有理解错误的地方，各位请多指教。  
 
-![FigureItOut](https://cdn2.imbottle.com/uploads/20210912closure/figureout.jpg!/scale/40)  
+![FigureItOut](https://p.pstatp.com/origin/pgc-image/eae005b782d24c5785d187f610426f4b)  
 
 ## 0x01 我觉得闭包是...  
 
@@ -52,11 +52,11 @@ inner();  //4
 
 关于这个例子我整了个小动图（做的比较仓促）：  
 
-![Closure](https://cdn2.imbottle.com/uploads/20210912closure/closure.gif)  
+![Closure](https://p.pstatp.com/origin/pgc-image/0b78bfa185f74eca9098ff38b6e457b8)  
 
 了解到这些我再回头看了一下，发现本博客程序-O-[初始化源码](https://github.com/SomeBottle/-O-/blob/master/jcs/i.js#L106)中也是有用到闭包的：  
 
-![Closure of -O-](https://cdn2.imbottle.com/uploads/20210912closure/blogcode.jpg)  
+![Closure of -O-](https://p.pstatp.com/origin/pgc-image/3eb69bc041994e94a7960588717fce32)  
 
 也就是说其实在很多不经意的时候我已经在写JavaScript代码时使用了所谓的“闭包”。为什么会这样呢？其实更进一步想，在看这些函数和变量的过程中我们脑中总是会模拟**变量作用的范围**。没错，更为重要的是**JS的作用域**相关的知识！  
 
@@ -155,6 +155,6 @@ console.log(exec_two(0));  //输出2
 
 虽然但是，读清楚这段代码真的耗了我好长时间...看来用了太多return和闭包的结果就是代码可读性会降低，所以凡事要适度嘛...  
 
-![Yeah](https://cdn2.imbottle.com/uploads/20210912closure/yeah.jpg!/scale/40)  
+![Yeah](https://p.pstatp.com/origin/pgc-image/5c2154dbe98a4c7e91bb5ef3236cff87)  
 
 最后要感叹一下，我竟然把这篇博文写出来了，也是第一次尝试写这种小笔记~今后随着学习的感悟变多，我有可能会持续更新下去~加油吧！不要停滞不前！    
