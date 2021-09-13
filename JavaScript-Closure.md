@@ -142,7 +142,7 @@ var exec_two = two(function () {
 exec_two(); //输出两次  
 ```
 
-所谓的输出两次其实就是把one函数再次执行嵌套了一次。可想而知如果再算一下**"1"+"2"**，得出的three函数核心代码将会是```exec_one(exec_one(exec_one()));```，<del>俗称套娃</del>    
+所谓的输出两次其实就是把one函数再次执行嵌套了一次。可想而知如果再算一下 **"1"+"2"** ，得出的three函数核心代码将会是```exec_one(exec_one(exec_one()));```，<del>俗称套娃</del>    
 
 如果把x给还原进去，就相当于从零开始不停加1：  
 
