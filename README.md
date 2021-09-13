@@ -9,5 +9,6 @@ There must be something that I misunderstood , I'll appreciate it if you can poi
 The notes here will be synchronized with my blog.  
 
 -------
-在拆那就要说拆那话！ヽ(ｏ\`皿′ｏ)ﾉ   
+在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
+
 ![](https://p.pstatp.com/origin/pgc-image/c2639f4adb734df798e2d93638763832)  
