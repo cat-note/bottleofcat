@@ -3,7 +3,7 @@
 
 ## C语言  
 * https://github.com/hairrrrr/C-CrashCourse  
-* https://wangdoc.com/clang/intro.html  
+* [阮一峰的C语言入门教程](https://wangdoc.com/clang/intro.html)    
 
 ## JavaScript  
 * [一杯茶的时间，上手 Node.js](https://zhuanlan.zhihu.com/p/97413574)  
