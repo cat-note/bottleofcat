@@ -27,7 +27,7 @@
 
 ## 数据结构  
 * [数据结构分类](https://www.zhihu.com/answer/1361122057)  **<--先看这个**  
-* [LeetCode刷题攻略](https://github.com/callmePicacho/Data-Structres)  **<--在实践中学习，非常有用**
+* [LeetCode刷题攻略](https://github.com/callmePicacho/Data-Structres)  **<--在实践中学习，非常有用，16k stars项目**
 * [LeetBook免费教程](https://leetcode-cn.com/leetbook/detail/top-interview-questions-easy/)  
 * [万字长文！二叉树入门和刷题看这篇就够了！](https://zhuanlan.zhihu.com/p/136758152)  
 
