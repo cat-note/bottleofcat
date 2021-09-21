@@ -1,6 +1,9 @@
 # 书签  
 这里挂着我平常学习能用到的站点资源（在精不在多）  
 
+## 概率论与数理统计  
+* https://github.com/ChanceQZ/Statistics-note  
+
 ## C语言  
 * https://github.com/hairrrrr/C-CrashCourse  
 * [阮一峰的C语言入门教程](https://wangdoc.com/clang/intro.html)    
