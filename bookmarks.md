@@ -19,6 +19,7 @@
 ## 数据结构  
 * [浙江大学《数据结构》上课笔记 + 数据结构实现 + 课后题题解](https://github.com/callmePicacho/Data-Structres)  
 * [万字长文！二叉树入门和刷题看这篇就够了！](https://zhuanlan.zhihu.com/p/136758152)  
+* [LeetBook免费教程](https://leetcode-cn.com/leetbook/detail/top-interview-questions-easy/)  
 
 ## 数据库  
 * [廖雪峰的SQL教程](https://www.liaoxuefeng.com/wiki/1177760294764384)  
