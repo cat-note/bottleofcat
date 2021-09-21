@@ -31,3 +31,6 @@
 
 ## 数据库  
 * [廖雪峰的SQL教程](https://www.liaoxuefeng.com/wiki/1177760294764384)  
+
+## TypeScript  
+* https://jkchao.github.io/typescript-book-chinese/project/modules.html  
