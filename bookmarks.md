@@ -1,6 +1,11 @@
 # 书签  
 这里挂着我平常学习能用到的站点资源（在精不在多）  
 
+## 我的学习路线  
+  - [ ] C++入门
+  - [ ] 数据结构
+  - [ ] 跟随学校学习Python和SQL  
+
 ## 概率论与数理统计  
 * https://github.com/ChanceQZ/Statistics-note  
 
