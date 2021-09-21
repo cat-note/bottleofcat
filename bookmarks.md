@@ -19,6 +19,7 @@
 * [MDN Web Docs](https://developer.mozilla.org/zh-CN/)  
 
 ## C++  
+* [C++入门教程](https://github.com/AnkerLeng/Cpp-0-1-Resource)  **<--先看这个**
 * [适合 C++ 新手学习的开源项目——在 GitHub 学编程](https://zhuanlan.zhihu.com/p/273682109)  
 
 ## Python  
