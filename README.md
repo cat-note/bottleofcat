@@ -12,7 +12,7 @@ The notes here will be synchronized with my blog.
 ## Content  
 0. [书签签](https://github.com/cat-note/bottleofcat/blob/main/bookmarks.md)  
 1. [JS小记：闭...闭包？](https://github.com/cat-note/bottleofcat/blob/main/JavaScript-Closure.md)  
-2. [大学物理实验有效数字与测量值](https://github.com/cat-note/bottleofcat/blob/main/PhyExpMeasuredAndSignificantFigure.md)  
+2. [大学物理实验有效数字与测量值小记](https://github.com/cat-note/bottleofcat/blob/main/PhyExpMeasuredAndSignificantFigure.md)  
 
 在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
 
