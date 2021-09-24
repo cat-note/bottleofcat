@@ -7,7 +7,7 @@
   - [ ] 跟随学校学习Python和SQL  
 
 ## 学习进度  
-  * C++从0到1 **(2/314)**   
+  * C++从0到1 ```(2/314)```   
 
 ## 概率论与数理统计  
 * https://github.com/ChanceQZ/Statistics-note  
