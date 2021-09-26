@@ -296,8 +296,8 @@ def main():
     return runningTimes
 
 
-# 我们运行十次程序来计算性能
-testTimes = 100
+# 我们运行两百次程序来计算性能
+testTimes = 200
 totalRunningTimes = []
 for i in range(0, testTimes):
     # 运行一次程序
@@ -345,3 +345,10 @@ for index, value in enumerate(totalInAverage):
 print(f"\t其中最好的是分发方法{minIndex+1}")
 print("\n<--------------------------------------------------------------------------------------->\n")
 input("Press any key to continue~\n")
+
+'''
+总结：
+1.采用元组保证扑克牌组的不可变性，另外通过deepcopy深复制保证每次实验中兄弟都是不同的，保证多次实验的独立性
+2.四种分发方法中最快的是方法1，也就是创建一个牌组列表进行shuffle然后分配给四位老哥
+3.其次快的是方法2，在方法2中牌组保持了原汁原味的元组，并没有被转换为列表，我们使用了遍历将元组中每一项分配给四人中随机一人
+'''
