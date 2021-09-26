@@ -7,7 +7,7 @@ import copy
 题目：两副扑克牌（去掉大小王）随机分发给4位玩家，并显示输出4位玩家手中的牌
 要求：用列表和元组实现
 '''
-
+# 使用Python版本：3.8.5
 '''
 要使用元组，元组是不能变的。我们分发扑克牌这个过程中什么不能变呢？那当然是扑克牌号不能变啦
 那么问题又来了，我们把扑克牌丢进了元组里，怎么选出来呢？
@@ -58,11 +58,6 @@ print('这里有两副牌，每副牌52张卡', '\n', pokerSets, '\n',
 bros = {}
 for i in range(1, 5):
     bros['bro'+str(i)] = []
-
-# 创建这几位老哥的克隆人，利用Python的深复制
-firstFourBros = copy.deepcopy(bros)
-
-print("\n有四位小老弟：", firstFourBros)
 
 # 先把事情做周全，我们做个转换为中文卡牌名的函数
 
@@ -160,17 +155,20 @@ def collectCards(bros):
 # 接下来有请我们的第一位嘉宾shuffle~
 
 
+cardSumForEach = int(len(pokerSets)/4)
 print("\n//////////////////////////////////////分发方法1//////////////////////////////////////\n")
+# 创建这几位老哥的克隆人，利用Python的深复制
+firstFourBros = copy.deepcopy(bros)
+print("\n有四位小老弟：", firstFourBros)
 # 我们首先把扑克牌组转换为列表
 pokerList = list(pokerSets)
 # 利用shuffle打乱扑克
 random.shuffle(pokerList)
 # 四个人每人能分到多少张牌
-cardSumForEach = int(len(pokerList)/4)
 print(f"每个人能分到{cardSumForEach}张牌")
 # 从第一个人开始分配
 for step in range(0, len(pokerList)//cardSumForEach):
-    firstFourBros['bro' + str(step+1)] = pokerList[step * cardSumForEach:(step+1)*cardSumForEach]
+    firstFourBros['bro' + str(step+1)] = pokerList[step*cardSumForEach:(step+1)*cardSumForEach]
 '''
 这里的 len(pokerList)//cardSumForEach 是算出了分配的步数，要分配四次
 步数step默认从0开始，我们将step+1便能把牌给对应的兄die了
@@ -195,6 +193,7 @@ for theCard in pokerSets:
     # 从四个老哥中随机选一个人出来，用random标准库中的choice
     theBroToGive = random.choice(acceptableBros)
     # 接着我们把遍历到的当前卡牌分配给这位老哥
+    # 这样写是为了方便后期修改哦
     operatingList = secondFourBros[f'bro{theBroToGive}']
     operatingList.append(theCard)
     # 这里我们沿用第一种分发方法中的变量cardSumForEach
@@ -210,4 +209,33 @@ collectCards(secondFourBros)
 
 print("//////////////////////////////////////分发方法2结束//////////////////////////////////////")
 
-input("Press any key to continue~")
+# 在这之后，我们又发现了一个神奇的方法，random.sample(iterable,length)，正如字面意思，它能从可迭代对象中随机取出一段样本
+print("\n//////////////////////////////////////分发方法3//////////////////////////////////////\n")
+# 这里我们首先又要把两副牌转换为一个列表，我们暂且叫它卡池吧！
+pokerPool = list(pokerSets)
+# 再次克隆兄弟们
+thirdFourBros = copy.deepcopy(bros)
+# 每个人能分配到的卡牌数我们继续用cardSumForEach
+# 遍历一下四位老哥
+for index in thirdFourBros:
+    # 按照cardSumForEach(26)抽取一个随机样本，给这个老哥
+    theSample = random.sample(pokerPool, cardSumForEach)
+    thirdFourBros[index] = theSample
+    # 接下来我们运用集合的差集运算去掉已经选出的这部分样本
+    pokerPool = list(set(pokerPool)-set(theSample))
+
+# 老铁们，再秀个牌！
+showYourCards(thirdFourBros)
+collectCards(thirdFourBros)
+print("//////////////////////////////////////分发方法3结束//////////////////////////////////////")
+
+# 已经...不用再战斗了吗？哦不！还有random.choice
+# 哈What's up老哥，你这choice不用过了吗
+# 你看现在哪还有choice，这都是哥们的choice
+# 没错，我们之前是用choice随机选哥们，如果是用choice选牌给哥们呢？
+
+print("\n//////////////////////////////////////分发方法4//////////////////////////////////////\n")
+
+print("//////////////////////////////////////分发方法4结束//////////////////////////////////////")
+
+input("Press any key to continue~\n")
