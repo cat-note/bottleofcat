@@ -1,6 +1,6 @@
 # 关系数据库de关系代数小记
 
-![letmeunderstand](https://user-images.githubusercontent.com/12976469/135962688-354c64b4-61fa-4813-b794-eb67625340ac.jpg)  
+![letmeunderstand](https://user-images.githubusercontent.com/12976469/135962882-7bc98de9-2f85-429e-a123-b2fd2465c038.jpg)
 
 最近学数据库概论学到了关系数据库的关系代数了。哎嘛，真的把我整晕了，尤其是关系代数的使用，很容易让人被蒙在鼓里。  
 **对我来说**槽点最大的莫过于书上的例子不多了，本来就挺抽象的一种**查询**语言，加上没有足够多让我懂的例子<del>(不过我本来也比较迟钝了)</del>，真的是难上加难...  
