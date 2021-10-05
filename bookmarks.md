@@ -28,9 +28,10 @@
 ## Python  
 * [廖雪峰的Python教程](https://www.liaoxuefeng.com/wiki/1016959663602400)  
 
-## 数据结构  
+## 数据结构和算法  
 * [LeetCode刷题攻略](https://github.com/youngyangyang04/leetcode-master)  **<--在实践中学习，非常有用，16k stars项目**
 * [万字长文！二叉树入门和刷题看这篇就够了！](https://zhuanlan.zhihu.com/p/136758152)  
+* [图解LeetCode题](https://github.com/MisterBooo/LeetCodeAnimation)  
 
 ## 数据库  
 * [廖雪峰的SQL教程](https://www.liaoxuefeng.com/wiki/1177760294764384)  
