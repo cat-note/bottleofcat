@@ -51,9 +51,21 @@
 
     3.域也有一个**域的基数**，**域的基数**代表域能取的值的数量，比如： ```年龄属性的域={17,18,19,20,21,22,23,24,25}```，那么这个域的基数就是9  
 
+    ![tired-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/tired-2021-10-06.webp)
+
 ## 0x02 传统的集合运算  
+传统的集合运算是从 **行** 的角度来进行的
 
+* **并**  
+    
+    ![union1-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union1-2021-10-06.webp)  
 
+    1.并运算要求两个关系**具有相同的目**(度,元数,属性数,列数)  
+    2.并运算要求两个关系**相应属性**取自**同一个域**，通俗来说，就是**两个关系对应的属性是相同的**  
+
+    ![union2-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union2-2021-10-06.webp)
+
+    因为是集合运算，并运算过程中**一定要记得元组去重**  
 
 
 To be updated...
@@ -61,6 +73,8 @@ To be updated...
 
 ## 特别感谢
 * [LemonPerfect](https://github.com/orgs/cat-note/people/LemonPrefect)  协助核对  
-* [板砖猫](#) 协助核对
+* [板砖猫](#) 协助核对  
+* 动画番剧截图来自 [AnimeShot](https://as2.bitinn.net/)  
 
 ## References  
+* [关系数据库--关系代数](https://zhuanlan.zhihu.com/p/258122592)  
