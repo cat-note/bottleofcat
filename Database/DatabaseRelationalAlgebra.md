@@ -13,11 +13,11 @@
 * **注意，因采用了动图(WebP)直观表达，流量用户请慎重浏览~**
 
 ## 0x01 小概念
-* **行与列**
+* ### **行与列**
 
     ![rowandcolumn-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rowandcolumn-2021-10-06.webp)
 
-* **目** & **度** & **元数**  
+* ### **目** & **度** & **元数**  
 
     ![meshanddegree-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/meshanddegree-2021-10-06.webp)  
 
@@ -25,13 +25,13 @@
 
     2.这样看来其实**元数就是目，目也就是度**。  
 
-* **属性** & **字段**  
+* ### **属性** & **字段**  
 
     1.**属性**就是**字段**（至少在数据库关系表这里是这样），都表示的是**列**。  
 
     2.上面和下面的图中第一行 **学号,姓名,性别...** 等等是 **属性名（字段名）**。  
 
-* **元组** & **基数** & **分量**
+* ### **元组** & **基数** & **分量**
 
     ![tupleandcardinalityandcomponent-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/tupleandcardinalityandcomponent-2021-10-06.webp)  
 
@@ -41,7 +41,7 @@
     
     3.**分量**是元组中一个**属性的值**。  
 
-* **域**  
+* ### **域**  
 
     ![domain-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/domain-2021-10-06.webp)  
 
@@ -56,14 +56,14 @@
 ## 0x02 传统的集合运算  
 传统的集合运算是从 **行** 的角度来进行的，也就是说操作对象集中在**元组**上~(๑•̀ㅂ•́)و✧  
 
-* ## 前提
+* ### **前提**
 
     ![union1-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union1-2021-10-06.webp)  
 
     1.运算要求两个关系**具有相同的目**(度,元数,属性数,列数)  
     2.运算要求两个关系**相应属性**取自**同一个域**，通俗来说，就是**两个关系对应的属性是相同的**  
 
-* ## 并  
+* ### **并**  
     
     ![union2-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union2-2021-10-06.webp)
 
@@ -71,7 +71,7 @@
 
     返回的结果是 **n目(属性数)** 关系，由**属于R**或者**属于S**的**元组**组成  
 
-* ## 差  
+* ### **差**  
 
     ![except1-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/except1-2021-10-06.webp)  
 
@@ -81,7 +81,7 @@
 
     ![except2-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/except2-2021-10-07.webp)  
 
-* ## 交  
+* ### **交**  
 
     ![intersection-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/intersection-2021-10-07.webp)  
 
@@ -89,7 +89,7 @@
 
     很容易能发现：```R ∩ S = R - (R-S)```  
 
-* ## 广义笛卡尔积  
+* ### **广义笛卡尔积**  
 
     ![bigiscoming-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/bigiscoming-2021-10-07.png)  
 
