@@ -13,6 +13,7 @@ The notes here will be synchronized with my blog.
 0. [书签签](https://github.com/cat-note/bottleofcat/blob/main/bookmarks.md)  
 1. [JS小记：闭...闭包？](https://github.com/cat-note/bottleofcat/blob/main/JavaScript/JavaScript-Closure.md)  
 2. [大学物理实验有效数字与测量值小记](https://github.com/cat-note/bottleofcat/blob/main/Physics/PhyExpMeasuredAndSignificantFigure.md)  
+3. [关系数据库de关系代数小记](https://github.com/cat-note/bottleofcat/blob/main/Database/DatabaseRelationalAlgebra.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](https://github.com/cat-note/bottleofcat/blob/main/Python/SimplePokerDistribution/poker.py)  
