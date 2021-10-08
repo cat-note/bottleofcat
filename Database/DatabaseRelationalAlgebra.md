@@ -2,7 +2,7 @@
 
 最近学数据库概论学到了**关系数据库**的关系代数了。哎嘛，真的把我整晕了，尤其是关系代数的使用，很容易让人被蒙在鼓里。  
 
-![letmeunderstand-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/letmeunderstand-2021-10-06.webp)
+![letmeunderstand-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/letmeunderstand-2021-10-06.webp)
 
 **对我来说**槽点最大的莫过于书上的例子不多了，本来就挺抽象的一种**查询**语言，加上没有足够多让我懂的例子<del>(不过我本来也比较迟钝了)</del>，真的是难上加难...  
 但没办法啊，这是我需要跨过的一道坎，于是我决定慢慢写出这篇小记（**主要针对数据库关系代数**）。不求挖的多深，但求能多少理解地透彻点😂  
@@ -13,11 +13,11 @@
 ## 0x01 小概念
 * ### **行与列**
 
-    ![rowandcolumn-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rowandcolumn-2021-10-06.webp)
+    ![rowandcolumn-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/rowandcolumn-2021-10-06.webp)
 
 * ### **目** & **度** & **元数**  
 
-    ![meshanddegree-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/meshanddegree-2021-10-06.webp)  
+    ![meshanddegree-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/meshanddegree-2021-10-06.webp)  
 
     1.如果使用关系表进行展示的话，**属性数（字段数）**其实就是**列数**，而进一步我们将属性数称为**元数**或者**目**或者**度**。  
 
@@ -31,7 +31,7 @@
 
 * ### **元组** & **基数** & **分量**
 
-    ![tupleandcardinalityandcomponent-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/tupleandcardinalityandcomponent-2021-10-06.webp)  
+    ![tupleandcardinalityandcomponent-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/tupleandcardinalityandcomponent-2021-10-06.webp)  
 
     1.表中的**一行**，是**一条记录**，也是**一个元组**。  
     
@@ -41,7 +41,7 @@
 
 * ### **域**  
 
-    ![domain-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/domain-2021-10-06.webp)  
+    ![domain-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/domain-2021-10-06.webp)  
 
     1.**域**就是属性的**取值范围所在**。  
     
@@ -49,21 +49,21 @@
 
     3.域也有一个**域的基数**，**域的基数**代表域能取的值的数量，比如： ```年龄属性的域={17,18,19,20,21,22,23,24,25}```，那么这个域的基数就是9  
 
-    ![rememberfirst-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rememberfirst-2021-10-07.png)
+    ![rememberfirst-2021-10-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/rememberfirst-2021-10-07.png)
 
 ## 0x02 传统的集合运算  
 传统的集合运算是从 **行** 的角度来进行的，也就是说操作对象集中在**元组**上~(๑•̀ㅂ•́)و✧  
 
 * ### **前提**
 
-    ![union1-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union1-2021-10-06.webp)  
+    ![union1-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/union1-2021-10-06.webp)  
 
     1.运算要求两个关系**具有相同的目**(度,元数,属性数,列数)  
     2.运算要求两个关系**相应属性**取自**同一个域**，通俗来说，就是**两个关系对应的属性是相同的**  
 
 * ### **并**  
     
-    ![union2-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/union2-2021-10-06.webp)
+    ![union2-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/union2-2021-10-06.webp)
 
     因为是集合运算，并运算过程中**一定要记得元组去重**  
 
@@ -71,17 +71,17 @@
 
 * ### **差**  
 
-    ![except1-2021-10-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/except1-2021-10-06.webp)  
+    ![except1-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/except1-2021-10-06.webp)  
 
     **R-S** 返回的结果是 **n目(属性数)** 关系，由**属于R**但**不属于S**的**元组**组成  
 
     一个例子可能有点模糊，接下来我们再来个 **S-R** 的例子：  
 
-    ![except2-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/except2-2021-10-07.webp)  
+    ![except2-2021-10-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/except2-2021-10-07.webp)  
 
 * ### **交**  
 
-    ![intersection-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/intersection-2021-10-07.webp)  
+    ![intersection-2021-10-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/intersection-2021-10-07.webp)  
 
     **R∩S**返回的结果是 **n目(属性数)** 关系，由**属于R**且**属于S**的**元组**组成  
 
@@ -89,7 +89,7 @@
 
 * ### **广义笛卡尔积**  
 
-    ![bigiscoming-2021-10-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/bigiscoming-2021-10-07.png)  
+    ![bigiscoming-2021-10-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/bigiscoming-2021-10-07.png)  
 
     咱实话实说，关系代数这一部分第一个让我晕头的地方就是这个笛卡尔积o(≧口≦)o，接下来我尽力搞懂并用动图展示出来笛卡尔积到底做了什么。  
 
@@ -104,7 +104,7 @@
 
     接下来我们回到这里，**域** 其实就是一个 **集合**，结合上文，**笛卡尔积是在域上面的一种\<集合\>运算** ，下面放个简单的例子：   
 
-    ![cartesian1-2021-10-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/cartesian1-2021-10-08.webp)
+    ![cartesian1-2021-10-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/cartesian1-2021-10-08.webp)
 
     复习一下，一个 **域** 允许的 **不同取值的个数** 称为这个 **域的基数**。换种说法，也是一个 **集合** 中的 **元素个数**。  
 
@@ -112,7 +112,7 @@
 
     当 **域的基数为m和n** 的两个域进行笛卡尔积后我们得到的 **域** 的 **域的基数** 就是 **m×n** （这里×是乘号的意思哈，不要多想！ (￣△￣；)） 
 
-    ![waitaminute-2021-10-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/waitaminute-2021-10-08.png)  
+    ![waitaminute-2021-10-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/waitaminute-2021-10-08.png)  
 
     仔细看一下能发现上面的例子中有个 **有序对** 的概念，不用怕，在关系这里我们后面就用不着它了！看看接下来这个例子：  
 
