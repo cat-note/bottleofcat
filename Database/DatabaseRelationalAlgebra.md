@@ -33,11 +33,11 @@
 
     ![tupleandcardinalityandcomponent-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/tupleandcardinalityandcomponent-2021-10-06.webp)  
 
-    1.表中的**一行**，是**一条记录**，也是**一个元组**。  
+    1.表中的**一行**，是**一条记录**，也是**一个元组**，有n个元素的元组可以被称为**n元组**。  
     
     2.记录（元组）的数称为**基数**，一定一定注意辨别这里的基数和下面**域的基数**。  
     
-    3.**分量**是元组中一个**属性的值**。  
+    3.**分量**是元组中一个**属性对应的值**。  
 
 * ### **域**  
 
@@ -116,9 +116,14 @@
 
     仔细看一下能发现上面的例子中有个 **有序对** 的概念，不用怕，在关系这里我们后面就用不着它了！看看接下来这个例子：  
 
+    ![cartesian2-2021-10-09](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/cartesian2-2021-10-09.webp)  
 
+    到底其实我们算出了一个包含 **老师所带专业课程的所有可能性** 的集合（域），把每一项元素放进关系中，这不就是元组嘛！  
 
-    <!--最后算出的元组放进表格，讲一下域中笛卡尔计算的基数和元组-->
+    -------
+    ![guangyi-2021-10-09](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/guangyi-2021-10-09.png)  
+
+    
 
 
 To be updated...
