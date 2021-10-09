@@ -14,6 +14,8 @@
 <details>
 <summary>展开阅读：行与列 , 目&度&元数 , 属性&字段 , 元组&基数&分量 , 域</summary>
 
+--------
+
 * ### **行与列**
 
     ![rowandcolumn-2021-10-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/rowandcolumn-2021-10-06.webp)
@@ -60,6 +62,8 @@
 
 <details>
 <summary>展开阅读：前提 , 并 , 差 , 交 , 广义笛卡尔积</summary>
+
+--------
 
 传统的集合运算是从 **行** 的角度来进行的，也就是说操作对象集中在**元组**上~(๑•̀ㅂ•́)و✧  
 
