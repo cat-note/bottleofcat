@@ -198,6 +198,8 @@
 
 * ### **选择**  
 
+    选择是对 **行（元组）** 进行操作的运算。
+
     例子：属性名 = 常量  
 
     ![selection1.1-2021-10-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/selection1.1-2021-10-10.webp)  
