@@ -160,14 +160,25 @@
 
     2. **随便两个关系** 都可以进行广义笛卡尔积运算（在保证 **结果的关系** 有意义的情况下）  
 
-![doIlearnitbefore-2021-10-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/doIlearnitbefore-2021-10-10.png)  
+        ![doIlearnitbefore-2021-10-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/doIlearnitbefore-2021-10-10.png)  
 
 至此，传统的集合运算这部分我们就过完了。你，学会了吗？喝杯茶休息一下，准备进入下一节吧！  
 
 </details>
 
+## 0x03 专门的关系运算   
+
+<details>
+<summary>展开阅读：</summary>  
+
+
 
 To be updated...  
+
+</details>
+
+
+
 
 ## 附表  
 
