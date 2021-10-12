@@ -468,6 +468,8 @@
 * 《数据库系统概论（第五版）》王珊主编 - 高等教育出版社  
 * 《离散数学》屈婉玲,耿素云,张立昂 - 高等教育出版社
 * [关系代数 - 百度百科](https://baike.baidu.com/item/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0)  
+* [关系代数(数据库) - Wikipedia](https://zh.wikipedia.org/wiki/%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0_(%E6%95%B0%E6%8D%AE%E5%BA%93))  
 * [笛卡尔乘积 - 百度百科](https://baike.baidu.com/item/%E7%AC%9B%E5%8D%A1%E5%B0%94%E4%B9%98%E7%A7%AF)  
 * [广义笛卡尔积 - 百度百科](https://baike.baidu.com/item/%E5%B9%BF%E4%B9%89%E7%AC%9B%E5%8D%A1%E5%B0%94%E7%A7%AF/23160124)  
-
+* [关系数据库--关系代数 - 知乎](https://zhuanlan.zhihu.com/p/258122592)  
+* [关系代数的基本运算 - keelii](https://keelii.com/2017/02/19/basic-operations-of-relation-algebra/)  
