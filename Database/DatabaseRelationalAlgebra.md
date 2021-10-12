@@ -217,6 +217,8 @@
 
     * 上面的例子中```StudentAge``` , ```StudentName```一类是属性名，而```17``` , ```'Jerry'``` 一类则是常量。  
 
+    * **字符串常量** 请一定记得用 **单引号** 括起来。  
+
     * 所以A和B表达式可以是 **属性名** , **常量** , 书上还补充说可以是 **简单函数** ，不过在基础应用中不太能见得到。  
 
     * **多个** 逻辑表达式可以用 **逻辑运算符** 进行连接，举几个例子：```AθB ∧ CθD``` , ```AθB ∨ CθD``` , ```┐(AθB)```。
@@ -238,6 +240,65 @@
     * 投影选择出 **一列或多列** 属性列后，需要 **去除重复元组** ， 这也是为什么说投影涉及少部分行上的操作。  
 
 * ### **除**  
+
+    除运算是同时从 **行** 和 **列** 的方向进行运算的。
+
+    这里的除运算理解起来可能有点“绕”，尤其是书上还引用了一个 **“象集”** 的概念来定义除法。那好吧 o(*￣3￣)o，我们先看看 **象集做了啥子** ：  
+
+    象集这个概念以我的水平实在是难以用文字表达清楚，这里就先上直观示例了：  
+
+    ![imageset1-2021-10-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset1-2021-10-11.webp)  
+
+    ![imageset2-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset2-2021-10-12.webp)  
+
+    上面的例子R(X,Z)中X指代了 **单个属性列B** ，接下来我们来几张静态图展示一下 **X代表一个属性组的情况** （其实是这里懒得做动图了_(´ཀ`」 ∠)_）
+
+    <details>
+    <summary><b>展开查看例子</b>：X代表包含B,C属性列的属性组</summary>
+
+    --------
+
+    ![imageset3-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-2021-10-12.webp)  
+
+    ![imageset3-2-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-2-2021-10-12.webp)  
+
+    ![imageset3-3-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-3-2021-10-12.webp)
+
+    ![imageset3-4-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-4-2021-10-12.webp)
+
+    ![imageset3-5-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-5-2021-10-12.webp)
+
+    ![imageset3-6-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-6-2021-10-12.webp)
+
+    ![imageset3-7-2021-10-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/imageset3-7-2021-10-12.webp)
+
+
+    </details>  
+
+    (๑•̀ㅂ•́)و✧
+
+    经过上面的例子，大家应该对 **象集做了什么** 大概有了个了解，这里做个总结：  
+
+    1. 我们把目标 **关系** 表示为 **R(X,Z)**，其中X和Z **可以代表单个属性列** ，亦可以代表 **多个属性列组成的属性组**。  
+
+    2. X和Z是互补的，如果X **代表其中一部分属性列** ，那么Z **一定会代表剩余的属性列**。  
+
+    3. 象集做的事无非是 **一次选择** 和 **一次投影** 。比如我想找R关系中 **x的象集**，那么先选择的是 **X的分量** 等于 x 的**元组（可能有多个，组成集合）** ，然后将这些元组（集）在 **Z属性组** 上进行投影，得到x的象集。  
+
+    4. 象集的英文是Image**Set**，没错，它也是 **集合** ！如果最后得到的结果中有重复项请记得 **去掉重复项**。   
+
+    ------
+
+    
+
+    <!--象集也要有两个示例，第一个示例R有三个属性，第二个示例R有四个属性-->
+    <!--X可以是属性组，Z也可以是属性组-->
+
+    <!--R中一定有S中没有的属性列，且R元组数肯定是 ≥ S元组数（基数），需要注意的是R和S中也要有相同的属性列-->
+    <!--要有两个示例，第一个示例R有三个属性，第二个示例R有四个属性-->
+
+    
+
 
     To be updated...
 
@@ -355,6 +416,39 @@
     2. 投影  
 
         同 **选择** 的示例二表格
+
+    3. 除  
+
+        | A  | B  | C  |
+        |:---:|:---:|:---:|
+        | a1 | b1 | c2 |
+        | a2 | b3 | c7 |
+        | a3 | b4 | c6 |
+        | a1 | b2 | c3 |
+        | a4 | b6 | c6 |
+        | a2 | b2 | c3 |
+        | a1 | b2 | c1 |  
+
+        | B  | C  | D  |
+        |:---:|:---:|:---:|
+        | b1 | c2 | d1 |
+        | b2 | c1 | d1 |
+        | b2 | c3 | d2 |
+
+        | A  | B  | C  | D  |
+        |:---:|:---:|:---:|:---:|
+        | a1 | b1 | c2 | d1 |
+        | a2 | b3 | c7 | d1 |
+        | a3 | b4 | c6 | d2 |
+        | a1 | b2 | c3 | d2 |
+        | a4 | b6 | c6 | d1 |
+        | a2 | b2 | c3 | d2 |
+        | a1 | b2 | c1 | d1 |
+
+        | C  | D  |
+        |:---:|:---:|
+        | c1 | d1 |
+        | c3 | d2 |
 
 
 
