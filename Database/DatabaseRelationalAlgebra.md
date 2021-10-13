@@ -321,7 +321,7 @@
 
     ![basicofthejoin1.1-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/basicofthejoin1.1-2021-10-13.webp) 
 
-    连接其实等同于从两个关系的 **广义笛卡尔积** 中按 **条件** 进行 **选择**，运算式中⋈符号下面的表达式其实和选择里的F一样是 **逻辑表达式** 。  
+    连接其实等同于从两个关系的 **广义笛卡尔积** 中按 **条件** 进行 **选择**，运算式中⋈符号下面的表达式其实和选择里的F一样是 **逻辑表达式**，但**要注意**，这里逻辑表达式θ两端用于比较的属性组是有限制的，**详细看下面的θ连接** 。  
 
     例子中得到的R和S两个关系的广义笛卡尔积：  
 
@@ -352,13 +352,35 @@
     | 20230105 | 李四   | 4          | 5          | 龙井茶     |
     </details>
 
+    其中属性列 ```ID``` , ```NAME``` , ```R.COURSEID``` 是原关系R的属性列，而 ```S.COURSEID``` ， ```TEACHER``` 是原关系S的属性列
+
+    在接下来的示例中，咱就用这张表来做示例了嗷~(/▽＼)  
+
 
 * ### **θ连接**  
 
     θ连接其实简称就是连接，很有存在感的便是 **代表比较运算符的 θ 了**（￣□￣；）  
     废话不多说，我们先上直观例子：  
 
-    
+    ![thetajoin1-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/thetajoin1-2021-10-13.webp)
+
+    ![thetajoin2-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/thetajoin2-2021-10-13.webp)  
+
+    ![thetajoin3-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/thetajoin3-2021-10-13.webp)  
+
+    主要操作就是从两个关系的广义笛卡尔积中 **按条件进行选择** 了，由此很大程度上可以参考上面的 **选择** 部分。尽管如此，还是要**注意**这些限定：  
+
+    1. 拿 **R ⋈ S(逻辑表达式：A θ B)** 进行举例，**A属性组** 只能在 **R** 这部分选，而 **B属性组** 只能在 **S** 这部分选。  
+
+    2. **A**和**B**是属性组，那么A和B的 **度数（列数）** 一定要**相同**。  
+
+    上面举的例子可能还有点不清不白，其实咱还可以皮点嘛(￣^￣)ゞ，比如说这样写：
+
+    ![thetajoin4.gif-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/thetajoin4.gif-2021-10-13.webp)  
+
+    在逻辑表达式中我们将学号 **ID** 和课程号 **S.COURSEID** 相比。可想而知，因为**在广义笛卡尔积结果中**学号是**恒大于**课程号的，所以结果自然是：  
+
+    ![thetajoin5-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/thetajoin5-2021-10-13.webp)  
 
 To be updated...
 
