@@ -404,7 +404,7 @@
 
     如果我拿R关系中的 ```ID``` 和S关系中的 ```COURSEID``` 属性列作为比较对象，因为二者并不是同一个属性名，**无法进行自然连接**。  
 
-    **第2点** 的话咱还是整个例子（紧接上一个等值连接的例子）：  
+    **第2点** 的话咱还是整个例子（紧接上一个等值连接的例子，因为等值连接举的例子中R关系的COURSEID和S关系的COURSEID是同一个属性）：  
 
     ![naturaljoin-2021-10-13](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/naturaljoin-2021-10-13.webp)  
 
@@ -414,10 +414,51 @@
 
     什么是 **悬浮元组** ？  
 
-    
+    ![danglingtuple-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/danglingtuple-2021-10-17.webp)  
 
-To be updated...
+    在进行自然连接后，原 **R关系** 和 **S关系** 中因为**不满足条件**，可能有 **元组** **没有在**连接结果中出现，也就是在连接过程中被**抛弃了**，这些被抛弃的元组就是 **悬浮元组**。（顺便学个新的英语单词：```dangle[verb.]悬挂，悬垂```）    
 
+    上面的例子中的悬浮元组是：  
+
+    | ID       | NAME | COURSEID |
+    |:--------:|:----:|:--------:|
+    | 20230105 | 李四   | 4        |
+
+    | COURSEID | TEACHER |
+    |:--------:|:-------:|
+    | 5        | 龙井茶     |  
+
+    那么什么是 **外连接** ？  
+
+    外连接其实就是在**自然连接**结果关系中保留 **所有的悬浮元组**，结果中属性的**未知值**就填上**NULL**  
+
+    我们在上面自然连接的结果中示例外连接：  
+
+    ![outerjoin-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/outerjoin-2021-10-17.webp)  
+
+    外连接保留了**R**和**S**关系中**所有的**悬浮元组，这些悬浮元组在最终结果中会缺值，我们将这些缺值全部记为**NULL**。  
+
+    在外连接之中，还有 **左外连接（左连接）** ：  
+
+    ![leftouterjoin-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/leftouterjoin-2021-10-17.webp)  
+
+    左外连接则只保留 **连接符号左边** 的关系的 **悬浮元组**，同样缺值记为**NULL**。例子中保留的是R中的悬浮元组。  
+
+    那么，**右外连接（右连接）** 做的事就显而易见了：  
+
+    ![rightouterjoin-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/rightouterjoin-2021-10-17.webp)  
+
+    右外连接则只保留 **连接符号右边** 的关系的 **悬浮元组**，同样缺值记为**NULL**。例子中保留的是S中的悬浮元组。  
+
+    结合上面的外连接，左外连接，右外连接，我们发现：  
+
+    ![relationsbetweenouterjoins-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/relationsbetweenouterjoins-2021-10-17.webp)  
+
+    也就是 ```外连接 = 左外连接 ∪ 右外连接```。  
+
+    感谢你看到这里，至此这篇文章的主要内容就结束啦！放工啦放工！╰（￣▽￣）╭    
+
+    ![Imtired-2021-10-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/Imtired-2021-10-17.webp)    
 
 </details>
 
