@@ -14,7 +14,11 @@
 
 ## 0x00 关系代数演示工具  
 
-I'm still working on it...
+仍在开发中，稍后会在这里放出在线网站链接~  
+
+你可以强势围观，这是一个开源的项目：https://github.com/SomeBottle/RA  
+
+咱有时间就会写写，不会咕咕咕哒！ (。﹏。*)  
 
 ## 0x01 小概念  
 <details>
