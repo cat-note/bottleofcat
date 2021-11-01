@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+import random as rd
+import os
+import platform as pt
+system = pt.system().lower()
+
 '''
 简单的在一排洞里抓狐狸的命令行小游戏
 
@@ -7,11 +14,6 @@
 '''
 
 # 使用Python版本：3.8.5
-
-import random as rd
-import os
-import platform as pt
-system = pt.system().lower()
 
 
 def start_game():
