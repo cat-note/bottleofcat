@@ -52,7 +52,7 @@ def start_game():
             player_guess = int(player_guess)-1
         except:
             error_show()
-        if player_guess > 0 and hole_list[player_guess:]:
+        if player_guess >= 0 and hole_list[player_guess:]:
             if hole_list[player_guess] == 1:
                 print('你抓住了狐狸崽子')
                 input()
