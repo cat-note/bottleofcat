@@ -43,4 +43,5 @@
 * https://jkchao.github.io/typescript-book-chinese/project/modules.html  
 
 ## 其他电子书  
+* [计算机类电子书集合仓库](https://github.com/iamshuaidi/CS-Book#%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80)  
 * [深入理解计算机系统](https://hansimov.gitbook.io/csapp/)  
