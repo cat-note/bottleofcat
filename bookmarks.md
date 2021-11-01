@@ -41,3 +41,6 @@
 
 ## TypeScript  
 * https://jkchao.github.io/typescript-book-chinese/project/modules.html  
+
+## 其他电子书  
+* [深入理解计算机系统](https://hansimov.gitbook.io/csapp/)  
