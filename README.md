@@ -18,6 +18,7 @@ The notes here will be synchronized with my blog.
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](https://github.com/cat-note/bottleofcat/blob/main/Python/SimplePokerDistribution/poker.py)  
+1. [Python一排洞抓狐狸小游戏](https://github.com/cat-note/bottleofcat/blob/main/Python/WhereDoesTheFoxHide/fox.py)  
 
 在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
 
