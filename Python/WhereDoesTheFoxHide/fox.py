@@ -20,10 +20,16 @@ def start_game():
     day = 1  # 初始化天数
     day_max = 5  # 最多能抓几天
     hole_num = rd.randint(5, 10)  # 随机生成5-10个洞
-    hole_list = [0]*hole_num  # 生成洞列表
-    hole_no = list(map(lambda x: str(x), list(range(1, hole_num+1))))
+    hole_list = [0 for i in range(hole_num)]  # 生成洞列表
+    hole_no = [str(i) for i in range(1, hole_num+1)]  # 生成洞序号
     fox_lies_in = rd.randrange(0, hole_num)
     hole_list[fox_lies_in] = 1
+
+    def game_end(msg):
+        print(msg)
+        print('游戏结束')
+        input()
+        menu()
 
     def error_show():
         print('输入错误，请重输入')
@@ -54,8 +60,7 @@ def start_game():
             error_show()
         if player_guess >= 0 and hole_list[player_guess:]:
             if hole_list[player_guess] == 1:
-                print('你抓住了狐狸崽子')
-                input()
+                game_end('【成功】你抓住了狐狸崽子！')
             elif day < day_max:
                 fox_move()
                 print(f'第{day}天你没有抓住狐狸崽子，狐狸跳到旁边的洞去了')
@@ -63,9 +68,8 @@ def start_game():
                 input()
                 return game_round()
             else:
-                print(f'过了{day_max}天你还没找到狐狸，狐狸已经跑到月球上了！')
-                input()
-                exit()
+                game_end(f'【失败】过了{day_max}天你还没找到狐狸，狐狸已经跑到月球上了！')
+                return True
         else:
             error_show()
     game_round()
@@ -86,7 +90,7 @@ def menu():
         0: start_game,
         1: exit
     }
-    choice = input('0 to start the game, 1 to exit: ')
+    choice = input('输入0开始新一局游戏，输入1退出: ')
     if not choice.isdigit() or int(choice) not in action.keys():
         print('Wrong choice')
         return menu()
