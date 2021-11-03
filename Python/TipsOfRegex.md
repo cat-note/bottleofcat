@@ -13,6 +13,9 @@
 |子模式|子表达式 / 子组 / subpattern|
 |贪婪模式|贪心模式 / greedy mode|
 |非贪婪模式|非贪心模式 / 懒惰模式 / lazy mode |
+|非捕获组|non-capturing groups|
+|向前查找|look-ahead|
+|向后查找|look-behind|
 
 ## 子模式扩展语法  
 
@@ -58,7 +61,7 @@
 
     * 这两个子模式扩展语法的功能是 **匹配[pattern]的内容**，但在结果中**并不会返回这个子模式**。
     
-    * 我们通过表格来说明一下，**如果匹配到了**即返回 **```[pattern2]``` 匹配** 的内容：  
+    * 我们通过表格来说明一下，功能是**如果匹配到了**即返回 **```[pattern2]``` 匹配** 的内容：  
 
         | 正则写法 | 正误 |
         |:---:|:----:|
@@ -120,6 +123,71 @@
 
     要好好记住哦~
     </details>
+
+* ### 非捕获组和look-ahead,look-behind的区别  
+
+    <details>
+    <summary>展开阅读</summary>
+
+    ------
+
+    在子模式扩展语法中非捕获组(non-capturing group)写作```(?:[pattern])```，look-ahead是向前查找，look-behind是向后查找，我们列张表：
+
+    |英文术语|中文术语|模式|
+    |:---:|:---:|:---:|
+    |正向向后查找|positive look-behind|```(?<=)```|
+    |正向向前查找|positive look-ahead|```(?=)```|
+    |负向向后查找|negative look-behind|```(?<!)```|
+    |负向向前查找|negative look-ahead|```(?!)```|
+
+    **正向**和**负向**指的分别是 ```出现则匹配``` 和 ```不出现则匹配```。
+
+    在上面一节里我们已经谈了一下```look-ahead```和```look-behind```，现在又出现个非捕获组。  
+
+    非捕获组```(?:[pattern])```的功能是匹配```[pattern]```，但不会记录这个组，整个例子看看：  
+
+    ```python
+    import re
+    s = 'Cake is better than potato'
+    pattern = re.compile(r'(?:is\s)better(\sthan)')
+    print(pattern.search(s).group(0))
+    # is better than
+    print(pattern.search(s).group(1))
+    # than
+    ```
+    
+    ```Match对象```的```group(num/name)```方法返回的是对应组的内容，子模式序号从**1**开始。```group(0)```返回的是**整个模式**的匹配内容（is better than），而```group(1)```返回的是**第1个子模式**的内容（than）。  
+
+    这里可以发现第1个子模式对应的是```(\sthan)```而不是```(?:is\s)```，也就是说```(?:is\s)```这个组**未被捕获**（没有被记录）  
+
+    问题来了，positive look-ahead（正向向前查找）```(?=[pattern])``` 和 positive look-behind（正向向后查找）```(?<=[pattern])``` 是 **出现[pattern]则匹配，但并不返回该子模式匹配的内容**，它们和```(?:[pattern])```有什么区别呢？  
+
+    拿下面这段代码的执行结果来列表：  
+
+    ```python
+    import re
+    s = 'Cake is better than potato'
+    pattern = re.compile(r'(?:is\s)better(\sthan)')
+    pattern2 = re.compile(r'(?<=is\s)better(\sthan)')
+    ```
+
+    |子模式扩展语法|pattern.group(0)|pattern.group(1)|
+    |:---:|:---:|:---:|
+    |(?:[subpattern])|is better than| 空格than|
+    |(?<=[subpattern])|better than| 空格than|
+
+    ![idontunderstand-2021-11-03](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/idontunderstand-2021-11-03.jpg)
+
+    根据上面的结果总结一下：  
+
+    1. ```(?<=[pattern])```和```(?=[pattern])```是匹配到了[pattern]**不会返回、亦不会记录（捕获）[pattern]子模式**，所以在上面例子中整个模式的匹配结果中没有 ```is空格```。
+
+    2. ```(?:[pattern])```是匹配到了[pattern]**会返回，但不会记录（捕获）[pattern]子模式**，所以在上面例子中整个的匹配结果中有 ```is空格```。
+
+    3. ```(?:[pattern])```，```(?<=[pattern])```，```(?=[pattern])``` 的共同点是 **都不会记录[pattern]子模式（子组）**，所以上面例子中```group(1)```找到的**第1个组**的内容是```(\sthan)```匹配到的```空格than```。
+
+    </details>
+
 
 ## 基本语法相关  
 
@@ -250,6 +318,8 @@
 
     <details>
     <summary>展开阅读</summary>
+
+    -------
 
     教材上列子模式功能时提了一下```\num```这个用法，但真的只是提了一下：
 
