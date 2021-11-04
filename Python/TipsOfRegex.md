@@ -1,4 +1,4 @@
-# Python正则表达式使用小记
+# Python正则表达式细节小记
 最近做Python课实验发现**正则表达式**和它在py中的的**标准库re**有很多能多琢磨一下的点，遂决定写成一篇小记，以后想复习能再来看看。  
 
 ![fuwafuwa-2021-11-02](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/fuwafuwa-2021-11-02.gif)  
