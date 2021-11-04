@@ -420,7 +420,7 @@
     pattern=re.compile('(?sm)^hElLo') # s->换行符识别，m->多行匹配
     ```
 
-    值得注意的是这个子模式扩展语法请最好放在 **整个模式的最前面**，不然Python会报“不建议”提示：```DeprecationWarning: Flags not at the start of the expression```.  
+    值得注意的是这个子模式扩展语法请最好放在 **整个模式的最前面**，不然Python会报“不建议”警告：```DeprecationWarning: Flags not at the start of the expression```.  
 
     </details>
 
