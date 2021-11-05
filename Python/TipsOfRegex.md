@@ -22,7 +22,7 @@
 
 * ### look-behind语法问题  
 
-    <details open>
+    <details>
     <summary>展开阅读</summary>
 
     ----
