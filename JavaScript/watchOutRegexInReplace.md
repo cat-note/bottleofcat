@@ -45,7 +45,7 @@ test$
 
 ![syntaxofreplace-2021-11-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/syntaxofreplace-2021-11-07.jpg)  
 
-原来用作替换的字符串内能包括一些特殊的变量名！  
+原来用作替换的字符串内能包括一些特殊的变量名（不过这个特性不止是JavaScript有，其他支持正则表达式的语言也多多少少支持，详细看[0x04-事后](#0x04-事后)）  
 
 | 变量名 | 代表的值 |
 |:---:|:---:|
@@ -100,3 +100,11 @@ str.replace(new RegExp('\\{\\[' + from + '\\]\\}','gi'), function(){
 
 以后写JavaScript代码的时候还是不能掉以轻心了，说不定在哪个角落还有我不太清楚的魔法。遇到不会或者不清楚的一定要多查文档，不然一旦写进项目里可能就会成为一个遗留的潜在问题。(ノへ￣、)   
 
+## 0x04 事后  
+
+经 [@Ajanuw](https://github.com/januwA) 老哥提醒，不止是JavaScript的正则替换中待替换字串(replacement)有这种用法，例如：  
+
+* [Python的re.sub](https://docs.python.org/zh-cn/3/library/re.html#re.sub)  
+* [PHP的preg_replace](https://www.php.net/preg_replace/)  
+
+不过```$&``` , ``` $` ``` , ``` $' ```这种写法真的是JavaScript独有的了，这回也是正好踩在这上面了（还是好想吐槽JavaScript的这个特殊变量配上``` ` ``` , ``` & ``` , ```'```的设计 Σ( ° △ °|||)︴  
