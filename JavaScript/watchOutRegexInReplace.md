@@ -98,7 +98,7 @@ str.replace(new RegExp('\\{\\[' + from + '\\]\\}','gi'), function(){
 
 ## 0x03 教训  
 
-以后写JavaScript代码的时候还是不能掉以轻心了，说不定在哪个角落还有我不太清楚的魔法。遇到不会或者不清楚的一定要多查文档，不然一旦写进项目里可能就会成为一个遗留的潜在问题。(ノへ￣、)   
+以后写代码的时候还是不能掉以轻心了，说不定在哪个角落还有我不太清楚的魔法。遇到不会或者不清楚的一定要多查文档，不然一旦写进项目里可能就会成为一个遗留的潜在问题。(ノへ￣、)   
 
 ## 0x04 事后  
 
@@ -106,5 +106,7 @@ str.replace(new RegExp('\\{\\[' + from + '\\]\\}','gi'), function(){
 
 * [Python的re.sub](https://docs.python.org/zh-cn/3/library/re.html#re.sub)  
 * [PHP的preg_replace](https://www.php.net/preg_replace/)  
+* [Perl](https://www.runoob.com/perl/perl-regular-expressions.html)  
 
-不过```$&``` , ``` $` ``` , ``` $' ```这种写法似乎是JavaScript独有的了，这回也是正好踩在这上面了（还是好想吐槽JavaScript的这个特殊变量配上``` ` ``` , ``` & ``` , ```'```的设计 Σ( ° △ °|||)︴  
+不过```$&``` , ``` $` ``` , ``` $' ```这种写法<del>似乎是JavaScript独有的</del> (**Perl**也有，是我才疏学浅) 了，这回也是正好踩在这上面了（还是好想吐槽这个特殊变量配上``` ` ``` , ``` & ``` , ```'```的设计 Σ( ° △ °|||)︴  
+
