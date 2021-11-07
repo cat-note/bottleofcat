@@ -16,6 +16,7 @@ The notes here will be synchronized with my blog.
 3. [关系数据库de关系代数小记](https://github.com/cat-note/bottleofcat/blob/main/Database/DatabaseRelationalAlgebra.md) <--流量用户慎重浏览   
 4. [Python里字符串Format时的一个易错“点”](https://github.com/cat-note/bottleofcat/blob/main/Python/DontForgetDotInFormat.md)  
 5. [Python正则表达式细节小记](https://github.com/cat-note/bottleofcat/blob/main/Python/TipsOfRegex.md)  
+6. [JavaScript正则表达式replace的一个坑](https://github.com/cat-note/bottleofcat/blob/main/JavaScript/watchOutRegexInReplace.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](https://github.com/cat-note/bottleofcat/blob/main/Python/SimplePokerDistribution/poker.py)  
