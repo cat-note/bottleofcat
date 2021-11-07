@@ -107,4 +107,4 @@ str.replace(new RegExp('\\{\\[' + from + '\\]\\}','gi'), function(){
 * [Python的re.sub](https://docs.python.org/zh-cn/3/library/re.html#re.sub)  
 * [PHP的preg_replace](https://www.php.net/preg_replace/)  
 
-不过```$&``` , ``` $` ``` , ``` $' ```这种写法真的是JavaScript独有的了，这回也是正好踩在这上面了（还是好想吐槽JavaScript的这个特殊变量配上``` ` ``` , ``` & ``` , ```'```的设计 Σ( ° △ °|||)︴  
+不过```$&``` , ``` $` ``` , ``` $' ```这种写法似乎是JavaScript独有的了，这回也是正好踩在这上面了（还是好想吐槽JavaScript的这个特殊变量配上``` ` ``` , ``` & ``` , ```'```的设计 Σ( ° △ °|||)︴  
