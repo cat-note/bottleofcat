@@ -304,4 +304,6 @@ print(new_instance.test_var) # 233
 
 To be updated......
 
-待更新：cls和self，类方法和静态方法，抽象类，多态
+待更新：类方法和静态方法，MethodType，构造函数继承和super，__new__是什么玩意->__new__和super
+
+TypeError: object.__new__() takes exactly one argument (the type to instantiate)问题
