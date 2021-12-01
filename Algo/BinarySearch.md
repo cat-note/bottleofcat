@@ -150,7 +150,7 @@ def find(from_list, which_one):
     found_ind = find(my_list, 1)
     ```
     
-    ![findBeginning-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findBeginning-2021-12-01.gif)  
+    ![findBeginning-remade-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findBeginning-remade-2021-12-01.gif) 
 
 2. 寻找列表中间的一个值：  
 
@@ -159,14 +159,38 @@ def find(from_list, which_one):
     found_ind = find(my_list, 16)
     ```
 
-    ![findMedian-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findMedian-2021-12-01.gif)
+    ![findMedian-remade-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findMedian-remade-2021-12-01.gif)
 
 3. 寻找一个找不到的值：  
-To be updated...
+
+    ```python
+    my_list = [1, 3, 4, 5, 8, 16, 24, 56, 78]
+    found_ind = find(my_list, 6)
+    ```
+
+    ![cannotFind-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/cannotFind-2021-12-01.gif)
 
 ## 时间复杂度  
 
-To be updated...
+通过大O表示法咱可以写成 ```O(f(n))``` 这样，其中：
+
+* ```n```是操作的**数据的规模**。
+* ```f(n)```是**操作的次数（程序执行的次数）**。  
+* **大O**的量和```f(n)```成正比（这是不是说明看```O```其实就可以粗略地看```f(n)```？）。  
+
+![043-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/043-2021-12-01.png)
+
+<a id="atMost"></a>
+
+上面例子的列表中有**9**个元素，数据规模 ```n=9```，这些例子中**除了卡死循环**的情况外，我发现程序**最多**执行检查```4```次，而不是9次——
+
+——因为每次执行操作后会将**搜索范围折半**，也就是每次操作后数据规模会**成半缩减**：  
+
+![timeComplexity-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/timeComplexity-2021-12-01.jpg)  
+
+所以**二分查找**的时间复杂度是 ```O(log```<sub>2</sub>```n)```。
+
+为什么说到[“最多”](#atMost)这个词呢？因为大O时间体现的是**最不理想情况下**的运行时间，也就是该算法的时间复杂度的**上界**。
 
 ## 更多的写法  
 
