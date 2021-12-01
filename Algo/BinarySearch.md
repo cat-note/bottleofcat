@@ -150,10 +150,22 @@ def find(from_list, which_one):
     found_ind = find(my_list, 1)
     ```
     
-    ![findBeginning-2021-11-30](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findBeginning-2021-11-30.gif)  
+    ![findBeginning-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findBeginning-2021-12-01.gif)  
 
 2. 寻找列表中间的一个值：  
+
+    ```python
+    my_list = [1, 3, 4, 5, 8, 16, 24, 56, 78]
+    found_ind = find(my_list, 16)
+    ```
+
+    ![findMedian-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findMedian-2021-12-01.gif)
+
 3. 寻找一个找不到的值：  
+To be updated...
+
+## 时间复杂度  
+
 To be updated...
 
 ## 更多的写法  
