@@ -149,7 +149,7 @@ def find(from_list, which_one):
 
     ```python
     my_list = [1, 3, 4, 5, 8, 16, 24, 56, 78]
-    found_ind = find(my_list, 1)
+    found_ind = find(my_list, 1) # 0
     ```
     
     ![findBeginning-remade-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findBeginning-remade-2021-12-01.gif) 
@@ -158,7 +158,7 @@ def find(from_list, which_one):
 
     ```python
     my_list = [1, 3, 4, 5, 8, 16, 24, 56, 78]
-    found_ind = find(my_list, 16)
+    found_ind = find(my_list, 16) # 5
     ```
 
     ![findMedian-remade-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/findMedian-remade-2021-12-01.gif)
@@ -167,7 +167,7 @@ def find(from_list, which_one):
 
     ```python
     my_list = [1, 3, 4, 5, 8, 16, 24, 56, 78]
-    found_ind = find(my_list, 6)
+    found_ind = find(my_list, 6) # False
     ```
 
     ![cannotFind-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/cannotFind-2021-12-01.gif)
