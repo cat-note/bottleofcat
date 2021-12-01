@@ -182,13 +182,15 @@ def find(from_list, which_one):
 
 <a id="atMost"></a>
 
-上面例子的列表中有**9**个元素，数据规模 ```n=9```，这些例子中**除了卡死循环**的情况外，我发现程序**最多**执行检查```4```次，而不是9次——
+上面例子的列表中有**9**个元素，数据规模 ```n=9```，这些例子中**除了卡死循环**的情况外，我发现程序 **最多** 执行检查```4```次，而不是9次——
 
 ——因为每次执行操作后会将**搜索范围折半**，也就是每次操作后数据规模会**成半缩减**：  
 
 ![timeComplexity-2021-12-01](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/timeComplexity-2021-12-01.jpg)  
 
-所以**二分查找**的时间复杂度是 ```O(log```<sub>2</sub>```n)```。
+（字丑勿cue ┑(￣Д ￣)┍）
+
+所以**二分查找**的时间复杂度表示为 ```O(log```<sub>2</sub>```n)```。
 
 为什么说到[“最多”](#atMost)这个词呢？因为大O时间体现的是**最不理想情况下**的运行时间，也就是该算法的时间复杂度的**上界**。
 
@@ -201,6 +203,3 @@ def find(from_list, which_one):
 * [https://www.zhihu.com/question/36132386/answer/155438728](https://www.zhihu.com/question/36132386/answer/155438728)  
 
 注意这个链接里的回答说 ```median = ( low + high ) / 2``` 写法会溢出是 **C/C++** 里的一个小坑。
-
-<!--二分查找有几种写法？它们的区别是什么？ - 胖君的回答 - 知乎
-https://www.zhihu.com/question/36132386/answer/155438728-->
