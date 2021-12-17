@@ -19,6 +19,7 @@ The notes here will be synchronized with my blog.
 6. [JavaScript正则表达式replace的一个细节点](https://github.com/cat-note/bottleofcat/blob/main/JavaScript/watchOutRegexInReplace.md)  
 7. [Python面向对象小备忘](https://github.com/cat-note/bottleofcat/blob/main/Python/NoteOfPythonOOP.md)  
 8. [【动画笔记】二分查找（折半查找）](https://github.com/cat-note/bottleofcat/blob/main/Algo/BinarySearch.md)  
+9. [物理实验霍尔效应判断P/N型半导体笔记](https://github.com/cat-note/bottleofcat/blob/main/Physics/HallEfxAndSemiconductor.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](https://github.com/cat-note/bottleofcat/blob/main/Python/SimplePokerDistribution/poker.py)  
