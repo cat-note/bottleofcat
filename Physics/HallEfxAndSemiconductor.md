@@ -8,3 +8,7 @@
 ![HallPNSemiconductor-2021-12-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/HallPNSemiconductor-2021-12-17.png)  
 
 做完这个总结咱要飞速准备六级了...明天就要考了...(考试周和四六级在一起真难受(ノへ￣、))  
+
+## 补充  
+
+https://www.zhihu.com/question/401069620/answer/1285915054  
