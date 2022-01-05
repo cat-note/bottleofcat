@@ -21,7 +21,8 @@
 
 ## JavaScript  
 * [一杯茶的时间，上手 Node.js](https://zhuanlan.zhihu.com/p/97413574)  
-* [廖雪峰的JavaScript教程](https://www.liaoxuefeng.com/wiki/1022910821149312)  
+* [Node.js Roadmap](https://github.com/tuture-dev/nodejs-roadmap) <-包括上面一杯茶时间这篇文章  
+* [WangDoc(阮一峰) - ES6教程](https://wangdoc.com/es6/)  
 * [MDN Web Docs](https://developer.mozilla.org/zh-CN/)  
 
 ## C++  
