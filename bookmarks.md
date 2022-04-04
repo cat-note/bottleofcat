@@ -10,7 +10,8 @@
   - [x] 跟随学校学习Python和SQL  
 
 ## 学习进度  
-  * 《C++新经典》
+  * 《C++新经典》 ```73/713```  
+  * 《数据结构 - 邓俊辉》
 
 ## 概率论与数理统计  
 * https://github.com/ChanceQZ/Statistics-note  
