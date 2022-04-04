@@ -26,6 +26,7 @@ The notes here will be synchronized with my blog.
 1. [Python一排洞抓狐狸小游戏](Python/WhereDoesTheFoxHide/fox.py)  
 2. [Python实验之简单的命令行学生管理](Python/ExpStuManagement/stu.py)  
 3. [Python课设-SKLINE](https://github.com/SomeBottle/skline)  
+4. [操作系统处理机常用调度算法的简单实现](OS/ProcessorScheduling/code)  
 
 在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
 
