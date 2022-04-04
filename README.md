@@ -6,7 +6,7 @@
 -------
 Here are the learning notes written by an amateur bottle.  
 There must be something that I misunderstood , I'll appreciate it if you can point them out~  
-The notes here will be synchronized with my blog.  
+The notes here will be synchronized with my blog.   
 
 -------
 ## Content  
