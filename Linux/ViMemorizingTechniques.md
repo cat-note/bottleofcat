@@ -681,6 +681,8 @@
         ![daBracket-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/daBracket-2022-04-12.gif)  
 
         > 💡 `y` 和 `c` 也是一样的用法，适用于多种括号。
+
+    ![quoteAndBracketComic-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/quoteAndBracketComic-2022-04-12.png)
     
 
 11. **双引号指定寄存器**
