@@ -810,7 +810,42 @@
 
         > 👆记忆方法：`r`直接记成 `redo [v]重做` 即可。为什么多了个`Ctrl`呢？因为`r`已经被**替换模式**占用了！  
 
-15. 数字快捷增减
+15. **数字快捷增减**
+
+    要修改一个数值的时候可以进入插入模式，移动光标到数值上进行修改，这样可能略嫌麻烦了。在`命令模式/普通模式`下提供了对**数值**进行**递增**或**递减**的操作指令：  
+
+    * `Ctrl + a` （`Ctrl + A`亦可） 
+    
+        对光标指针所在数值进行**递增操作**。如果光标没有指向数值，会**向右查找**数值进行递增。  
+
+        > 💡 记忆方法： `a` 可以记成 `ascend [v]上升；升高；递增`，亦可以记成 `accumulate [v]积累；逐渐增加`。之所以有 `Ctrl` ,是因为`a`已经被用于切换**插入模式**了！
+
+        ![ascendingNum-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/ascendingNum-2022-04-12.gif)  
+
+        👆 示例中可以看到，当光标右方没有数值时会屏幕闪烁提示指令无效。  
+
+    * `Ctrl + x` （`Ctrl + X`亦可）  
+
+        对光标指针所在数值进行**递减操作**。如果光标没有指向数值，同样会**向右查找**数值进行递减。  
+
+        > 💡 记忆方法： `x` 可以记成 `叉掉数字，从而让数值减小`。之所以有`Ctrl`也是因为`x`已经被用于**插入模式**。  
+
+    * **重复指令**  
+
+        设想一下，如果我要增加10亿，难不成要一直按住按键不动？当然不是这样啦！  
+
+        再记忆一遍，`命令模式/普通模式`下的指令可以加**数字前缀**进行重复，在这里只需要这样输入指令即可快速递增指定数值：  
+
+        ```1000000000Ctrl + a```  
+
+        ![ascendBillionTimes-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/ascendBillionTimes-2022-04-12.gif)  
+
+        ```Ctrl + x``` 同理！  
+
+        ![rocketAscending-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rocketAscending-2022-04-12.png)
+
+
+    八进制，十六进制支持
 
 16. 重复上条指令
 
