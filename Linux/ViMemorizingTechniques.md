@@ -824,11 +824,15 @@
 
         👆 示例中可以看到，当光标右方没有数值时会屏幕闪烁提示指令无效。  
 
+        -------
+
     * `Ctrl + x` （`Ctrl + X`亦可）  
 
         对光标指针所在数值进行**递减操作**。如果光标没有指向数值，同样会**向右查找**数值进行递减。  
 
         > 💡 记忆方法： `x` 可以记成 `叉掉数字，从而让数值减小`。之所以有`Ctrl`也是因为`x`已经被用于**插入模式**。  
+
+        -------
 
     * **重复指令**  
 
@@ -845,7 +849,9 @@
         ![rocketAscending-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rocketAscending-2022-04-12.png)
 
 
-    八进制，十六进制支持
+    > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical）。
+
+    👆 具体配置见`末行模式/命令(行)模式`的xxx一节。
 
 16. 重复上条指令
 
@@ -874,4 +880,5 @@
     ![writeAnotherFile-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeAnotherFile-2022-04-08.png)
 
 
-> registers查看寄存器，marks查看标记
+> 帮助:help，registers查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number
+> 记得这些部分都要和上文形成关联
