@@ -1,12 +1,12 @@
 # bottleofcat
 这里是Somebottle的摸鱼学习笔记   
 肯定会有错误，欢迎各位指教(*‘ v\`*)   
-咱在这儿的笔记也是和[咱的博客](https://bottle.moe)相同步的~   
+咱在这儿的笔记也是和[咱的博客](https://somebottle.cnblogs.com/)相同步的~   
 
 -------
 Here are the learning notes written by an amateur bottle.  
 There must be something that I misunderstood , I'll appreciate it if you can point them out~  
-The notes here will be synchronized with my blog.   
+The notes here will be synchronized with my [blog](https://somebottle.cnblogs.com/).   
 
 -------
 ## Content  
