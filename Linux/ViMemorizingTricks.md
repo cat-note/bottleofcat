@@ -539,7 +539,7 @@
 
     * **剪切一个字符**
 
-        `x` 剪切**光标右边的一个字符**  
+        `x` 剪切**光标右边的一个字符** （相当于`dl`或`d→`）  
         `s` 剪切**光标右边的一个字符**，并且**进入插入模式**  
 
         > **👆记忆方法**：`x` 中的 `x`记为`画个叉叉删掉字符`；  
@@ -848,7 +848,7 @@
         对光标指针所在数值进行**递减操作**。如果光标没有指向数值，同样会**向右查找**数值进行递减。  
 
         > 💡 记忆方法： `x` 可以记成 `叉掉数字，从而让数值减小`。  
-        > 之所以有`Ctrl`也是因为`x`已经被用于**插入模式**。  
+        > 之所以有`Ctrl`也是因为`x`已经被用于**剪切字符**。  
 
         -------
 
@@ -939,9 +939,26 @@
     
     > 👆 记忆方法：硬背
 
-18. 其他可能常用到的指令
+18. 其他可能常用到的指令  
 
-19. 多窗口编辑  
+    * 大写 `J`  
+
+         这个指令能将**光标所在行**和其下面一行**连接成一行**，之间用**一个空格间隔**：  
+
+         ![LinesJoin-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/LinesJoin-2022-04-17.gif)  
+
+         > `4J` 的话则是将光标所在行和**下面3行**进行连接，每行之间用空格隔开。**一共4行**。  
+
+         > 💡 记忆方法：直接记  `Join [v]加入；连接` 即可。  
+        
+    * `gJ`  
+
+        同样是连接行。和上面`J`不同的是，这个指令在连接行之后**不会在之间添加空格！**。  
+
+        > 💡 记忆方法：可以记成`gross Join`，`gross`有`总的；粗鲁的`的意思，gross Join就可以记成 “**连接成一个总体**” 或者 “**粗鲁地直接连在一起**”。  
+
+    ...to be updated  
+
 
 ## 末行模式/命令(行)模式
 
@@ -961,8 +978,23 @@
 
     ![writeToAnother-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeToAnother-2022-04-08.gif)  
 
-    ![writeAnotherFile-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeAnotherFile-2022-04-08.png)
+    ![writeAnotherFile-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeAnotherFile-2022-04-08.png)  
+
+    除了上面针对单一文件的写入指令，还可以同时**写入多个文件**，下面这个指令适用于Vim编辑器中同时打开多个文件的情况：
+
+    ```:wa```  
+
+    👆 将所有打开的文件进行写入保存。（可以记成`Write All 写入所有`）  
+
+    ![WriteAll-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/WriteAll-2022-04-17.png)  
+
+## 基本搜索替换
+
+## 简单多窗口编辑
+
+## 可视模式
 
 
-> 帮助:help，registers查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number
+> 帮助:help，registers查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number  
+> 搜索部分记得在“可能用到的指令”中添加g* * g# #  
 > 记得这些部分都要和上文形成关联
