@@ -1009,11 +1009,26 @@
 
     比如**未保存强制退出编辑器**就可以用： ```:qa!```  
 
-    (弔图)
+    ![forcedQuitAll-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedQuitAll-remake-2022-04-18.png)  
 
     > ⚠ 强制执行指令时一定要再三考虑，防止数据丢失等问题。  
 
 4. 联合使用 ```w``` 与 ```q```   
+
+    ![wCombineWithQ-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wCombineWithQ-2022-04-18.png)  
+
+    既然未保存没法正常关闭文件，那么保存后关闭不就行了嘛！  
+
+    ```:wq```  
+
+    👆 双剑合璧，数据无忧！这个指令会将缓冲区中的编辑内容**写入文件**，并且**关闭文件**。（针对**当前正在编辑的文件**）  
+
+    当然，也有针对**编辑器所有打开的文件**的操作：
+
+    ```:wqa```  
+
+    👆 写入并关闭**所有打开的文件**，这之后会**退出编辑器**。（```Write & Quit All```）
+
 
 
 
