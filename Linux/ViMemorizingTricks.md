@@ -988,6 +988,20 @@
 
     ![WriteAll-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/WriteAll-2022-04-17.png)  
 
+    如果只想保存文本中的一部分呢？Vim还支持指定行写入文件：  
+
+    ```:<line1>,<line2> w filename```  
+
+    👇 比如我想写入第`13`至第`14`行的文本（共两行）：```:13,14 w filename```  
+
+    ![writeSpecificLines-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeSpecificLines-remake-2022-04-18.gif)  
+
+    输出文件效果：  
+
+    ![SpecificLines-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/SpecificLines-2022-04-18.jpg)  
+
+
+
 2. ```q``` 退出（记为```Quit [v]离开；关闭```）  
 
     文本编辑器必备操作——关闭文件。  
@@ -1001,19 +1015,7 @@
     > **注意**：上面这两个指令执行的前提是**当前文件自打开后没有任何更改**，也就是说文件缓冲区中没有任何新增内容，不然编辑器会警告文件尚未保存更改。  
     > 怎么强制退出呢？下面就将写到.....  
 
-3. 感叹号 ```!``` 强制执行指令  
-
-    有些情况下末行模式指令的执行可能会被拒绝，比如上面的`:q`在文件保存前不能直接执行。（这一点其实也是为了数据安全）  
-
-    然而，只需要在这些指令**末尾**加上感叹号 ```!``` 就可以**强制执行**了！  
-
-    比如**未保存强制退出编辑器**就可以用： ```:qa!```  
-
-    ![forcedQuitAll-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedQuitAll-remake-2022-04-18.png)  
-
-    > ⚠ 强制执行指令时一定要再三考虑，防止数据丢失等问题。  
-
-4. 联合使用 ```w``` 与 ```q```   
+3. 联合使用 ```w``` 与 ```q```   
 
     ![wCombineWithQ-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wCombineWithQ-2022-04-18.png)  
 
@@ -1030,11 +1032,36 @@
     👆 写入并关闭**所有打开的文件**，这之后会**退出编辑器**。（```Write & Quit All```）
 
 
+4. 感叹号 ```!``` 强制执行指令  
+
+    有些情况下末行模式指令的执行可能会被拒绝，比如上面的`:q`在文件保存前不能直接执行。（这一点其实也是为了数据安全）  
+
+    然而，只需要在这些指令**末尾**加上感叹号 ```!``` 就可以**强制执行**了！  
+
+    比如**未保存强制退出编辑器**就可以用： ```:qa!```  
+
+    ![forcedQuitAll-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedQuitAll-remake-2022-04-18.png)  
+
+    此外我觉得**文件强制写入**也是值得记录一下的：```:w!```  
+
+    👆 这个指令会**尝试强制写入文件，即使文件是只读(Read-only)的**，前提是**用户得要有修改文件属性的权限**。   
+
+    > ⚠ 强制执行指令时一定要再三考虑，防止数据丢失等问题。  
+
+5. ```r``` 在下一行读入文件 （记成 ```Read [v]读取```） 
+
+    在编辑文本的时候可能需要将**另一个文件的文本**插入进来，这个时候就轮到`:r`大显身手了。  
+
+    ```:r``` 能够**读取一个文件**，并将文件内容**追加**到光标所在行的**后一行**。  
+
+    ![appendFileContent-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/appendFileContent-2022-04-18.gif)  
+
+    👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
 
-## 基本搜索替换
+### 基本搜索替换
 
-## 简单多窗口编辑
+### 简单多文件编辑
 
 ## 可视模式
 
