@@ -431,9 +431,25 @@
 
         ![jump2markedLine-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/jump2markedLine-2022-04-12.gif)  
 
-        > 这样是不是就相当于标记了一个行的行首呢？
+        > 这样是不是就相当于标记了一个行的行首呢？ 
 
-    > 💡 在进行了[**缩进操作**](#indenting)后，标记的位置仍然在文本的相应位置，无需担心。
+    * **删除标记**  
+
+        ma可以设置名为`a`的标记，删除的话其实在前面加个del即可：  
+
+        ```delm a``` 或 ```delmarks a``` 
+        
+        （ `Delete Marks` ）  
+
+        同时支持**删除多个标记**。比如我要删除`a`,`b`,`c`三个标记，可以写成：  
+
+        ```delm abc``` 或 ```delmarks a b c```  
+
+        也就是说删除标记的时候**标记名之间有没有间隔是无所谓的**。
+        
+    > 💡 在进行了[**缩进操作**](#indenting)后，标记的位置仍然在文本的相应位置，无需担心。 
+
+    `末行模式/命令行模式`下可以**查看标记信息**：[:marks](#LLmarks)  
 
 7. **翻页**  
 
@@ -785,7 +801,9 @@
 
     这里主要记录一下复制粘贴方面的寄存器引用方法。Vim寄存器储存的内容远不止这么一点，还包括操作历史记录等信息，就不多赘述了。
 
-    > 👆记忆方法：`"` 就像个图钉📌，标明是哪一个寄存器。
+    > 👆记忆方法：`"` 就像个图钉📌，标明是哪一个寄存器。  
+
+    `末行模式/命令行模式`下可以**查看寄存器信息**：[:reg\[isters\]](#LLregisters)  
 
 13. **缩进**  
 
@@ -828,6 +846,8 @@
         > 为什么多了个`Ctrl`呢？因为`r`已经被**替换模式**占用了！  
 
 15. **数字快捷增减**
+
+    <a id="numberAscDesc"></a> 
 
     要修改一个数值的时候可以进入插入模式，移动光标到数值上进行修改，这样可能略嫌麻烦了。在`命令模式/普通模式`下提供了对**数值**进行**递增**或**递减**的操作指令：  
 
@@ -878,9 +898,11 @@
 
         ---------
 
+    <a id="availableNumTypes"></a> 
+
     > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical）。
 
-    👆 具体配置见`末行模式/命令(行)模式`的xxx一节。
+    👆 具体配置见`末行模式/命令(行)模式`的[nrformats配置](#nrformats)一节。  
 
 16. **字母大小写切换**  
 
@@ -966,7 +988,7 @@
 
 在这个模式中涉及到了最基础的文件保存 / 退出编辑器等操作。
 
-1. ```:w``` 写入 （记为```Write [v]写文件```）
+1. ```:w``` **写入** （记为```Write [v]写文件```）
 
     顾名思义，这个指令会将**自开始编辑以来**的更改写入文件中：
 
@@ -976,7 +998,7 @@
 
     文件保存总让人想起桌面软件的“另存为”功能，当然```Vi```也是能实现的：
 
-    ```:w filename```  
+    ⭐ ```:w filename```  
 
     ![writeToAnother-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeToAnother-2022-04-08.gif)  
 
@@ -984,7 +1006,7 @@
 
     除了上面针对单一文件的写入指令，还可以同时**写入多个文件**，下面这个指令适用于Vim编辑器中同时打开多个文件的情况：
 
-    ```:wa```  
+    ⭐ ```:wa```  
 
     👆 将所有打开的文件进行写入保存。（可以记成`Write All 写入所有`）  
 
@@ -992,7 +1014,7 @@
 
     如果只想保存文本中的一部分呢？Vim还支持指定行写入文件：  
 
-    ```:<line1>,<line2> w filename```  
+    ⭐ ```:<line1>,<line2> w filename```  
 
     👇 比如我想写入第`13`至第`14`行的文本（共两行）：```:13,14 w filename```  
 
@@ -1004,41 +1026,41 @@
 
 
 
-2. ```:q``` 退出（记为```Quit [v]离开；关闭```）  
+2. ```:q``` **退出**（记为```Quit [v]离开；关闭```）  
 
     文本编辑器必备操作——关闭文件。  
 
-    ```:q``` 指令会退出**当前编辑的文件**（如果只打开了一个文件，这个操作同时会**退出编辑器**）  
+    ⭐ ```:q``` 指令会退出**当前编辑的文件**（如果只打开了一个文件，这个操作同时会**退出编辑器**）  
 
-    ```:qa``` 指令则会退出**所有打开的文件**，并且**退出编辑器**。
+    ⭐ ```:qa``` 指令则会退出**所有打开的文件**，并且**退出编辑器**。
 
     > 👆 记忆方法：`Quit All 关闭所有`  
 
     > **注意**：上面这两个指令执行的前提是**当前文件自打开后没有任何更改**，也就是说文件缓冲区中没有任何新增内容，不然编辑器会警告文件尚未保存更改。  
     > 怎么强制退出呢？下面就将写到.....  
 
-3. 联合使用 ```w``` 与 ```q```   
+3. **联合使用** ```w``` 与 ```q```   
 
     ![wCombineWithQ-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wCombineWithQ-2022-04-18.png)  
 
     既然未保存没法正常关闭文件，那么保存后关闭不就行了嘛！  
 
-    ```:wq```  
+    ⭐ ```:wq```  
 
     👆 双剑合璧，数据无忧！这个指令会将缓冲区中的编辑内容**写入文件**，并且**关闭文件**。（针对**当前正在编辑的文件**）  
 
     当然，也有针对**编辑器所有打开的文件**的操作：
 
-    ```:wqa```  
+    ⭐ ```:wqa```  
 
     👆 写入并关闭**所有打开的文件**，这之后会**退出编辑器**。（```Write & Quit All```）
 
 
-4. 感叹号 ```!``` 强制执行指令  
+4. 感叹号 ```!``` **强制执行指令**  
 
     有些情况下末行模式指令的执行可能会被拒绝，比如上面的`:q`在文件保存前不能直接执行。（这一点其实也是为了数据安全）  
 
-    然而，只需要在这些指令**末尾**加上感叹号 ```!``` 就可以**强制执行**了！  
+    ⭐ 然而，只需要在这些指令**末尾**加上感叹号 ```!``` 就可以**强制执行**了！  
 
     比如**未保存强制退出编辑器**就可以用： ```:qa!```  
 
@@ -1050,37 +1072,39 @@
 
     > ⚠ 强制执行指令时一定要再三考虑，防止数据丢失等问题。  
 
-5. ```:r``` 在下一行读入文件 （记成 ```Read [v]读取```） 
+5. ```:r``` **在下一行读入文件** （记成 ```Read [v]读取```） 
 
     在编辑文本的时候可能需要将**另一个文件的文本**插入进来，这个时候就轮到`:r`大显身手了。  
 
-    ```:r``` 能够**读取一个文件**，并将文件内容**追加**到光标所在行的**后一行**。  
+    ⭐ ```:r``` 能够**读取一个文件**，并将文件内容**追加**到光标所在行的**后一行**。  
 
     ![appendFileContent-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/appendFileContent-2022-04-18.gif)  
 
     👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
-6. ```:help [command]```  
+6. ```:help [command]``` **查看帮助**  
 
     就像Linux中的`man`指令一样，Vi/Vim的`末行模式/命令行模式`也有个`:help`指令用来查看编辑器使用帮助。  
 
-    直接使用 ```:help``` 时会打开帮助文件，并将光标移动到顶部。  
+    ⭐ 直接使用 ```:help``` 时会打开帮助文件，并将光标移动到顶部。  
 
-    指令形如```:help [command]```时，在开启文件后光标会跳转到对应的指令帮助信息。  
+    ⭐ 指令形如```:help [command]```时，在开启文件后光标会跳转到对应的指令帮助信息。  
 
     > 比如要看寄存器指令的帮助信息：```:help reg``` 或 ```:help registers```  
 
-7. ```:registers``` 或 ```:reg``` 查看寄存器  
+7. ```:registers``` 或 ```:reg``` **查看寄存器**  
+
+    <a id="LLregisters"></a> 
 
     这一部分可以结合```命令模式/正常模式```的[双引号指定寄存器](#specifyRegs)一起记。    
 
-    直接使用 ```:registers``` 或 ```:reg``` 时会展示**所有的寄存器** 👇  
+    ⭐ 直接使用 ```:registers``` 或 ```:reg``` 时会展示**所有的寄存器** 👇  
 
     ![registers-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/registers-2022-04-18.jpg)  
 
     也可以在后面**指定要查询的寄存器名**，这些名称可以用空格分开，也可以连在一起写：  
 
-    比如 ```:reg[isters] a b c``` 或 ```:reg[isters] abc``` ，可以筛选查询`a`,`b`,`c`寄存器 👇  
+    ⭐ 比如 ```:reg[isters] a b c``` 或 ```:reg[isters] abc``` ，可以筛选查询`a`,`b`,`c`寄存器 👇  
 
     ![specifyRegisters-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/specifyRegisters-2022-04-18.gif)  
 
@@ -1089,7 +1113,97 @@
     ![009-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/009-2022-04-18.png)  
 
 
-    
+8. ```:marks``` **查看标记信息**  
+
+    <a id="LLmarks"></a> 
+
+    这个和上面```:reg[isters]```的使用**很类似**，所以咱给写一起了。  
+
+    这一部分可以结合```命令模式/正常模式```的[自定义跳转标记](#makeMarks)一起记。 
+
+    ⭐ 直接使用 ```:marks``` 能查询到**所有现有的标记**  
+
+    和:registers一样，在后接查询的标记名，能筛选结果：  
+
+    ⭐ 比如 ```:marks a b c``` 或 ```:marks abc``` ，可以筛选查询`a`,`b`,`c`标记  
+
+9. ```:set``` **设置项**  
+
+    这个指令用于设置一些配置项，这里就记几个比较常用的（因为配置项有非常多，全写出来太累赘了）  
+
+    * **开启/关闭行号显示**  
+
+        ```:set number``` 或 ```:set nu``` 可以在行首显示行号  
+
+        而 ```:set nonumber``` 或 ```:set nonu``` 则可以关闭行号显示  
+
+        此外 ```:set nu!``` 或 ```:set number!``` 可以在**开启行号/关闭行号**之间互相切换。  
+
+        ![lineNumbers-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lineNumbers-2022-04-19.gif)  
+
+        > 👆 记忆方法：直接记 `Number [n]号码 [v]标号`  
+
+    * **开启/关闭相对行号显示**  
+
+        ```:set relativenumber``` 或 ```:set rnu``` 可以显示相对行号  
+
+        而 ```:set nonumber``` 或 ```:set nonu``` 则可以关闭相对行号显示  
+
+        此外 ```:set rnu!``` 或 ```:set relativenumber!``` 可以在**开启相对行号/关闭相对行号**之间互相切换。
+
+        ![relativeNumber-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/relativeNumber-2022-04-19.gif)  
+
+        👆 可以看到，相对行号以**光标所在行**为第`0`行，向上或向下标出相对的行号。  
+
+        这个特性可以用于**辅助涉及多行的指令**，比如 `y3j`, `3k`, `2>>` 等。  
+
+        > 💡 记忆方法：按字面记，即 `Relative Number 相对 号码`  
+
+    * **识别数字进制的配置**  
+
+        <a id="nrformats"></a> 
+
+        上面已经写过`Ctrl+x`和`Ctrl+a`能[快捷减增数字](#numberAscDesc)。不过呢，Vim怎么识别**增减的类型**呢? 这就涉及到下面这个配置项了：  
+
+        * ```:set nrformats``` 或 ```:set nf```  
+
+            直接输入这个指令会查询**该配置项当前的设置**：  
+
+            ![queryNrformats-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/queryNrformats-2022-04-19.gif)  
+
+            上面也写过Vim[能识别的增减类型](#availableNumTypes)。这里的`octal,hex` 则代表会尝试识别**八进制**，**十六进制**以及**十进制**的数字。（十进制是默认支持的）  
+
+        * 使用 `+=` 或 `-=` 进行配置  
+
+            这种写法其实可以理解为一些编程语言中的**运算赋值**操作：
+
+            ```:set nrformats+=bin```  
+
+            ```:set nrformats+=bin,alpha```  
+
+            (或者 `set nf+= ...` )  
+
+            👆 多个可以用**逗号**分隔，会“附加”到配置项的末尾。  
+
+            然而，移除的时候就要注意了，一定要按**配置中的顺序**来：
+
+            ```:set nrformats-=bin```  
+
+            ```:set nrformats-=bin,alpha```  
+
+            👆 这样写的话必须保证配置项中也有**bin,alpha**这个字串！  
+
+            ![removeNf-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/removeNf-2022-04-19.gif)  
+
+            ↑ 没有`bin,alpha`这个字串，无法移除。
+
+            ![successfullySetNf-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/successfullySetNf-2022-04-19.gif)  
+
+            ↑ 移除`octal,alpha`的话就很成功，因为配置项中有这个字串。  
+
+        * 直接使用 `=` 进行配置  
+
+            
 
 ### 基本搜索替换
 
@@ -1098,6 +1212,6 @@
 ## 可视模式
 
 
-> 帮助:help，registers/reg查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number  
+> 帮助:help，registers/reg查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number ，:!命令行执行
 > 搜索部分记得在“可能用到的指令”中添加g* * g# #  
 > 记得这些部分都要和上文形成关联
