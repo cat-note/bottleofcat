@@ -1082,7 +1082,7 @@
 
     👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
-6. ```:help [command]``` **查看帮助**  
+6. ```:help [command]``` 或 ```:h [command]``` **查看帮助**  
 
     就像Linux中的`man`指令一样，Vi/Vim的`末行模式/命令行模式`也有个`:help`指令用来查看编辑器使用帮助。  
 
@@ -1090,7 +1090,7 @@
 
     ⭐ 指令形如```:help [command]```时，在开启文件后光标会跳转到对应的指令帮助信息。  
 
-    > 比如要看寄存器指令的帮助信息：```:help reg``` 或 ```:help registers```  
+    > 比如要看寄存器指令的帮助信息：```:help reg``` 或 ```:help registers``` （ ```:h reg``` 当然也行 ）  
 
 7. ```:registers``` 或 ```:reg``` **查看寄存器**  
 
@@ -1203,9 +1203,94 @@
 
         * 直接使用 `=` 进行配置  
 
-            
+            同样可以按编程语言里的**赋值**来理解，会直接**改变整个配置**  
 
-### 基本搜索替换
+            ```:set nrformats=octal,hex```  
+
+            👆 多个值一样是用**逗号分隔**  
+        
+        > 💡 记忆方法：`nrformats`可以看成`number recognizing formats`，也就是`数字识别格式`。取`n`和`f`即为`nf`，因此`nf`也可以简单记为`number format`！  
+
+    * **执行Shell指令**  
+
+        编辑文本到一半突然想执行一个Shell指令。我之前可能会利用`:wq`先退出编辑器，输入执行指令后再重新打开编辑器。  
+
+        实际上在`末行模式/命令行模式`下Vi/Vim也是能快捷切换到Shell执行指令的：  
+
+        * ```:! <command>``` **暂时离开**编辑界面，在Shell下执行指令**并打印结果**   
+
+            ![temporaryShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/temporaryShell-2022-04-19.gif)  
+
+            👆 **临时**跳转到命令行执行`清屏`及`查询日期`指令并展示结果。  
+
+            > 💡 `:!` 还有很多神奇的用法，比如执行指令后将返回的结果插入下一行：`:r! <command>`；  
+            > 又比如将文本`21`至`25`行进行升序排序，并替换原文本：`:21,25! sort`，这里就很像Shell中`管道符`的用法了。  
+            
+            ![sortByShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/sortByShell-2022-04-19.gif)  
+
+            👆 演示 `:21,25! sort`  
+
+            > 更多用法在这里就不多赘述了╮(╯3╰)╭  
+
+        * ```:sh``` **创建一个新的Shell会话**
+
+            这个指令就比较简单粗暴了，在执行后会创建一个新的Shell会话，我可以直接在Shell中执行指令！  
+
+            ![createNewShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/createNewShell-2022-04-19.gif)  
+
+            这个Shell是一个**非登入**Shell，所以需要使用 `exit` 指令退出。  
+
+            该Shell退出后会**回到编辑器界面！**  
+
+            ![exitShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exitShell-2022-04-19.gif) 
+
+            > 👆 这个直接记忆 `Shell` 就行   
+
+    * **重复上一条指令**  
+
+        在`命令模式/正常模式`下我可以使用 `.` 句点来重复上一次更改。在`末行模式/命令行模式`下也有类似的方法。  
+
+        * **经典方法**  
+
+            在`末行模式/命令行模式`下输入 `:` 后会进入`末行模式/命令行模式`，此时可以通过：  
+
+            ⭐ `↑`, `↓`, `PageUp`, `PageDown` 
+            
+            来浏览之前的输入历史  
+
+            ![scrollHistory-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistory-2022-04-19.gif)  
+
+            💡 可以在 `:` 后面输入一些字符以**加快检索**：  
+
+            ![scrollHistoryWithHint-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistoryWithHint-2022-04-19.gif)  
+
+            👆 输入`:s`后，能快速浏览`:s`开头的历史指令记录；`:se`则能快速浏览`:se`开头的历史指令。  
+
+        * **`@` 方法**  
+
+            在`命令模式/正常模式`下输入：
+
+            `@:`  
+
+            能重新执行**上一条`末行模式/命令行模式`指令**。  
+
+            > 👆 记忆方法：把 `:` 末行指令给**at**出来！  
+
+            虽然我把这个方法写在末行模式这里了，但实际上其可以算是`命令模式/正常模式`的指令。  
+
+            因此也是**可以重复执行的！**  
+
+            ![repeatLastLine-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatLastLine-2022-04-19.gif)  
+
+            👆 演示：先用`:d`删除一行，然后再用`3@:`重复执行`:d`三次以继续删除下面三行。  
+
+    ![however-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/however-2022-04-19.png)  
+
+    有点累了...喝口水...   
+
+### 基本搜索替换  
+
+    
 
 ### 简单多文件编辑
 
