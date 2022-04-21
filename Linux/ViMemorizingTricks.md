@@ -1,14 +1,8 @@
----
-title: 请输入标题（若是回答的话，请删除本行）
-zhihu-url: 请输入知乎链接（删除本行发表新的知乎专栏文章）
-zhihu-title-image: 请输入专栏文章题图（若无需题图，删除本行）
-注意: 所有的冒号是半角冒号，冒号后面有一个半角空格
----
 # 想法子记忆Vi/Vim常用操作及指令
 
 在Linux系统中编辑文本总是离不开一位老帮手——**Vi**。而因为其诞生的年代有些久远，有些操作在现在看来可能有点“反直觉”。  
 
-于是我决定写这样一篇小笔记，记录一下我**记忆**Vi的这些这些 **常用** 操作和指令的方法（**主要靠的是英语了**）。
+于是我决定写这样一篇小笔记，记录一下我**记忆**Vi的这些这些 **常用** 操作和指令的方法（**主要靠的是英语和图示了**）。
 
 当然，正如“好记性不如烂笔头”所言，多实践才是熟练掌握技能的王道。
 
@@ -547,7 +541,7 @@ zhihu-title-image: 请输入专栏文章题图（若无需题图，删除本行�
         `S` 同上👆，这个其实在[**模式切换**](#cutAndInsert)这一节里面写了  
 
         > **👆记忆方法**：`dd` 中的 `d`记为`delete [v]删除`；   
-        > `cc`中的`c`记为`clear[v]清除`，亦可记成`Chi 吃`；   
+        > `cc`中的`c`记为`change[v]改变`，亦可记成`Chi 吃`；   
         > `S`可以记成`Shift [v]转移`，剪切就像是在转移文本的位置，亦可记成`Shan 删`。
 
     * **剪切多行**
@@ -1294,15 +1288,152 @@ zhihu-title-image: 请输入专栏文章题图（若无需题图，删除本行�
 
     有点累了...喝口水...   
 
-### 基本搜索替换  
+## 基本搜索替换  
 
+1. **搜索**  
+
+    **前提**：在`命令模式/正常模式`下：  
+
+    ```/<搜索模式>```  自光标**向后查找**  
+
+    ```?<搜索模式>```  自光标**向前查找**  
+
+    > 👆 其实`末行模式/命令行模式`下也不是不行，也就多了个冒号：`:/<搜索模式>`、`:?<搜索模式>`。不过接下来这两个指令就不行了 ↓
     
+    ```n``` ---> 这个指令**会重复上一次搜索动作**。  
+    * 比如`/....`是往**光标后**搜索，按下`n`就是**在光标后**再次搜索
+    * 而`?....`是往**光标前**搜索，那么按下`n`就是**在光标前**再次搜索  
 
-### 简单多文件编辑
+    ```N``` ---> 这个指令和 ```n``` 的操作相反  
+
+    > 👆 记忆方法：`n`可以记成 `next [a]下一个的` ，正如o和O操作相反一样，`N`和`n`操作相反。  
+
+    -------------
+
+    这里的`搜索模式`实际上就是**正则表达式**，不过和普通的正则略微有些不同！  
+
+    1. 当然是可以直接搜索字串的  
+
+        ![searchStr-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchStr-2022-04-21.gif)  
+
+    2. **大小写不敏感**搜索  
+
+        一般在写正则表达式时要进行大小写不敏感匹配我一般会在正则表达式末尾加上`i`标记，但是在`搜索模式`里是不行的，需要用到特殊转义标记：
+        
+        `\c`  
+
+        这个标记写在`搜索模式`的中间（不要写在中括号`[]`里！）一般也是可以的，但我觉着还是**放在末尾**好辨别一些。
+
+        ![caseInsensitivelySearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseInsensitivelySearch-2022-04-21.gif)
+
+        ![caseInsensitiveSearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseInsensitiveSearch-2022-04-21.png)  
+
+        > 👆 记忆方法：这里的 `\c` 可以记成 `case [n]大小写`。
+
+    3. 利用**正则表达式**进行搜索  
+
+        这里使用正则表达式和在编程语言里有些小区别，这里简单写一下：  
+
+        - 采用 `<` 和 `>` 分别匹配**单词词首**和**单词词尾**，而不是`\b`。  
+
+        - 部分元字符**要发挥元字符**的作用的话，需要**先转义**。这里列个表格：  
+
+            | 元字符 | 用途 | 在搜索模式中的用法 |
+            |:---:|:---:|:---:|
+            | `+` | 匹配1次或多次 | `\+` |
+            | `?` | 匹配0或1次（非贪婪模式在Vim中另有元字符） | `\?` |
+            | `{n,m}` | 匹配n到m次 | `\{n,m}` |
+            | `{n,}` | 匹配n次或更多次 | `\{n,}` |
+            | `{n}` | 匹配n次 | `\{n}` |
+            | `{,m}` | 匹配0到m次 | `\{,m}` |
+            | `<` | 匹配单词首部 | `\<` |
+            | `>` | 匹配单词尾部 | `\>` |
+            | `(` | 子模式开始标志 | `\(` |
+            | `)` | 子模式结束标志 | `\)` |
+            | `\|` | 两项之间任意匹配一个 | `\\|` |  
+
+            除此之外的元字符大多是可以直接使用的，下面是一些示例：  
+
+            ![regexSearch1-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch1-2022-04-21.jpg) ![regexSearch2-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch2-2022-04-21.jpg) ![regexSearch3-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch3-2022-04-21.png) ![regexSearch4-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch4-2022-04-21.jpg) ![regexSearch5-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch5-2022-04-21.jpg)  
+
+    4. 神奇的**非贪婪模式**  
+
+        Vim这里的非贪婪模式用的就不是元字符 `?` 了，取而代之借用了一下大括号 ```{...,...} ```  
+
+        > 官方说明可以在`末行模式/命令行模式`下输入`:help non-greedy`查看。
+
+        当 `{` 后面**紧接**了一个连字符(Hyphen) `-` 时，就相当于采用了**非贪婪匹配**，下面举些例子：    
+
+        `e\{2,3}` 匹配 `ee` 或 `eee`，如果有更长的`eee`就优先匹配（也就是**贪婪匹配**）  
+
+        `e\{-2,3}` 匹配 `ee` 或 `eee`，优先匹配更短的`ee`（也就是**非贪婪匹配**）  
+
+        ![non-greedyMatch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/non-greedyMatch-2022-04-21.gif)  
+
+        > 👆 这个例子中在`{`后紧接`-`后会往少的匹配，也就是只匹配一个`paprika `。
+
+        ------
+
+        如果在 `-` 后面**没有指定匹配次数**，就有点类似 `*` 了。形如：  
+
+        ```\{-}```  匹配`0-任意`次，但是非贪婪匹配，匹配次数尽量少。
+
+        ```\{-,3}```  匹配`0-3`次，但是非贪婪匹配，匹配次数尽量少。  
+
+        > 例：用模式 `ke\{-}` 匹配字串`keep`只匹配到了`k`，因为`\{-}`代表匹配`0-任意次`，但是**非贪婪匹配**，所以这里`e`匹配了`0`次。
+
+    5. 搜索光标下的单词
+
+        这一小节的操作是在`命令模式/正常模式`下的：
+
+        * `*` **往后**搜索**光标目前指向的单词**，只匹配**一整个单词**  
+
+        * `#` **向前**搜索**光标目前指向的单词**，只匹配**一整个单词**  
+
+            ![searchWordUnderCursor-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchWordUnderCursor-2022-04-21.gif)  
+
+            > 从这个例子可以看到，实际上Vim是把光标指向的单词转换成了搜索语句。`*` 对应 `/\<accept\>`，`#` 对应 `?\<\accept\>`。  
+
+        * `g*` **往后**搜索**光标目前指向的单词**，单词可作为**字串的一部分**被匹配。
+
+        * `g#` **向前**搜索**光标目前指向的单词**，单词可作为**字串的一部分**被匹配。
+
+            ![searchWordPartUnderCursor-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchWordPartUnderCursor-2022-04-21.gif)  
+
+            > 可以看到 `*` 对应 `/accept`，`#` 对应 `?accept`，单词可作为**字串的一部分**被匹配。 
+
+        >💡 因为这几个指令被转换为末行搜索操作了，所以在搜索中可以用的`n`、`N`这一类指令也是可以用的。 
+
+    6. 开启搜索高光显示
+
+        上面的图示中搜索匹配项都会“**黄的发光**”，这种**匹配结果高光显示**是可以作为配置项使用 `:set` 进行设置的：  
+
+        * `:set hlsearch` 或 `:set hls` 开启搜索结果**高光显示**  
+
+        * `:set nohlsearch` 或 `:set nohls` 关闭搜索结果**高光显示**  
+
+            ![highlightSearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/highlightSearch-2022-04-21.gif)  
+
+        虽然高亮显示一目了然，但是开了之后光标就不明显了，高光咱已经看够了，怎么**关掉目前结果的高光展示**呢？  
+
+        * `:nohlsearch` 或 `:noh` 关闭**目前的高光显示**  
+
+            ![nohlsearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nohlsearch-2022-04-21.gif)  
+
+            > 可以看到输入`:noh`后会取消目前的高亮，但是这并不影响重新开始搜索时高亮展示匹配。  
+
+        > 💡 记忆方法：`hlsearch` 即 `Highlight Search`，`Highlight [v]突出，强调]`，`Search [n]搜索`。  
+
+        ![hlsearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/hlsearch-2022-04-21.png)  
+
+2. **替换**
+
+## 简单多文件编辑
 
 ## 可视模式
 
 
 > 帮助:help，registers/reg查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number ，:!命令行执行
+> 搜索部分还有高光显示:set hls[earch]
 > 搜索部分记得在“可能用到的指令”中添加g* * g# #  
 > 记得这些部分都要和上文形成关联
