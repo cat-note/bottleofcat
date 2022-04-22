@@ -1082,7 +1082,61 @@
 
     👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
-6. ```:help [command]``` 或 ```:h [command]``` **查看帮助**  
+6. ```:e``` **开启新buffer或刷新当前buffer** （记成 ```Edit [v]编辑```）  
+
+    当编辑文件编辑到一半，想要推翻当前的所有修改，该怎么办呢？  
+
+    一种方法是使用 `:q!`，强制退出文件；  
+
+    另一种方法则是 ```:e!```，强制刷新当前`buffer`：  
+
+    * 文件在`Vi/Vim`中未经修改但是在**别的软件中受到了修改**时，可以直接使用 `:e` 在编辑器里**刷新（重新载入）文件内容**。  
+
+    * 文件做了修改后，也可以用 `:e!` 强制**重载文件内容**，也就是抛弃文件开启以来的所有修改。  
+
+        ![forcedRefreshBuffer-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedRefreshBuffer-2022-04-22.gif)
+
+    > buffer可以理解为文件的一个**缓冲区**，文件在编辑器中被编辑实际上也就是临时buffer在被编辑。当写入文件的时候就是把buffer中的内容**写入到原文件**中，以达成编辑的效果。
+
+    ----------
+
+    除了刷新当前文件的buffer外，```:e```指令还可以用于**打开新的文件**并创建buffer。  
+
+    * ```:e <filename>``` 打开文件（如果存在的话），创建buffer
+
+        👆 前提：目前在编辑的文件已经保存或者未经修改。
+
+    * ```:e! <filename>``` 无论**当前文件是否保存(写入)**，强制打开新文件  
+
+7. ```:buffers``` 和 ```:bn```, ```:bp``` 以及 ```:b<id>```  
+
+    * ```:buffers``` 
+
+        **列出所有buffer**，在这里可以看到buffer的ID（最左边一列）。  
+
+        ![viewBuffers-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/viewBuffers-2022-04-22.jpg)  
+
+    * ```:b<id>``` 
+
+        既然拿到了buffer的ID，我就可以在buffer之间跳转了，比如：
+
+        ```:b2``` 跳转到id为2的buffer  
+
+        > 注意：这个操作也要求当前编辑的文件**不能有未保存**的修改。  
+
+    * ```:bn``` 和 ```:bp```  
+
+        就算不知道buffer的ID，利用这两个指令也能在buffer间互相切换：  
+
+        ```:bn``` ---> 切换到**下一个**buffer  
+
+        ```:bp``` ---> 切换到**上一个**buffer   
+
+        > 注意：这个操作也要求当前编辑的文件**不能有未保存**的修改。
+
+        > 💡 记忆方法：`bn`即 `buffer next 下一个buffer`；`bp`即 `buffer previous 上一个buffer`。
+
+8. ```:help [command]``` 或 ```:h [command]``` **查看帮助**  
 
     就像Linux中的`man`指令一样，Vi/Vim的`末行模式/命令行模式`也有个`:help`指令用来查看编辑器使用帮助。  
 
@@ -1092,7 +1146,7 @@
 
     > 比如要看寄存器指令的帮助信息：```:help reg``` 或 ```:help registers``` （ ```:h reg``` 当然也行 ）  
 
-7. ```:registers``` 或 ```:reg``` **查看寄存器**  
+9. ```:registers``` 或 ```:reg``` **查看寄存器**  
 
     <a id="LLregisters"></a> 
 
@@ -1113,7 +1167,7 @@
     ![009-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/009-2022-04-18.png)  
 
 
-8. ```:marks``` **查看标记信息**  
+10. ```:marks``` **查看标记信息**  
 
     <a id="LLmarks"></a> 
 
@@ -1127,7 +1181,7 @@
 
     ⭐ 比如 ```:marks a b c``` 或 ```:marks abc``` ，可以筛选查询`a`,`b`,`c`标记  
 
-9. ```:set``` **设置项**  
+11. ```:set``` **设置项**  
 
     这个指令用于设置一些配置项，这里就记几个比较常用的（因为配置项有非常多，全写出来太累赘了）  
 
@@ -1582,16 +1636,11 @@
 
 除了这些，搜索替换可能还有一些其他的用法尚未提到，另外还有`:g`这种末行指令。这里就主要记录一下基础的用法啦~  
 
+![exhausted-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exhausted-2022-04-22.png)  
 
-
-## 简单多文件编辑 
+## 简单多窗口编辑 
 
 
 
 ## 可视模式 
 
-
-> 帮助:help，registers/reg查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number ，:!命令行执行
-> 搜索部分还有高光显示:set hls[earch]
-> 搜索部分记得在“可能用到的指令”中添加g* * g# #  
-> 记得这些部分都要和上文形成关联
