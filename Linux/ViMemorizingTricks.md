@@ -1292,6 +1292,8 @@
 
 1. **搜索**  
 
+    <a id="searching"></a> 
+
     **前提**：在`命令模式/正常模式`下：  
 
     ```/<搜索模式>```  自光标**向后查找**  
@@ -1309,6 +1311,8 @@
     > 👆 记忆方法：`n`可以记成 `next [a]下一个的` ，正如o和O操作相反一样，`N`和`n`操作相反。  
 
     -------------
+
+    <a id="searchPattern"></a> 
 
     这里的`搜索模式`实际上就是**正则表达式**，不过和普通的正则略微有些不同！  
 
@@ -1348,13 +1352,22 @@
             | `{,m}` | 匹配0到m次 | `\{,m}` |
             | `<` | 匹配单词首部 | `\<` |
             | `>` | 匹配单词尾部 | `\>` |
-            | `(` | 子模式开始标志 | `\(` |
-            | `)` | 子模式结束标志 | `\)` |
+            | `(` | 子模式(捕获组)开始标志 | `\(` |
+            | `)` | 子模式(捕获组)结束标志 | `\)` |
             | `\|` | 两项之间任意匹配一个 | `\\|` |  
+            | `%` | 用于修饰**非捕获组** | `\%` |
+            | `@<=`, `@<!`, `@=`, `@!` | 向后预查，向前预查 | `\@<=`, `\@<!`, `\@=`, `\@!` |
+
+            > 💡 这种情况是基于Vim**默认设置**的`magic`模式的，其他模式不多赘述。  
+            > 默认情况下这些元字符如果不转义，就代表**匹配这个字符本身**。
 
             除此之外的元字符大多是可以直接使用的，下面是一些示例：  
 
-            ![regexSearch1-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch1-2022-04-21.jpg) ![regexSearch2-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch2-2022-04-21.jpg) ![regexSearch3-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch3-2022-04-21.png) ![regexSearch4-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch4-2022-04-21.jpg) ![regexSearch5-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch5-2022-04-21.jpg)  
+            ![regexSearch1-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch1-2022-04-21.jpg) ![regexSearch2-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch2-2022-04-21.jpg) ![regexSearch3-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch3-2022-04-21.png) ![regexSearch4-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch4-2022-04-21.jpg) ![regexSearch5-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch5-2022-04-21.jpg)   
+
+            另外也是支持**引用子模式的匹配结果(分组)**的：  
+
+            ![regexSearch6-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch6-2022-04-22.jpg)  
 
     4. 神奇的**非贪婪模式**  
 
@@ -1382,7 +1395,46 @@
 
         > 例：用模式 `ke\{-}` 匹配字串`keep`只匹配到了`k`，因为`\{-}`代表匹配`0-任意次`，但是**非贪婪匹配**，所以这里`e`匹配了`0`次。
 
-    5. 搜索光标下的单词
+    5. **非捕获组与向前/向后预查**  
+
+        在编程语言使用的正则表达式中，非捕获组一般用`(?:模式)`来表示，这一个子模式不会参与分组。 
+
+        ---------------
+
+        然鹅在`Vi/Vim`**搜索模式**中，非捕获组用的是：  
+
+        `\%(子模式\)` （ `\%\(子模式\)` 也行） 
+        
+        来表示的。下面就是一个示例：  
+
+        ![nonCapturingGroup-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nonCapturingGroup-2022-04-22.jpg)  
+
+        > 可以看到`accept`并未参与分组，`\1`引用的是第二个子模式的匹配结果`after`  
+
+        -------------
+
+        接着，在编程语言中的向后/向前预查`(?<=)`, `(?=)`, `(?<!)`, `(?!)` 在Vi/Vim中也是有特殊的表示方法的：  
+
+        | 预查内容↓ \ 方向→ | 向后(左) | 向前(右) |
+        |:---:|:---:|:---:|
+        | 存在 | `\(子模式\)\@<=` | `\(子模式\)\@=` |
+        | 不存在 | `\(子模式\)\@<!` | `\(子模式\)\@!` |  
+
+        > 💡 **预查**即预先检查子模式，看看这个子模式是否存在于待匹配的字串前/后，预查子模式是**不会出现在最终的匹配结果中的**。  
+
+        ![lookBehindPositive-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookBehindPositive-2022-04-22.jpg)  
+
+        > 👆 匹配` paprika`，前提是` paprika`**后面**（左边）必须要匹配到`paprika`。  
+
+        ![lookAheadPositive-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookAheadPositive-2022-04-22.jpg)  
+
+        > 👆 匹配`paprika`，前提是`paprika`**前面**（右边）必须要匹配到` pepper`。  
+
+        ![lookAheadNegative-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookAheadNegative-2022-04-22.jpg)  
+
+        > 👆 匹配`paprika`，前提是`paprika`**前面**（右边）**不能**匹配到`pepper`。  
+
+    6. 搜索**光标下的单词**
 
         这一小节的操作是在`命令模式/正常模式`下的：
 
@@ -1404,7 +1456,7 @@
 
         >💡 因为这几个指令被转换为末行搜索操作了，所以在搜索中可以用的`n`、`N`这一类指令也是可以用的。 
 
-    6. 开启搜索高光显示
+    7. 开启**搜索高光显示**
 
         上面的图示中搜索匹配项都会“**黄的发光**”，这种**匹配结果高光显示**是可以作为配置项使用 `:set` 进行设置的：  
 
@@ -1422,15 +1474,121 @@
 
             > 可以看到输入`:noh`后会取消目前的高亮，但是这并不影响重新开始搜索时高亮展示匹配。  
 
-        > 💡 记忆方法：`hlsearch` 即 `Highlight Search`，`Highlight [v]突出，强调]`，`Search [n]搜索`。  
+        > 💡 记忆方法：`hlsearch` 即 `Highlight Search`，`Highlight [v]突出，强调`，`Search [n]搜索`。  
 
         ![hlsearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/hlsearch-2022-04-21.png)  
 
 2. **替换**
 
-## 简单多文件编辑
+    替换的指令就是在`末行模式/命令行模式`下输入的了，
 
-## 可视模式
+    其完全可以结合搜索指令一起记忆：  
+
+    ```:[作用范围] s/<搜索模式>/<替换模式>/<替换flag>```  
+
+    > 💡 很明显了，这里的`s`代表的就是`substitute [v]取代，替代`  
+
+    1. **作用范围**  
+
+        这里直接列表直观展示一下：  
+
+        |作用范围|说明|
+        |:---:|:---:|
+        |不写|**默认光标所在行**|
+        | `.` | 同样代表**光标所在行** |
+        | `n` (整数) | 代表**第`n`行**。比如`233`代表第233行|
+        | `$` | 代表**最后一行** |  
+        | `'a` | 代表`a`**标记所在行**（关于设定跳转标记可以看[自定义跳转标记](#makeMarks)） |
+        | `上述符号±相对行数` | 比如`'a+2`就代表`a`标记所在行的下面第二行；`.-1` 就代表光标所在行的上面一行 |
+        | `上述符号1,上述符号2` | 代表从`上述符号1`代表的行到`上述符号2`代表的行。比如`.,$`代表从光标所在行到最后一行。|
+        | `%` | 代表**从第一行到最后一行**（整个文本），和`1,$`相同 |
+        | `'<,'>` | 在[**可视模式**](#可视模式)下输入 `:` 进入`末行模式/命令行模式`会自动填充，代表**可视模式下选定的范围 |   
+
+        ![replaceInTheRange-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceInTheRange-2022-04-22.gif)  
+
+        > 👆 示例：`.,+3` 代表从光标所在行到光标所在行的下面第三行作为范围进行替换  
+
+    2. **搜索模式**  
+
+        同上面的[**搜索模式**](#searchPattern)。  
+
+        💡 值得一提的是这里可以留空。如果留空的话**默认使用**上一次[**搜索**](#searching)的匹配。  
+
+        > 比如我先搜索了`/\<paprika\>`，然后我想替换全文的`/\<paprika\>/`为`pepper`，在替换时可以这样写：`:%s//pepper/g`（省略了搜索模式）。
+
+    3. **替换模式**  
+
+        替换模式当然可以是**任意字符串**，  
+        
+        同时也可以**引用搜索结果中的部分**：  
+
+        ![replaceWithReference-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference-2022-04-22.gif)  
+
+        👆 使用 `\1`, `\2` 引用**搜索结果**中的第一个和第二个**捕获组**的内容。  
+
+        ![replaceWithReference2-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference2-2022-04-22.gif)  
+
+        👆 使用 `&` 引用**搜索匹配结果**  
+
+        ![replaceWithReference3-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference3-2022-04-22.gif)  
+
+        👆 很巧妙的用法，利用捕获组引用交换顺序  
+
+    4. **替换flag**  
+
+        一般正则表达式末尾会加上修饰符以控制匹配行为。而Vim这里的**替换flag**也是类似修饰符，控制替换行为的。  
+
+        下面列出几个比较常用的： 
+
+        | Flag | 说明 | 记忆 |
+        | :---: | :---: | :---: |
+        | `g` | 全局替换（在指定的**作用范围**内） |  `global [a]全局的` |
+        | `i` | 忽略大小写 | `ignore-case 忽略大小写` |
+        | `I` | 大小写敏感 | 和`i`意义相反 |
+        | `n` | 并不会真正替换，而是显示**匹配的数目** | `numerate [v]计算` |
+        | `c` | 在替换前**让用户确认** | `confirm [v]确认` |  
+
+        > 💡 值得一提的是 `i`——忽略大小写。  
+        > 之前在[**搜索模式**](#searchPattern)中提到过在模式中加入 `\c` 能忽略大小写进行搜索，而这里替换也是用的搜索模式，  
+        > 因此在这里就算不用修饰符`i`，转而在搜索模式中加入`\c`也是完全可以的。  
+
+        ![replaceIgnoreCase-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceIgnoreCase-2022-04-22.gif)  
+
+        > 👆 不使用修饰符而是在搜索模式中使用了`\c`  
+
+        -------------
+
+        ![numerateMatches-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/numerateMatches-2022-04-22.gif)  
+
+        > 👆 使用 `n` 修饰符，并不会实际替换文本，而是**显示匹配的数量**  
+
+        -----------
+
+        ![confirmReplace-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/confirmReplace-2022-04-22.gif)  
+
+        > 👆 使用 `c` 修饰符，在替换前**让用户确认**。  
+
+        其中提示输入的 `(y/n/a/q/l/^E/^Y)` 中，分别代表：  
+
+        | 输入指令 | 说明 | 记忆 |
+        |:---:|:---:|:---:|
+        | `y` | 确认替换**当前光标所在匹配** | `yes [v]确认` |
+        | `n` | 不替换**当前匹配** | `no [v]不` |  
+        | `a` | 确认替换**所有匹配** | `all [v]所有` |  
+        | `q` | 不进行替换并退出 | `quit [v]退出` |
+        | `l` | 替换**当前匹配**并退出 | `instead [adv]顶替` |
+
+        (另还有`Ctrl+E`和`Ctrl+Y`，是光标移动指令)  
+
+除了这些，搜索替换可能还有一些其他的用法尚未提到，另外还有`:g`这种末行指令。这里就主要记录一下基础的用法啦~  
+
+
+
+## 简单多文件编辑 
+
+
+
+## 可视模式 
 
 
 > 帮助:help，registers/reg查看寄存器，marks查看标记，:set nrformats/nf设置递增递减数值类型支持，@:重复上一条末行操作，行号:set nu/number ，:!命令行执行
