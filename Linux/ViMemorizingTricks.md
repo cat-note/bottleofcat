@@ -25,7 +25,7 @@
 3. 末行(底线)模式 (```Last-line``` mode) ，也是接受指令的一种模式，更偏向于文件的管理。  
 之所以叫 “末行” 是因为指令的输入在窗口最下方：
 
-    ![lastLineMode-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lastLineMode-2022-04-07.jpg)
+    ![lastLineMode-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lastLineMode-2022-04-07.jpg)
 
 
 ```Vim```是```Vi```的增强版，因此```Vim```完全可以兼容```Vi```的操作，不过它的模式名可能略有差别：
@@ -53,72 +53,72 @@
 
 * **命令模式**
 
-    <a id="modeSwitch-normalMode" title="命令模式"></a>
+    <a id="modeSwitch-normalMode" for-anchor="true" title="命令模式"></a>
 
     作为进入```Vi```的默认模式，我们可以把这儿当作一个小家，  
     无论在哪个模式下**按```Esc```**（可以记成```Escape``` [v.]逃离。逃回家了）都可以回到命令模式。（家是永远的港湾啊）
 
-    ![EscGoHome-2022-04-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/EscGoHome-2022-04-06.png)
+    ![EscGoHome-2022-04-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/EscGoHome-2022-04-06.png)
 
     再提一嘴，在```Vim```里这个模式称为**正常模式**。
 
 * **插入模式**  
 
-    <a id="modeSwitch-insertMode" title="插入模式"></a>
+    <a id="modeSwitch-insertMode" for-anchor="true" title="插入模式"></a>
 
     通过以下按键指令能进入插入模式。这些按键通常是**大小写成对**的，**小写**对应的指令略显 **“温和”** ，**大写**对应的就比较 **“走极端”** 了。
 
-    ![InsertModeUpperAndLower-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/InsertModeUpperAndLower-2022-04-07.png)
+    ![InsertModeUpperAndLower-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/InsertModeUpperAndLower-2022-04-07.png)
 
     1. ```i``` / ```I``` 插入 （记作```Insert [v]插入；嵌入；（在文章中）添加``` ） 
 
-        <a id="modeSwitch-insertMode-i" title="i/I 插入"></a>
+        <a id="modeSwitch-insertMode-i" for-anchor="true" title="i/I 插入"></a>
 
         小写的```i```，就是在**光标所在位置**进入插入模式：
 
-        ![lowerInsert-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lowerInsert-2022-04-07.gif)  
+        ![lowerInsert-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lowerInsert-2022-04-07.gif)  
 
         大写的```I```则有点“极端”，会**跳转到当前光标所在行的开头**进入插入模式：
 
-        ![upperInsert-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/upperInsert-2022-04-07.gif)
+        ![upperInsert-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/upperInsert-2022-04-07.gif)
 
     2. ```a``` / ```A``` 附加 （记作```Append [v]增补，追加```） 
 
-        <a id="modeSwitch-insertMode-a" title="a/A 附加"></a>
+        <a id="modeSwitch-insertMode-a" for-anchor="true" title="a/A 附加"></a>
 
         小写的```a```，就是在**光标所在位置之后一位**进入插入模式，即所谓的“附加”：
 
-        ![lowerAppend-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lowerAppend-2022-04-07.gif)  
+        ![lowerAppend-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lowerAppend-2022-04-07.gif)  
 
         显而易见，大写的```A```就会**跳转到当前光标所在行的末尾**进入插入模式（在尾部附加）：
 
-        ![upperAppend-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/upperAppend-2022-04-07.gif)
+        ![upperAppend-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/upperAppend-2022-04-07.gif)
 
     3. ```o``` / ```O``` 新增一行 （暂且记作```Open``` new line） 
 
-        <a id="modeSwitch-insertMode-o" title="o/O 新增一行"></a>  
+        <a id="modeSwitch-insertMode-o" for-anchor="true" title="o/O 新增一行"></a>  
 
         都是新增行，差别无非是往下新增还是往上新增了。
 
         小写的```o```，就是在光标所在行的**之后新建一行**，然后进入插入模式：
 
-        ![newLineAfter-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/newLineAfter-2022-04-07.gif)  
+        ![newLineAfter-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/newLineAfter-2022-04-07.gif)  
 
         大写的```O```呢，就比较蛮横，会把光标所在行及其以下的行整体往下顶，在原位置新建一行（相对来说就是**在光标所在行上面新建一行**），然后进入插入模式：
 
-        ![newLineBefore-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/newLineBefore-2022-04-07.gif)
+        ![newLineBefore-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/newLineBefore-2022-04-07.gif)
 
     4. ```s``` / ```S``` 剪切(取代) （可以直接记删的拼音```Shan```，也可以记成```Substitute [v]取代```）
 
-        <a id="modeSwitch-insertMode-s" title="s/S 剪切(取代)"></a>
+        <a id="modeSwitch-insertMode-s" for-anchor="true" title="s/S 剪切(取代)"></a>
 
         小写的```s```，会**剪切光标所在位置右边的字符**，然后进入插入模式：
 
-        ![subWord-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/subWord-2022-04-07.gif)
+        ![subWord-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/subWord-2022-04-07.gif)
 
         大写的```S```就很暴躁了，会**剪切光标所在行**，然后进入插入模式：
 
-        ![subLine-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/subLine-2022-04-07.gif)  
+        ![subLine-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/subLine-2022-04-07.gif)  
 
         > 记```Substitute```的话，可以理解为这个操作是剪切原有`字符/行`后进行插入，**取代**原有的`字符/行`。
 
@@ -126,19 +126,19 @@
 
     上面这些按键指令都是在```命令模式/正常模式```下输入的，通过**在指令前附加数字**，能重复这个指令的操作：
 
-    <a id="modeSwitch-insertMode-repeat" title="切换指令的重复"></a>
+    <a id="modeSwitch-insertMode-repeat" for-anchor="true" title="切换指令的重复"></a>
 
     * ```3s``` -> 删除光标后```3```个字符
 
-        ![repeatSubstitute-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatSubstitute-2022-04-07.gif) 
+        ![repeatSubstitute-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/repeatSubstitute-2022-04-07.gif) 
 
     * ```4a``` -> 在光标下一位附加内容，**操作结束后**(Esc)把这个内容重复```4```次
 
-        ![appendFourTimes-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/appendFourTimes-2022-04-07.gif)  
+        ![appendFourTimes-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/appendFourTimes-2022-04-07.gif)  
 
 * **替换模式** 
 
-    <a id="modeSwitch-replaceMode" title="替换模式"></a>
+    <a id="modeSwitch-replaceMode" for-anchor="true" title="替换模式"></a>
 
     这个模式和插入模式一样是用于编辑文本的，不同的是替换模式下**输入所至之处会覆盖一切。**  
 
@@ -146,21 +146,21 @@
 
     输入大写```R```进入替换模式：
 
-    ![replaceMode-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceMode-2022-04-07.gif)  
+    ![replaceMode-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceMode-2022-04-07.gif)  
 
     有了大写R，那么小写```r```呢？小写r的功能是**将光标后面的字符替换为指定字符**。比如我们先输入```r```，再输入```a```:  
 
-    ![replaceChr-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceChr-2022-04-07.gif)  
+    ![replaceChr-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceChr-2022-04-07.gif)  
 
     当然，这些操作一样是可以重复进行的：
 
-    ![repeatReplace-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatReplace-2022-04-07.gif)
+    ![repeatReplace-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/repeatReplace-2022-04-07.gif)
 
     (指令分别是`3rp`，`3R`->`hello`->`Esc`)
 
 * **末行模式（Vim中的命令行模式）** 
 
-    <a id="modeSwitch-commandLineMode" title="末行模式/命令行模式"></a>
+    <a id="modeSwitch-commandLineMode" for-anchor="true" title="末行模式/命令行模式"></a>
 
     输入 ```Shift```+```:``` 进入末行模式（事实上我们一般都是这样打出冒号来的）
 
@@ -168,7 +168,7 @@
 
 * **可视模式**  
 
-    <a id="modeSwitch-visualMode" title="可视模式"></a>
+    <a id="modeSwitch-visualMode" for-anchor="true" title="可视模式"></a>
 
     可视模式是```Vim```中新引入的模式，支持在高光选择下进行指令操作。
 
@@ -176,15 +176,15 @@
 
     其中 ```v``` 键能普通地进入可视模式：
 
-    ![visualNormal-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualNormal-2022-04-07.gif)
+    ![visualNormal-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visualNormal-2022-04-07.gif)
     
     而 ```V``` 在进入可视模式后**会保持高光选择到光标所在行**（**可视行**模式）：
 
-    ![visualLine-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualLine-2022-04-07.gif)  
+    ![visualLine-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visualLine-2022-04-07.gif)  
 
     还有一种便是使用 ```Ctrl+V/v``` 进入可视模式了，这种模式叫**可视块**模式，如字面所言，是选择“一块文字”：  
 
-    ![visuallySelectBlock-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallySelectBlock-2022-04-23.gif)  
+    ![visuallySelectBlock-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visuallySelectBlock-2022-04-23.gif)  
 
 
 </details>
@@ -193,13 +193,13 @@
 
 这是进入```Vi/Vim```后所处的默认模式，和文本处理是靠的非常近的，我决定先记一下这部分。
 
-<a id="normalMode-modeSwitch" title="模式切换"></a>
+<a id="normalMode-modeSwitch" for-anchor="true" title="模式切换"></a>
 
 1. [**模式切换**](#模式切换)
 
 2. **基本光标移动（上下左右）**
 
-    <a id="normalMode-arrowMovement" title="基本光标移动（上下左右）"></a>
+    <a id="normalMode-arrowMovement" for-anchor="true" title="基本光标移动（上下左右）"></a>
 
     在交互式字符界面下没有能动的鼠标，只有闪烁的光标来标注位置。要编辑文本，真得先掌握移动光标的指令。  
 
@@ -210,11 +210,11 @@
 
     -------
     
-    ![jkLine-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/jkLine-2022-04-08.gif)  
+    ![jkLine-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/jkLine-2022-04-08.gif)  
 
     👆 ```j```、```k```、```↓```、```↑```将光标从一行的指定位置移动到另一行的**指定位置**。
 
-    ![enterDash-re-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/enterDash-re-2022-04-08.gif)  
+    ![enterDash-re-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/enterDash-re-2022-04-08.gif)  
 
     👆 ```Enter```、```-```，将光标移动到下一行或上一行的**行首**！
 
@@ -223,7 +223,7 @@
 
     * **“经典”款**
 
-        <a id="normalMode-arrowMovement-classical" title="h l k j移动"></a>
+        <a id="normalMode-arrowMovement-classical" for-anchor="true" title="h l k j移动"></a>
 
         ```h``` 向左移动光标  
         ```l``` 向右移动光标  
@@ -232,15 +232,15 @@
 
         之所以这样设计，因为在早期**终端机**上，键盘是这个样的：
 
-        ![hjklOnTerminal-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/hjklOnTerminal-2022-04-08.jpg)  
+        ![hjklOnTerminal-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/hjklOnTerminal-2022-04-08.jpg)  
 
         **记忆方法**：现代键盘上```↓```、```↑```键在中间，而```←```、```→```键在两侧，而HJKL也正是两侧的```K```、```L```代表横向移动，中间的```J```、```K```代表纵向移动（HJKL四个键连在一起的设计一直保留到了今天）。
 
-        ![hjkl-remarked-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/hjkl-remarked-2022-04-08.gif)
+        ![hjkl-remarked-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/hjkl-remarked-2022-04-08.gif)
 
     * **现代款**
 
-        <a id="normalMode-arrowMovement-modern" title="↑ ↓ ← →移动"></a>
+        <a id="normalMode-arrowMovement-modern" for-anchor="true" title="↑ ↓ ← →移动"></a>
 
         ```←``` 向左移动光标  
         ```→``` 向右移动光标  
@@ -249,7 +249,7 @@
 
     * **“隐藏”款**
 
-        <a id="normalMode-arrowMovement-others" title="其他款式"></a>
+        <a id="normalMode-arrowMovement-others" for-anchor="true" title="其他款式"></a>
 
         ```Backspace(退格键)``` 向左移动光标  
         ```Space(空格键)``` 向右移动光标  
@@ -272,13 +272,13 @@
 
 3. **行内光标移动**
 
-    <a id="normalMode-moveInsideRow" title="行内光标移动"></a>
+    <a id="normalMode-moveInsideRow" for-anchor="true" title="行内光标移动"></a>
 
     这里记录一下在**一行**文本中光标的移动指令：
 
     * **跳到行首**
 
-        <a id="normalMode-moveInsideRow-jumpAheadOfLine" title="跳到行首"></a>
+        <a id="normalMode-moveInsideRow-jumpAheadOfLine" for-anchor="true" title="跳到行首"></a>
 
         ```0``` 回到行首，`列数`=`1`的地方   
         ```Home``` 同上👆   
@@ -289,7 +289,7 @@
 
     * **跳到行尾**
 
-        <a id="normalMode-moveInsideRow-jumpEndOfLine" title="跳到行末"></a>
+        <a id="normalMode-moveInsideRow-jumpEndOfLine" for-anchor="true" title="跳到行末"></a>
 
         ```$``` 回到行尾**最后一个字符**的地方  
         ```End``` 同上👆   
@@ -300,15 +300,15 @@
 
 4. **屏幕可见行中移动光标**
 
-    <a id="normalMode-moveInScreenLine" title="屏幕可见行中移动光标"></a>
+    <a id="normalMode-moveInScreenLine" for-anchor="true" title="屏幕可见行中移动光标"></a>
 
     上面所说的“行”取决于**换行符`\n`**的位置，但这里的**屏幕可见行**是取决于窗口大小的：
 
-    ![screenLine-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/screenLine-2022-04-10.jpg)
+    ![screenLine-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/screenLine-2022-04-10.jpg)
 
     （图中标注的即为**一个屏幕可见行**）  
 
-    <a id="normalMode-moveInScreenLine-g" title="g^ g0 gm g$ 等等"></a>
+    <a id="normalMode-moveInScreenLine-g" for-anchor="true" title="g^ g0 gm g$ 等等"></a>
 
     针对这样的一个行，也是有指令可用于行内移动的：
 
@@ -330,11 +330,11 @@
 
     再展开想想，既然`g`开头的指令**在这里看的是屏幕可见行**，我是不是可以用`gj`（或`g↓`）指令从一个屏幕中的行移动到另一个行呢？
 
-    ![JLOperation-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/JLOperation-2022-04-10.gif)
+    ![JLOperation-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/JLOperation-2022-04-10.gif)
 
     👆这个主要是用`j`（`↓`）指令进行的光标移动  
 
-    ![gjOperation-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/gjOperation-2022-04-10.gif)  
+    ![gjOperation-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/gjOperation-2022-04-10.gif)  
 
     👆而这个主要是用`gj`（`g↓`）指令进行的光标移动。  
 
@@ -342,7 +342,7 @@
 
     -------
 
-    <a id="normalMode-moveInScreenLine-HML" title="H M L 指令"></a>
+    <a id="normalMode-moveInScreenLine-HML" for-anchor="true" title="H M L 指令"></a>
 
     针对屏幕可见行，还有几个指令：
 
@@ -360,21 +360,21 @@
 
 5. **文件内光标移动**  
 
-    <a id="normalMode-moveInFile" title="文件内光标移动"></a>  
+    <a id="normalMode-moveInFile" for-anchor="true" title="文件内光标移动"></a>  
 
     除了上述几种移动外，还有几个常用指令能按词、按句、按段等移动光标：
 
     * **按词移动**  
 
-        <a id="normalMode-moveInFile-moveByWord" title="按词移动w,b"></a>
+        <a id="normalMode-moveInFile-moveByWord" for-anchor="true" title="按词移动w,b"></a>
 
         `w` 跳转到**下一个词**的开头部分（**考虑标点符号**），演示如下👇
 
-        ![wordNext-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wordNext-2022-04-10.gif)
+        ![wordNext-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/wordNext-2022-04-10.gif)
 
         `W` 跳转到**下一个词**的开头部分（只考虑**空格分隔**） ，演示如下👇
 
-        ![wordNext-CAPS-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wordNext-CAPS-2022-04-10.gif) 
+        ![wordNext-CAPS-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/wordNext-CAPS-2022-04-10.gif) 
 
         `b` 跳转到**上一个词**的开头部分（**考虑标点符号**）。
 
@@ -388,7 +388,7 @@
 
         ------
 
-        <a id="normalMode-moveInFile-endOfWord" title="移动到词尾e"></a>
+        <a id="normalMode-moveInFile-endOfWord" for-anchor="true" title="移动到词尾e"></a>
 
         `e` 跳转到当前**光标所在词**的**词尾**，如果光标在词尾，就跳转到**下一个词的词尾** （**考虑标点符号**）。  
 
@@ -398,7 +398,7 @@
 
     * **按句移动**  
 
-        <a id="normalMode-moveInFile-moveAheadSentence" title="移动到句首( )"></a>  
+        <a id="normalMode-moveInFile-moveAheadSentence" for-anchor="true" title="移动到句首( )"></a>  
 
         `(` 移动到**光标所在句子的开头部分**，如果已经在开头，就移动到**上一个句子**的开头部分
 
@@ -408,7 +408,7 @@
 
     * **按段落移动**  
 
-        <a id="normalMode-moveInFile-moveAheadParagraph" title="移动到段首{ }"></a>  
+        <a id="normalMode-moveInFile-moveAheadParagraph" for-anchor="true" title="移动到段首{ }"></a>  
 
         `{` 移动到**光标所在段落的开头部分**，如果已经在开头，就移动到**上一个段落**的开头部分
 
@@ -423,7 +423,7 @@
 
     * **在整个文件中跳转光标**  
 
-        <a id="normalMode-moveInFile-arrowJump" title="跳转光标gg,G"></a>  
+        <a id="normalMode-moveInFile-arrowJump" for-anchor="true" title="跳转光标gg,G"></a>  
 
         ⚠️ 下面的指令全部都会使光标**跳转到行首第一个不为空白符的字符**处。    
 
@@ -433,23 +433,23 @@
 
         `[row]G` 跳转到文件**第[row]行**（row代表数字）。  
 
-        ![GJump-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/GJump-2022-04-10.gif)  
+        ![GJump-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/GJump-2022-04-10.gif)  
 
         👆 分别演示了 `gg`，`G`，`2G` 的操作。
 
         > 记忆方法：上面三个指令本质都和`G`有关，`G`可以直接记忆为`Goto 转到,跳转`。  
 
-        ![nGJump-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nGJump-2022-04-10.webp)
+        ![nGJump-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/nGJump-2022-04-10.webp)
 
 6. **自定义跳转标记**
 
-    <a id="normalMode-makeMarks" title="自定义跳转标记"></a> 
+    <a id="normalMode-makeMarks" for-anchor="true" title="自定义跳转标记"></a> 
 
     在这一坨文本中进行移动时，我经常要使用指令反复横跳。有一个地方我**经常跳转过去**，如果一步步来实在很麻烦！此时就可以用**自定义跳转标记**来解决。  
 
     * **设置标记**  
 
-        <a id="normalMode-makeMarks-set" title="设置标记m"></a> 
+        <a id="normalMode-makeMarks-set" for-anchor="true" title="设置标记m"></a> 
 
         指令非常简单：  
 
@@ -465,7 +465,7 @@
 
     * **跳转到标记处**  
 
-        <a id="normalMode-makeMarks-goto" title="跳转到标记处`"></a> 
+        <a id="normalMode-makeMarks-goto" for-anchor="true" title="跳转到标记处`"></a> 
 
         ``` `a ```   
 
@@ -477,19 +477,19 @@
 
     * **跳转到标记所在行的行首**
 
-        <a id="normalMode-makeMarks-goAheadLine" title="跳转到标记所在行的行首'"></a> 
+        <a id="normalMode-makeMarks-goAheadLine" for-anchor="true" title="跳转到标记所在行的行首'"></a> 
 
         ``` 'a ```  
 
         使用单引号 `'` 加标记名能跳转到**该标记所在行**的行首**第一个不为空白符的**字符处！  
 
-        ![jump2markedLine-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/jump2markedLine-2022-04-12.gif)  
+        ![jump2markedLine-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/jump2markedLine-2022-04-12.gif)  
 
         > 这样是不是就相当于标记了一个行的行首呢？ 
 
     * **删除标记**  
 
-        <a id="normalMode-makeMarks-del" title="删除标记delm"></a> 
+        <a id="normalMode-makeMarks-del" for-anchor="true" title="删除标记delm"></a> 
 
         ma可以设置名为`a`的标记，删除的话其实在前面加个del即可：  
 
@@ -509,11 +509,11 @@
 
 7. **翻页**  
 
-    <a id="normalMode-scrollPage" title="翻页"></a> 
+    <a id="normalMode-scrollPage" for-anchor="true" title="翻页"></a> 
 
     * **后空翻**  
 
-        <a id="normalMode-scrollPage-back" title="往回翻"></a>
+        <a id="normalMode-scrollPage-back" for-anchor="true" title="往回翻"></a>
 
         ```Ctrl + b``` 往回翻**一整页**  
         ```PageUp``` 往回翻**一整页**   
@@ -525,7 +525,7 @@
 
     * **前空翻**
 
-        <a id="normalMode-scrollPage-forward" title="往前翻"></a>
+        <a id="normalMode-scrollPage-forward" for-anchor="true" title="往前翻"></a>
 
         ```Ctrl + f``` 往前翻**一整页**  
         ```PageDown``` 往前翻**一整页**   
@@ -540,13 +540,13 @@
 
 8. **复制**
 
-    <a id="normalMode-yank" title="复制y"></a>
+    <a id="normalMode-yank" for-anchor="true" title="复制y"></a>
 
     复制是文本的经典便捷操作之一。
 
     * **复制一行**
 
-        <a id="normalMode-yank-singleLine" title="复制一行"></a>
+        <a id="normalMode-yank-singleLine" for-anchor="true" title="复制一行"></a>
 
         `yy` 复制光标所在行（到寄存器中）  
         `Y` 同上
@@ -555,7 +555,7 @@
 
     * **多行复制**
 
-        <a id="normalMode-yank-multiLines" title="复制多行"></a>
+        <a id="normalMode-yank-multiLines" for-anchor="true" title="复制多行"></a>
 
         `2yy` 复制**光标所在行**以及**下一行**，共`2`行  
         `2Y` 同上
@@ -565,11 +565,11 @@
 
     * **打一套复制组合拳！（选区复制）**  
 
-        <a id="normalMode-yank-withMove" title="光标移动复制"></a>
+        <a id="normalMode-yank-withMove" for-anchor="true" title="光标移动复制"></a>
 
         `y`其实可以和很多**光标移动指令**结合使用！利用好这套“组合拳”，效率倍增有木有！  
 
-        ![yankBoxing-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/yankBoxing-2022-04-10.png)  
+        ![yankBoxing-2022-04-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/yankBoxing-2022-04-10.png)  
 
         比如 `ye` 就能复制光标所在位置到[**单词尾部**](#normalMode-moveInFile-endOfWord)的部分，
 
@@ -584,7 +584,7 @@
 
         ------
 
-        <a id="normalMode-yank-summary" title="光标移动复制总结"></a>
+        <a id="normalMode-yank-summary" for-anchor="true" title="光标移动复制总结"></a>
 
         🤩 **总结一下**就是：
         
@@ -592,7 +592,7 @@
 
         通常以**光标所在位置**为起点，直到**光标移动指令执行后的光标位置**为止作为**选区**进行复制。
 
-        ![yankGoTest-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/yankGoTest-2022-04-11.gif)  
+        ![yankGoTest-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/yankGoTest-2022-04-11.gif)  
 
         👆示例`ygj`的效果。光标所在位置是`语`字前面，执行`gj`后光标位于`草`字前面，所以复制选区就是：
 
@@ -600,13 +600,13 @@
 
 9. **剪切**  
 
-    <a id="normalMode-cut" title="剪切d,c,x..."></a>
+    <a id="normalMode-cut" for-anchor="true" title="剪切d,c,x..."></a>
 
     有了复制，就不得不提到**复制并移除**——剪切了。通过这些指令移除的文本会被存进寄存器，可用于**粘贴**。
 
     * **剪切一行**  
 
-        <a id="normalMode-cut-singleLine" title="剪切一行"></a>
+        <a id="normalMode-cut-singleLine" for-anchor="true" title="剪切一行"></a>
 
         `dd` 剪切**光标所在行**  
         `cc` 剪切**光标所在行**，并且**进入插入模式**  
@@ -618,7 +618,7 @@
 
     * **剪切多行**
 
-        <a id="normalMode-cut-multiLines" title="剪切多行"></a>
+        <a id="normalMode-cut-multiLines" for-anchor="true" title="剪切多行"></a>
 
         这一部分和复制多行真的相差无几，可以说会用[**多行复制**](#normalMode-yank-multiLines)了，肯定是会剪切多行的。  
 
@@ -629,7 +629,7 @@
 
     * **剪切一个字符**
 
-        <a id="normalMode-cut-chr" title="剪切一个字符x"></a>
+        <a id="normalMode-cut-chr" for-anchor="true" title="剪切一个字符x"></a>
 
         `x` 剪切**光标右边的一个字符** （相当于`dl`或`d→`）  
         `s` 剪切**光标右边的一个字符**，并且**进入插入模式**  
@@ -639,7 +639,7 @@
 
     * **行内剪切**
 
-        <a id="normalMode-cut-inLine" title="行内剪切D,C"></a>
+        <a id="normalMode-cut-inLine" for-anchor="true" title="行内剪切D,C"></a>
 
         和复制不同的是，大写 `D` 和 `C` 的作用**并不等同于** `dd` 和 `cc`！
 
@@ -650,14 +650,14 @@
 
     * **组合剪切（选区剪切）**
 
-        <a id="normalMode-cut-withMove" title="光标移动剪切"></a>
+        <a id="normalMode-cut-withMove" for-anchor="true" title="光标移动剪切"></a>
 
         复制`y`能打组合拳，我堂堂剪切为什么不行！
 
         确实，剪切 `d` 或 `c` 都是可以和**光标操作指令**进行结合的，  
         他俩不同的地方在于 `d` 只是普通的剪切，`c` 还附赠了[**切换到插入模式**](#modeSwitch-insertMode-s)服务!  
 
-        ![arrogantCandD-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/arrogantCandD-2022-04-11.png)  
+        ![arrogantCandD-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/arrogantCandD-2022-04-11.png)  
 
         `dj` 或 `d↓` 的效果就等同于`2dd`  
         `cj` 或 `c↓` 的效果就等同于`2cc`，会进入插入模式   
@@ -670,7 +670,7 @@
         `c^` 在进行上面的操作👆后，会进入**插入模式** 
         ```d`a``` 剪切从**当前光标**位置到`a`[**标记位置**](#normalMode-makeMarks)的部分  
 
-        ![3dgj-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/3dgj-2022-04-11.gif)  
+        ![3dgj-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/3dgj-2022-04-11.gif)  
 
         👆演示了一下 `3dgj` 。从光标所在位置 `语` **开始**，到执行了`3gj`之后的光标位置**为止**作为选区，进行剪切。也就是这一部分：  
 
@@ -683,7 +683,7 @@
 
         ------
 
-        <a id="normalMode-cut-summary" title="光标移动剪切总结"></a>
+        <a id="normalMode-cut-summary" for-anchor="true" title="光标移动剪切总结"></a>
 
         🤩 **总结一下**就是：
         
@@ -695,7 +695,7 @@
 
 10. **粘贴**
 
-    <a id="normalMode-paste" title="粘贴p"></a>
+    <a id="normalMode-paste" for-anchor="true" title="粘贴p"></a>
 
     Copy和Cut都记了，接下来咱要想办法粘贴(Paste)内容咯~ 
 
@@ -707,7 +707,7 @@
 
     -------
 
-    <a id="normalMode-paste-lines" title="粘贴行文本"></a>
+    <a id="normalMode-paste-lines" for-anchor="true" title="粘贴行文本"></a>
 
     当**寄存器**中的内容是**一行或多行**文本（开头有换行符`\n`）时：  
     * `p`会把文本粘贴到当前**光标所在行**的**下一行**，  
@@ -716,14 +716,14 @@
 
     * 👇举例：先利用`yy`复制**一行**文本，然后分别用 `p` 和 `P` 进行粘贴
 
-        ![pasteAndUpperPaste-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/pasteAndUpperPaste-2022-04-11.gif)  
+        ![pasteAndUpperPaste-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/pasteAndUpperPaste-2022-04-11.gif)  
 
         > 很明显能看到使用`p`时，该行文本会被粘贴到`line2`这一行的下方；  
         > 而使用`P`时，该行文本会被粘贴到`line2`这一行的上方。
 
     -------
 
-    <a id="normalMode-paste-lessThanLine" title="粘贴不足一行文本"></a>
+    <a id="normalMode-paste-lessThanLine" for-anchor="true" title="粘贴不足一行文本"></a>
 
     当**寄存器**中的内容是**不足一行的文本**（**开头没有**换行符`\n`）时：
 
@@ -733,7 +733,7 @@
 
     * 👇举例：先执行`ygj`复制**开头没有换行符**的一段文本，然后分别用 `p` 和 `P` 进行粘贴
 
-        ![ygjPasteAndUpperPaste-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/ygjPasteAndUpperPaste-2022-04-11.gif)
+        ![ygjPasteAndUpperPaste-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/ygjPasteAndUpperPaste-2022-04-11.gif)
 
         > 粘贴的时候**光标指向的字符**是`n`。使用`p`粘贴时，内容粘贴在`n`的右方；而使用`P`粘贴时，内容粘贴在`n`的左方。
 
@@ -743,7 +743,7 @@
 
 11. **Vim上下文编辑**
 
-    <a id="normalMode-contextEdit" title="Vim上下文编辑"></a>
+    <a id="normalMode-contextEdit" for-anchor="true" title="Vim上下文编辑"></a>
 
     Vim在复制`y`，剪切`c`、`d`这些操作的基础上复用了`i`和`a`指令用于对上下文进行操作：  
 
@@ -752,7 +752,7 @@
 
     * **针对单词**（`w` / `W`）
 
-        <a id="normalMode-contextEdit-forWord" title="针对单词diw,daw..."></a>
+        <a id="normalMode-contextEdit-forWord" for-anchor="true" title="针对单词diw,daw..."></a>
 
         > ⭐ 记作`Word`
 
@@ -768,7 +768,7 @@
 
         ※ 下面演示一下`diw`和`daw`的区别：  
 
-        ![diwAnddaw-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/diwAnddaw-2022-04-11.gif)  
+        ![diwAnddaw-2022-04-11](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/diwAnddaw-2022-04-11.gif)  
 
         很明显能看到，使用`diw`时，剪切后遗留的文本是 `of ,`（单词左边的空格保留了）；  
         使用`daw`时，剪切后遗留的文本是 `of,`（单词左边的空格被一同剪切了） 。   
@@ -779,7 +779,7 @@
 
     * **针对句子**（`s`） 
 
-        <a id="normalMode-contextEdit-forSentence" title="针对句子yis,das..."></a>  
+        <a id="normalMode-contextEdit-forSentence" for-anchor="true" title="针对句子yis,das..."></a>  
 
         > ⭐ 记作`Sentence`。注意，这里**没有大写** `S` 的用法！  
 
@@ -797,7 +797,7 @@
 
     * **针对段落**（`p`）
 
-        <a id="normalMode-contextEdit-forParagraph" title="针对段落yip,dap..."></a>  
+        <a id="normalMode-contextEdit-forParagraph" for-anchor="true" title="针对段落yip,dap..."></a>  
 
         > ⭐ 记作`Paragraph`。注意，这里**没有大写** `P` 的用法！   
 
@@ -814,7 +814,7 @@
 
     * **针对单/双引号**（ `'` / `"` ） 
 
-        <a id="normalMode-contextEdit-forQuotes" title="针对单/双引号"></a>
+        <a id="normalMode-contextEdit-forQuotes" for-anchor="true" title="针对单/双引号"></a>
 
         很明显，这一部分操作是用来处理单/双引号**引起来的文本**的，和上面的`w`、`W`、`s`、`p`不同的是这里的 `i` / `a` 的含义：
 
@@ -823,11 +823,11 @@
 
         `di"` 剪切光标所在的**双引号**引起来的**同行**文本（`i`代表不包括两侧的引号） 👇  
 
-        ![diQuoted-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/diQuoted-2022-04-12.gif)  
+        ![diQuoted-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/diQuoted-2022-04-12.gif)  
 
         `da'` 剪切光标所在的**单引号**引起来的**同行**文本（`a`代表包括两侧的引号） 👇
 
-        ![daQuoted-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/daQuoted-2022-04-12.gif)  
+        ![daQuoted-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/daQuoted-2022-04-12.gif)  
 
         > 💡 `y` 和 `c` 也是一样的用法
 
@@ -835,7 +835,7 @@
     
     * **针对括号** （ `( )`, `< >`, `[ ]`, `{ }` ）  
 
-        <a id="normalMode-contextEdit-forBracket" title="针对括号"></a>
+        <a id="normalMode-contextEdit-forBracket" for-anchor="true" title="针对括号"></a>
 
         这一部分用来处理**括号括起来的文本**。
 
@@ -846,26 +846,26 @@
 
         `di(` 或 `di)` 剪切光标所在的**小括号`( )`括起来的**文本（`i`代表不包括两侧的括号） 👇
 
-        ![diBracket-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/diBracket-2022-04-12.gif)  
+        ![diBracket-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/diBracket-2022-04-12.gif)  
 
         `da{` 或 `da}` 剪切光标所在的**大括号`{ }`括起来的**文本（`a`代表包括两侧的括号） 👇  
 
-        ![daBracket-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/daBracket-2022-04-12.gif)  
+        ![daBracket-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/daBracket-2022-04-12.gif)  
 
         > 💡 `y` 和 `c` 也是一样的用法，适用于多种括号。
 
-    ![quoteAndBracketComic-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/quoteAndBracketComic-2022-04-12.png)
+    ![quoteAndBracketComic-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/quoteAndBracketComic-2022-04-12.png)
     
 
 12. **双引号指定寄存器**
 
-    <a id="normalMode-specifyRegs" title="双引号指定寄存器"></a>
+    <a id="normalMode-specifyRegs" for-anchor="true" title="双引号指定寄存器"></a>
 
     默认情况下使用复制粘贴似乎用的都是一个公共的寄存器（Registers），Vim实际上是支持寄存多条文本的，**只需要在指令前指定寄存器名**即可。
 
     * **默认的寄存器**被系统记为 `"` ，一个双引号
 
-        <a id="normalMode-specifyRegs-default" title="默认寄存器"></a>
+        <a id="normalMode-specifyRegs-default" for-anchor="true" title="默认寄存器"></a>
 
         当执行`yy`时，会将目标文本行存入 `"` 寄存器，操作等同于：  
 
@@ -879,7 +879,7 @@
 
     * **指定寄存器名字**
 
-        <a id="normalMode-specifyRegs-setName" title="命名寄存器"></a>
+        <a id="normalMode-specifyRegs-setName" for-anchor="true" title="命名寄存器"></a>
 
         把上述第二个单引号改成 `a-z` 的**小写字母**即可！这样就相当于得到了`26`个“剪贴板”呢~  
 
@@ -895,7 +895,7 @@
 
     * **往已命名寄存器中附加内容**
 
-        <a id="normalMode-specifyRegs-appendByName" title="往命名寄存器中附加内容"></a>
+        <a id="normalMode-specifyRegs-appendByName" for-anchor="true" title="往命名寄存器中附加内容"></a>
 
         上面写到用**小写字母**对寄存器进行命名，那么**大写字母**呢？
 
@@ -903,7 +903,7 @@
 
         ```"Ay$``` 将光标位置到行尾的文本附加到`a`寄存器中 👇
 
-        ![AppendToRegisterA-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/AppendToRegisterA-2022-04-12.gif)
+        ![AppendToRegisterA-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/AppendToRegisterA-2022-04-12.gif)
 
     这里主要记录一下复制粘贴方面的寄存器引用方法。Vim寄存器储存的内容远不止这么一点，还包括操作历史记录等信息，就不多赘述了。
 
@@ -913,20 +913,20 @@
 
 13. **缩进**  
 
-    <a id="normalMode-indenting" title="缩进"></a>
+    <a id="normalMode-indenting" for-anchor="true" title="缩进"></a>
 
     Vi/Vim 常用于编辑代码，缩进功能当然也是比较常用的了。  
 
     * **增加缩进**  
 
-        <a id="normalMode-indenting-add" title="增加缩进"></a>
+        <a id="normalMode-indenting-add" for-anchor="true" title="增加缩进"></a>
 
         `>>` 给**光标所在行**增加缩进   
         `4>>` 给**光标所在行**以及下面`3`行增加缩进，共`4`行  
 
     * **减少缩进**  
 
-        <a id="normalMode-indenting-rmv" title="减少缩进"></a>
+        <a id="normalMode-indenting-rmv" for-anchor="true" title="减少缩进"></a>
 
         `<<` 给**光标所在行**减少缩进   
         `5<<` 给**光标所在行**以及下面`4`行减少缩进，共`5`行  
@@ -935,13 +935,13 @@
 
 14. **撤销与重做** 
 
-    <a id="normalMode-undoAndRedo" title="撤销与重做"></a>
+    <a id="normalMode-undoAndRedo" for-anchor="true" title="撤销与重做"></a>
 
     文本编辑必不可少的便是撤销与重做功能了！  
 
     * **撤销** 
 
-        <a id="normalMode-undoAndRedo-undo" title="撤销"></a>
+        <a id="normalMode-undoAndRedo-undo" for-anchor="true" title="撤销"></a>
 
         `u` 撤销**上一步操作**  
 
@@ -952,7 +952,7 @@
 
     * **重做**  
 
-        <a id="normalMode-undoAndRedo-redo" title="重做"></a>
+        <a id="normalMode-undoAndRedo-redo" for-anchor="true" title="重做"></a>
 
         `Ctrl + r` 或者 `Ctrl + R`  
 
@@ -963,13 +963,13 @@
 
 15. **数字快捷增减**
 
-    <a id="normalMode-numAscDesc" title="数字快捷增减"></a>
+    <a id="normalMode-numAscDesc" for-anchor="true" title="数字快捷增减"></a>
 
     要修改一个数值的时候可以进入插入模式，移动光标到数值上进行修改，这样可能略嫌麻烦了。在`命令模式/普通模式`下提供了对**数值**进行**递增**或**递减**的操作指令：  
 
     * `Ctrl + a` （`Ctrl + A`亦可） 
 
-        <a id="normalMode-numAscDesc-ascend" title="数字递增Ctrl+A/a"></a>
+        <a id="normalMode-numAscDesc-ascend" for-anchor="true" title="数字递增Ctrl+A/a"></a>
     
         对光标指针所在数值进行**递增操作**。如果光标没有指向数值，会**向右查找**数值进行递增。  
 
@@ -977,7 +977,7 @@
         > 亦可以记成 `accumulate [v]积累；逐渐增加`。  
         > 之所以有 `Ctrl` ,是因为`a`已经被用于切换**插入模式**了！
 
-        ![ascendingNum-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/ascendingNum-2022-04-12.gif)  
+        ![ascendingNum-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/ascendingNum-2022-04-12.gif)  
 
         👆 示例中可以看到，当光标右方没有数值时会屏幕闪烁提示指令无效。  
 
@@ -985,7 +985,7 @@
 
     * `Ctrl + x` （`Ctrl + X`亦可）  
 
-        <a id="normalMode-numAscDesc-descend" title="数字递减Ctrl+X/x"></a>
+        <a id="normalMode-numAscDesc-descend" for-anchor="true" title="数字递减Ctrl+X/x"></a>
 
         对光标指针所在数值进行**递减操作**。如果光标没有指向数值，同样会**向右查找**数值进行递减。  
 
@@ -996,7 +996,7 @@
 
     * **重复指令**  
 
-        <a id="normalMode-numAscDesc-repeat" title="重复递增/递减操作"></a>
+        <a id="normalMode-numAscDesc-repeat" for-anchor="true" title="重复递增/递减操作"></a>
 
         设想一下，如果我要增加10亿，难不成要一直按住按键不动？当然不是这样啦！  
 
@@ -1004,15 +1004,15 @@
 
         ```1000000000Ctrl + a```  
 
-        ![ascendBillionTimes-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/ascendBillionTimes-2022-04-12.gif)  
+        ![ascendBillionTimes-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/ascendBillionTimes-2022-04-12.gif)  
 
         ```Ctrl + x``` 同理！  
 
-        ![rocketAscending-2022-04-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/rocketAscending-2022-04-12.png)
+        ![rocketAscending-2022-04-12](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/rocketAscending-2022-04-12.png)
 
     * **进制的表示方法**
 
-        <a id="normalMode-numAscDesc-type" title="进制的表示方法"></a>
+        <a id="normalMode-numAscDesc-type" for-anchor="true" title="进制的表示方法"></a>
 
         `0x` 前缀表示**十六进制**  （记**hex**的**x**）
 
@@ -1022,7 +1022,7 @@
 
         ---------
 
-    <a id="normalMode-numAscDesc-available" title="Vim可识别类型"></a>
+    <a id="normalMode-numAscDesc-available" for-anchor="true" title="Vim可识别类型"></a>
 
     > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical）。
 
@@ -1030,24 +1030,24 @@
 
 16. **字母大小写切换**  
 
-    <a id="normalMode-caseSwitch" title="字母大小写切换"></a>
+    <a id="normalMode-caseSwitch" for-anchor="true" title="字母大小写切换"></a>
 
     数字增减有了，字母其实也是可以“随地大小变”的！
 
     * `gu后接光标移动指令`
 
-        <a id="normalMode-caseSwitch-gu" title="转换为小写gu"></a>
+        <a id="normalMode-caseSwitch-gu" for-anchor="true" title="转换为小写gu"></a>
 
         将从光标位置开始到**执行移动指令后**光标的位置结束作为选区，  
         将选区内的所有字母转换为**小写**!  
 
-        ![guiw-2022-04-16](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/guiw-2022-04-16.gif)  
+        ![guiw-2022-04-16](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/guiw-2022-04-16.gif)  
 
         👆 演示了`guiw`指令。`iw`选择的是光标所在单词`FLOOD`，执行`gu`后将单词所有字母转换为**小写**：`flood`。  
 
     * `gU后接光标移动指令`  
 
-        <a id="normalMode-caseSwitch-gupper" title="转换为大写gU"></a>
+        <a id="normalMode-caseSwitch-gupper" for-anchor="true" title="转换为大写gU"></a>
 
         将选区内的所有字母转换为**大写**  
 
@@ -1055,35 +1055,35 @@
 
     * `~` (波浪符)  
 
-        <a id="normalMode-caseSwitch-swap" title="大小写交换~"></a>
+        <a id="normalMode-caseSwitch-swap" for-anchor="true" title="大小写交换~"></a>
 
         波浪符将**光标**所在的字母进行**大小写交换**，比如`b`会转换为`B`；`B`则会转换为`b`。  
 
         这个指令可以用于转换**光标所在行**中**自光标往后**的字母**大小写**。  
 
-        ![tilde-2022-04-16](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/tilde-2022-04-16.gif)  
+        ![tilde-2022-04-16](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/tilde-2022-04-16.gif)  
 
         👆 `50~`，将本行中自光标往后50个字符进行大小写转换。  
 
     * `g~后接光标移动指令`  
 
-        <a id="normalMode-caseSwitch-swap" title="光标移动大小写交换g~"></a>
+        <a id="normalMode-caseSwitch-swap" for-anchor="true" title="光标移动大小写交换g~"></a>
 
         上面的`~`只能对**光标所在行**的字符进行大小写交换，如果要涉及**一个选区**呢？  
 
         于是，`g~`他来了！在`g~`后接光标移动指令，将**光标当前位置**开始到**执行指令后光标所在位置**为止之间的字符进行大小写交换。  
 
-        ![gT2gj-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/gT2gj-2022-04-17.gif)  
+        ![gT2gj-2022-04-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/gT2gj-2022-04-17.gif)  
 
         👆 `g~2gj`，将从光标位置开始到光标向下移动**两个屏幕行**为止的部分字符大小写交换。
 
     > 💡 记忆方法：波浪线可以看作是一条**波**，随着波的传播，同一个地方的**波峰波谷交替出现**，在这里就记成**大写小写的交替**。
 
-    ![caseInversion-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseInversion-2022-04-17.gif)
+    ![caseInversion-2022-04-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/caseInversion-2022-04-17.gif)
 
 17. **重复最后一次更改**  
 
-    <a id="normalMode-repeatLast" title="重复最后一次更改."></a>
+    <a id="normalMode-repeatLast" for-anchor="true" title="重复最后一次更改."></a>
 
     `.`  
 
@@ -1101,15 +1101,15 @@
 
 18. **行连接指令**  
 
-    <a id="normalMode-joinRows" title="行连接"></a>
+    <a id="normalMode-joinRows" for-anchor="true" title="行连接"></a>
 
     * 大写 `J`  
 
-        <a id="normalMode-joinRows-j" title="带空格间隔"></a>
+        <a id="normalMode-joinRows-j" for-anchor="true" title="带空格间隔"></a>
 
          这个指令能将**光标所在行**和其下面一行**连接成一行**，之间用**一个空格间隔**：  
 
-         ![LinesJoin-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/LinesJoin-2022-04-17.gif)  
+         ![LinesJoin-2022-04-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/LinesJoin-2022-04-17.gif)  
 
          > `4J` 的话则是将光标所在行和**下面3行**进行连接，每行之间用空格隔开。**一共4行**。  
 
@@ -1117,7 +1117,7 @@
         
     * `gJ`  
 
-        <a id="normalMode-joinRows-gj" title="无间隔"></a>
+        <a id="normalMode-joinRows-gj" for-anchor="true" title="无间隔"></a>
 
         同样是连接行。和上面`J`不同的是，这个指令在连接行之后**不会在之间添加空格！**。  
 
@@ -1130,25 +1130,25 @@
 
 1. ```:w``` **写入** （记为```Write [v]写文件```）
 
-    <a id="commandLineMode-write" title="写入(保存)文件:w"></a>
+    <a id="commandLineMode-write" for-anchor="true" title="写入(保存)文件:w"></a>
 
     顾名思义，这个指令会将**自开始编辑以来**的更改写入文件中：
 
-    ![write-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/write-2022-04-07.gif)  
+    ![write-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/write-2022-04-07.gif)  
 
-    ![writeFile-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeFile-2022-04-07.png)
+    ![writeFile-2022-04-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/writeFile-2022-04-07.png)
 
-    <a id="commandLineMode-write-as" title="另写入文件(另存为)"></a>
+    <a id="commandLineMode-write-as" for-anchor="true" title="另写入文件(另存为)"></a>
 
     文件保存总让人想起桌面软件的“另存为”功能，当然```Vi```也是能实现的：
 
     ⭐ ```:w filename```  
 
-    ![writeToAnother-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeToAnother-2022-04-08.gif)  
+    ![writeToAnother-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/writeToAnother-2022-04-08.gif)  
 
-    ![writeAnotherFile-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeAnotherFile-2022-04-08.png)  
+    ![writeAnotherFile-2022-04-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/writeAnotherFile-2022-04-08.png)  
 
-    <a id="commandLineMode-write-all" title="写入所有文件"></a>
+    <a id="commandLineMode-write-all" for-anchor="true" title="写入所有文件"></a>
 
     除了上面针对单一文件的写入指令，还可以同时**写入多个文件**，下面这个指令适用于Vim编辑器中同时打开多个文件的情况：
 
@@ -1156,9 +1156,9 @@
 
     👆 将所有打开的文件进行写入保存。（可以记成`Write All 写入所有`）  
 
-    ![WriteAll-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/WriteAll-2022-04-17.png)  
+    ![WriteAll-2022-04-17](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/WriteAll-2022-04-17.png)  
 
-    <a id="commandLineMode-write-part" title="写入文件部分行"></a>  
+    <a id="commandLineMode-write-part" for-anchor="true" title="写入文件部分行"></a>  
 
     如果只想保存文本中的一部分呢？Vim还支持指定行写入文件：  
 
@@ -1166,17 +1166,17 @@
 
     👇 比如我想写入第`13`至第`14`行的文本（共两行）：```:13,14 w filename```  
 
-    ![writeSpecificLines-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeSpecificLines-remake-2022-04-18.gif)  
+    ![writeSpecificLines-remake-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/writeSpecificLines-remake-2022-04-18.gif)  
 
     输出文件效果：  
 
-    ![SpecificLines-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/SpecificLines-2022-04-18.jpg)  
+    ![SpecificLines-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/SpecificLines-2022-04-18.jpg)  
 
 
 
 2. ```:q``` **退出**（记为```Quit [v]离开；关闭```）  
 
-    <a id="commandLineMode-quit" title="退出文件:q"></a>
+    <a id="commandLineMode-quit" for-anchor="true" title="退出文件:q"></a>
 
     文本编辑器必备操作——关闭文件。  
 
@@ -1191,9 +1191,9 @@
 
 3. **联合使用** ```w``` 与 ```q```   
 
-    <a id="commandLineMode-combineWQ" title="联合使用:wq"></a>
+    <a id="commandLineMode-combineWQ" for-anchor="true" title="联合使用:wq"></a>
 
-    ![wCombineWithQ-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wCombineWithQ-2022-04-18.png)  
+    ![wCombineWithQ-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/wCombineWithQ-2022-04-18.png)  
 
     既然未保存没法正常关闭文件，那么保存后关闭不就行了嘛！  
 
@@ -1210,7 +1210,7 @@
 
 4. 感叹号 ```!``` **强制执行指令**  
 
-    <a id="commandLineMode-force" title="强制执行!"></a>
+    <a id="commandLineMode-force" for-anchor="true" title="强制执行!"></a>
 
     有些情况下末行模式指令的执行可能会被拒绝，比如上面的`:q`在文件保存前不能直接执行。（这一点其实也是为了数据安全）  
 
@@ -1218,7 +1218,7 @@
 
     比如**未保存强制退出编辑器**就可以用： ```:qa!```  
 
-    ![forcedQuitAll-remake-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedQuitAll-remake-2022-04-18.png)  
+    ![forcedQuitAll-remake-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/forcedQuitAll-remake-2022-04-18.png)  
 
     此外我觉得**文件强制写入**也是值得记录一下的：```:w!```  
 
@@ -1228,19 +1228,19 @@
 
 5. ```:r``` **在下一行读入文件** （记成 ```Read [v]读取```） 
 
-    <a id="commandLineMode-readNextLine" title="在下一行读入文件:r"></a>
+    <a id="commandLineMode-readNextLine" for-anchor="true" title="在下一行读入文件:r"></a>
 
     在编辑文本的时候可能需要将**另一个文件的文本**插入进来，这个时候就轮到`:r`大显身手了。  
 
     ⭐ ```:r``` 能够**读取一个文件**，并将文件内容**追加**到光标所在行的**后一行**。  
 
-    ![appendFileContent-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/appendFileContent-2022-04-18.gif)  
+    ![appendFileContent-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/appendFileContent-2022-04-18.gif)  
 
     👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
 6. ```:e``` **开启新buffer或刷新当前buffer** （记成 ```Edit [v]编辑```）
 
-    <a id="commandLineMode-newBuffer" title=":e开启或刷新当前buffer"></a>
+    <a id="commandLineMode-newBuffer" for-anchor="true" title=":e开启或刷新当前buffer"></a>
 
     当编辑文件编辑到一半，想要推翻当前的所有修改，该怎么办呢？  
 
@@ -1250,19 +1250,19 @@
 
     * 文件在`Vi/Vim`中未经修改但是在**别的软件中受到了修改**时，可以直接使用 `:e` 在编辑器里**刷新（重新载入）文件内容**。  
 
-    <a id="commandLineMode-newBuffer-reload" title="强制重载文件内容"></a>
+    <a id="commandLineMode-newBuffer-reload" for-anchor="true" title="强制重载文件内容"></a>
 
     * 文件做了修改后，也可以用 `:e!` 强制**重载文件内容**，也就是抛弃文件开启以来的所有修改。  
 
-        ![forcedRefreshBuffer-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedRefreshBuffer-2022-04-22.gif)  
+        ![forcedRefreshBuffer-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/forcedRefreshBuffer-2022-04-22.gif)  
 
-    <a id="commandLineMode-newBuffer-buffer" title="简述buffer"></a>
+    <a id="commandLineMode-newBuffer-buffer" for-anchor="true" title="简述buffer"></a>
 
     > buffer可以理解为文件的一个**缓冲区**，文件在编辑器中被编辑实际上也就是临时buffer在被编辑。当写入文件的时候就是把buffer中的内容**写入到原文件**中，以达成编辑的效果。
 
     ----------
 
-    <a id="commandLineMode-newBuffer-newFile" title="打开新文件"></a>
+    <a id="commandLineMode-newBuffer-newFile" for-anchor="true" title="打开新文件"></a>
 
     除了刷新当前文件的buffer外，```:e```指令还可以用于**打开新的文件**并创建buffer。  
 
@@ -1274,19 +1274,19 @@
 
 7. ```:buffers``` 和 ```:bn```, ```:bp``` 以及 ```:b<id>```  
 
-    <a id="commandLineMode-buffers" title=":buffers, :bn, :bp, :b<id>"></a>
+    <a id="commandLineMode-buffers" for-anchor="true" title=":buffers, :bn, :bp, :b<id>"></a>
 
     * ```:buffers``` 
 
-        <a id="commandLineMode-buffers-all" title="查看所有:buffers"></a>
+        <a id="commandLineMode-buffers-all" for-anchor="true" title="查看所有:buffers"></a>
 
         **列出所有buffer**，在这里可以看到buffer的ID（最左边一列）。  
 
-        ![viewBuffers-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/viewBuffers-2022-04-22.jpg)  
+        ![viewBuffers-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/viewBuffers-2022-04-22.jpg)  
 
     * ```:b<id>``` 
 
-        <a id="commandLineMode-buffers-id" title=":b<id>跳转指定buffer"></a>
+        <a id="commandLineMode-buffers-id" for-anchor="true" title=":b<id>跳转指定buffer"></a>
 
         既然拿到了buffer的ID，我就可以在buffer之间跳转了，比如：
 
@@ -1296,7 +1296,7 @@
 
     * ```:bn``` 和 ```:bp```  
 
-        <a id="commandLineMode-buffers-switch" title="buffers之间互相切换:bn,:bp"></a>
+        <a id="commandLineMode-buffers-switch" for-anchor="true" title="buffers之间互相切换:bn,:bp"></a>
 
         就算不知道buffer的ID，利用这两个指令也能在buffer间互相切换：  
 
@@ -1310,7 +1310,7 @@
 
 8. ```:help [command]``` 或 ```:h [command]``` **查看帮助**  
 
-    <a id="commandLineMode-help" title="查看帮助:h[elp]"></a>
+    <a id="commandLineMode-help" for-anchor="true" title="查看帮助:h[elp]"></a>
 
     就像Linux中的`man`指令一样，Vi/Vim的`末行模式/命令行模式`也有个`:help`指令用来查看编辑器使用帮助。  
 
@@ -1322,28 +1322,28 @@
 
 9. ```:registers``` 或 ```:reg``` **查看寄存器**  
 
-    <a id="commandLineMode-viewRegs" title="查看寄存器:reg[isters]"></a>
+    <a id="commandLineMode-viewRegs" for-anchor="true" title="查看寄存器:reg[isters]"></a>
 
     这一部分可以结合```命令模式/正常模式```的[双引号指定寄存器](#normalMode-specifyRegs)一起记。    
 
     ⭐ 直接使用 ```:registers``` 或 ```:reg``` 时会展示**所有的寄存器** 👇  
 
-    ![registers-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/registers-2022-04-18.jpg)  
+    ![registers-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/registers-2022-04-18.jpg)  
 
     也可以在后面**指定要查询的寄存器名**，这些名称可以用空格分开，也可以连在一起写：  
 
     ⭐ 比如 ```:reg[isters] a b c``` 或 ```:reg[isters] abc``` ，可以筛选查询`a`,`b`,`c`寄存器 👇  
 
-    ![specifyRegisters-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/specifyRegisters-2022-04-18.gif)  
+    ![specifyRegisters-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/specifyRegisters-2022-04-18.gif)  
 
     关于寄存器更多用法这里就不多赘述了~  
 
-    ![009-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/009-2022-04-18.png)  
+    ![009-2022-04-18](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/009-2022-04-18.png)  
 
 
 10. ```:marks``` **查看标记信息**  
 
-    <a id="commandLineMode-viewMarks" title="查看标记:marks"></a>
+    <a id="commandLineMode-viewMarks" for-anchor="true" title="查看标记:marks"></a>
 
     这个和上面```:reg[isters]```的使用**很类似**，所以咱给写一起了。  
 
@@ -1357,13 +1357,13 @@
 
 11. ```:set``` **设置项**  
 
-    <a id="commandLineMode-settings" title="设置项:set"></a>
+    <a id="commandLineMode-settings" for-anchor="true" title="设置项:set"></a>
 
     这个指令用于设置一些配置项，这里就记几个比较常用的（因为配置项有非常多，全写出来太累赘了）  
 
     * **开启/关闭行号显示**  
 
-        <a id="commandLineMode-settings-nu" title="开启/关闭行号显示"></a>
+        <a id="commandLineMode-settings-nu" for-anchor="true" title="开启/关闭行号显示"></a>
 
         ```:set number``` 或 ```:set nu``` 可以在行首显示行号  
 
@@ -1371,13 +1371,13 @@
 
         此外 ```:set nu!``` 或 ```:set number!``` 可以在**开启行号/关闭行号**之间互相切换。  
 
-        ![lineNumbers-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lineNumbers-2022-04-19.gif)  
+        ![lineNumbers-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lineNumbers-2022-04-19.gif)  
 
         > 👆 记忆方法：直接记 `Number [n]号码 [v]标号`  
 
     * **开启/关闭相对行号显示**  
 
-        <a id="commandLineMode-settings-rnu" title="开启/关闭相对行号显示"></a>
+        <a id="commandLineMode-settings-rnu" for-anchor="true" title="开启/关闭相对行号显示"></a>
 
         ```:set relativenumber``` 或 ```:set rnu``` 可以显示相对行号  
 
@@ -1385,7 +1385,7 @@
 
         此外 ```:set rnu!``` 或 ```:set relativenumber!``` 可以在**开启相对行号/关闭相对行号**之间互相切换。
 
-        ![relativeNumber-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/relativeNumber-2022-04-19.gif)  
+        ![relativeNumber-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/relativeNumber-2022-04-19.gif)  
 
         👆 可以看到，相对行号以**光标所在行**为第`0`行，向上或向下标出相对的行号。  
 
@@ -1395,23 +1395,23 @@
 
     * **识别数字进制的配置**  
 
-        <a id="commandLineMode-settings-nrformats" title="识别数字进制的配置"></a>
+        <a id="commandLineMode-settings-nrformats" for-anchor="true" title="识别数字进制的配置"></a>
 
         上面已经写过`Ctrl+x`和`Ctrl+a`能[快捷减增数字](#normalMode-numAscDesc)。不过呢，Vim怎么识别**增减的类型**呢? 这就涉及到下面这个配置项了：  
 
         * ```:set nrformats``` 或 ```:set nf```  
 
-            <a id="commandLineMode-settings-nrformats-view" title="查看当前的配置"></a>
+            <a id="commandLineMode-settings-nrformats-view" for-anchor="true" title="查看当前的配置"></a>
 
             直接输入这个指令会查询**该配置项当前的设置**：  
 
-            ![queryNrformats-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/queryNrformats-2022-04-19.gif)  
+            ![queryNrformats-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/queryNrformats-2022-04-19.gif)  
 
             上面也写过Vim[能识别的增减类型](#normalMode-numAscDesc-available)。这里的`octal,hex` 则代表会尝试识别**八进制**，**十六进制**以及**十进制**的数字。（十进制是默认支持的）  
 
         * 使用 `+=` 或 `-=` 进行配置  
 
-            <a id="commandLineMode-settings-nrformats-add" title="运算赋值配置±="></a>
+            <a id="commandLineMode-settings-nrformats-add" for-anchor="true" title="运算赋值配置±="></a>
 
             这种写法其实可以理解为一些编程语言中的**运算赋值**操作：
 
@@ -1431,17 +1431,17 @@
 
             👆 这样写的话必须保证配置项中也有**bin,alpha**这个字串！  
 
-            ![removeNf-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/removeNf-2022-04-19.gif)  
+            ![removeNf-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/removeNf-2022-04-19.gif)  
 
             ↑ 没有`bin,alpha`这个字串，无法移除。
 
-            ![successfullySetNf-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/successfullySetNf-2022-04-19.gif)  
+            ![successfullySetNf-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/successfullySetNf-2022-04-19.gif)  
 
             ↑ 移除`octal,alpha`的话就很成功，因为配置项中有这个字串。  
 
         * 直接使用 `=` 进行配置  
 
-            <a id="commandLineMode-settings-nrformats-eq" title="赋值配置="></a>
+            <a id="commandLineMode-settings-nrformats-eq" for-anchor="true" title="赋值配置="></a>
 
             同样可以按编程语言里的**赋值**来理解，会直接**改变整个配置**  
 
@@ -1453,7 +1453,7 @@
 
 12. **执行Shell指令**  
 
-    <a id="commandLineMode-shell" title="执行Shell指令"></a>
+    <a id="commandLineMode-shell" for-anchor="true" title="执行Shell指令"></a>
 
     编辑文本到一半突然想执行一个Shell指令。我之前可能会利用`:wq`先退出编辑器，输入执行指令后再重新打开编辑器。  
 
@@ -1461,16 +1461,16 @@
 
     * ```:! <command>``` **暂时离开**编辑界面，在Shell下执行指令**并打印结果**   
 
-        <a id="commandLineMode-shell-temporary" title="暂时离开编辑执行语句"></a>
+        <a id="commandLineMode-shell-temporary" for-anchor="true" title="暂时离开编辑执行语句"></a>
 
-        ![temporaryShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/temporaryShell-2022-04-19.gif)  
+        ![temporaryShell-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/temporaryShell-2022-04-19.gif)  
 
         👆 **临时**跳转到命令行执行`清屏`及`查询日期`指令并展示结果。  
 
         > 💡 `:!` 还有很多神奇的用法，比如执行指令后将返回的结果插入下一行：`:r! <command>`；  
         > 又比如将文本`21`至`25`行进行升序排序，并替换原文本：`:21,25! sort`，这里就很像Shell中`管道符`的用法了。  
         
-        ![sortByShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/sortByShell-2022-04-19.gif)  
+        ![sortByShell-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/sortByShell-2022-04-19.gif)  
 
         👆 演示 `:21,25! sort`  
 
@@ -1478,29 +1478,29 @@
 
     * ```:sh``` **创建一个新的Shell会话**
 
-        <a id="commandLineMode-shell-new" title="创建新的Shell会话"></a>
+        <a id="commandLineMode-shell-new" for-anchor="true" title="创建新的Shell会话"></a>
 
         这个指令就比较简单粗暴了，在执行后会创建一个新的Shell会话，我可以直接在Shell中执行指令！  
 
-        ![createNewShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/createNewShell-2022-04-19.gif)  
+        ![createNewShell-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/createNewShell-2022-04-19.gif)  
 
         这个Shell是一个**非登入**Shell，所以需要使用 `exit` 指令退出。  
 
         该Shell退出后会**回到编辑器界面！**  
 
-        ![exitShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exitShell-2022-04-19.gif) 
+        ![exitShell-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/exitShell-2022-04-19.gif) 
 
         > 👆 这个直接记忆 `Shell` 就行   
 
 13. **重复上一条指令**  
 
-    <a id="commandLineMode-repeatLast" title="重复上一条指令"></a>
+    <a id="commandLineMode-repeatLast" for-anchor="true" title="重复上一条指令"></a>
 
     在`命令模式/正常模式`下我可以使用 `.` 句点来重复上一次更改。在`末行模式/命令行模式`下也有类似的方法。  
 
     * **经典方法**  
 
-        <a id="commandLineMode-repeatLast-classical" title="经典方法"></a>
+        <a id="commandLineMode-repeatLast-classical" for-anchor="true" title="经典方法"></a>
 
         在`末行模式/命令行模式`下输入 `:` 后会进入`末行模式/命令行模式`，此时可以通过：  
 
@@ -1508,17 +1508,17 @@
         
         来浏览之前的输入历史  
 
-        ![scrollHistory-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistory-2022-04-19.gif)  
+        ![scrollHistory-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/scrollHistory-2022-04-19.gif)  
 
         💡 可以在 `:` 后面输入一些字符以**加快检索**：  
 
-        ![scrollHistoryWithHint-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistoryWithHint-2022-04-19.gif)  
+        ![scrollHistoryWithHint-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/scrollHistoryWithHint-2022-04-19.gif)  
 
         👆 输入`:s`后，能快速浏览`:s`开头的历史指令记录；`:se`则能快速浏览`:se`开头的历史指令。  
 
     * **`@:` 方法**  
 
-        <a id="commandLineMode-repeatLast-at" title="@:方法"></a>
+        <a id="commandLineMode-repeatLast-at" for-anchor="true" title="@:方法"></a>
 
         在`命令模式/正常模式`下输入：
 
@@ -1532,11 +1532,11 @@
 
         因此也是**可以重复执行的！**  
 
-        ![repeatLastLine-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatLastLine-2022-04-19.gif)  
+        ![repeatLastLine-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/repeatLastLine-2022-04-19.gif)  
 
         👆 演示：先用`:d`删除一行，然后再用`3@:`重复执行`:d`三次以继续删除下面三行。  
 
-    ![however-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/however-2022-04-19.png)  
+    ![however-2022-04-19](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/however-2022-04-19.png)  
 
     有点累了...喝口水...   
 
@@ -1544,7 +1544,7 @@
 
 1. **搜索**  
 
-    <a id="searchSub-search" title="搜索"></a>
+    <a id="searchSub-search" for-anchor="true" title="搜索"></a>
 
     **前提**：在`命令模式/正常模式`下：  
 
@@ -1564,19 +1564,19 @@
 
     -------------
 
-    <a id="searchSub-search-pattern" title="搜索模式(Pattern)"></a>
+    <a id="searchSub-search-pattern" for-anchor="true" title="搜索模式(Pattern)"></a>
 
     这里的`搜索模式`实际上就是**正则表达式**，不过和普通的正则略微有些不同！  
 
     1. 当然是可以直接搜索字串的  
 
-        <a id="searchSub-search-pattern-str" title="直接搜索字串"></a>
+        <a id="searchSub-search-pattern-str" for-anchor="true" title="直接搜索字串"></a>
 
-        ![searchStr-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchStr-2022-04-21.gif)  
+        ![searchStr-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/searchStr-2022-04-21.gif)  
 
     2. **大小写不敏感**搜索  
 
-        <a id="searchSub-search-pattern-casei" title="大小写不敏感搜索"></a>
+        <a id="searchSub-search-pattern-casei" for-anchor="true" title="大小写不敏感搜索"></a>
 
         一般在写正则表达式时要进行大小写不敏感匹配我一般会在正则表达式末尾加上`i`标记，但是在`搜索模式`里是不行的，需要用到特殊转义标记：
         
@@ -1584,15 +1584,15 @@
 
         这个标记写在`搜索模式`的中间（不要写在中括号`[]`里！）一般也是可以的，但我觉着还是**放在末尾**好辨别一些。
 
-        ![caseInsensitivelySearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseInsensitivelySearch-2022-04-21.gif)
+        ![caseInsensitivelySearch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/caseInsensitivelySearch-2022-04-21.gif)
 
-        ![caseInsensitiveSearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseInsensitiveSearch-2022-04-21.png)  
+        ![caseInsensitiveSearch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/caseInsensitiveSearch-2022-04-21.png)  
 
         > 👆 记忆方法：这里的 `\c` 可以记成 `case [n]大小写`。
 
     3. 利用**正则表达式**进行搜索  
 
-        <a id="searchSub-search-pattern-regex" title="利用正则表达式"></a>
+        <a id="searchSub-search-pattern-regex" for-anchor="true" title="利用正则表达式"></a>
 
         这里使用正则表达式和在编程语言里有些小区别，这里简单写一下：  
 
@@ -1621,15 +1621,15 @@
 
             除此之外的元字符大多是可以直接使用的，下面是一些示例：  
 
-            ![regexSearch1-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch1-2022-04-21.jpg) ![regexSearch2-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch2-2022-04-21.jpg) ![regexSearch3-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch3-2022-04-21.png) ![regexSearch4-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch4-2022-04-21.jpg) ![regexSearch5-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch5-2022-04-21.jpg)   
+            ![regexSearch1-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch1-2022-04-21.jpg) ![regexSearch2-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch2-2022-04-21.jpg) ![regexSearch3-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch3-2022-04-21.png) ![regexSearch4-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch4-2022-04-21.jpg) ![regexSearch5-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch5-2022-04-21.jpg)   
 
             另外也是支持**引用子模式的匹配结果(分组)**的：  
 
-            ![regexSearch6-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/regexSearch6-2022-04-22.jpg)  
+            ![regexSearch6-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/regexSearch6-2022-04-22.jpg)  
 
     4. 神奇的**非贪婪模式**  
 
-        <a id="searchSub-search-pattern-nonGreedy" title="非贪婪匹配"></a>
+        <a id="searchSub-search-pattern-nonGreedy" for-anchor="true" title="非贪婪匹配"></a>
 
         Vim这里的非贪婪模式用的就不是元字符 `?` 了，取而代之借用了一下大括号 ```{...,...} ```  
 
@@ -1641,7 +1641,7 @@
 
         `e\{-2,3}` 匹配 `ee` 或 `eee`，优先匹配更短的`ee`（也就是**非贪婪匹配**）  
 
-        ![non-greedyMatch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/non-greedyMatch-2022-04-21.gif)  
+        ![non-greedyMatch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/non-greedyMatch-2022-04-21.gif)  
 
         > 👆 这个例子中在`{`后紧接`-`后会往少的匹配，也就是只匹配一个`paprika `。
 
@@ -1657,7 +1657,7 @@
 
     5. **非捕获组与向前/向后预查**  
 
-        <a id="searchSub-search-pattern-groups" title="非捕获组与向前/向后预查"></a>
+        <a id="searchSub-search-pattern-groups" for-anchor="true" title="非捕获组与向前/向后预查"></a>
 
         在编程语言使用的正则表达式中，非捕获组一般用`(?:模式)`来表示，这一个子模式不会参与分组。 
 
@@ -1669,7 +1669,7 @@
         
         来表示的。下面就是一个示例：  
 
-        ![nonCapturingGroup-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nonCapturingGroup-2022-04-22.jpg)  
+        ![nonCapturingGroup-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/nonCapturingGroup-2022-04-22.jpg)  
 
         > 可以看到`accept`并未参与分组，`\1`引用的是第二个子模式的匹配结果`after`  
 
@@ -1684,21 +1684,21 @@
 
         > 💡 **预查**即预先检查子模式，看看这个子模式是否存在于待匹配的字串前/后，预查子模式是**不会出现在最终的匹配结果中的**。  
 
-        ![lookBehindPositive-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookBehindPositive-2022-04-22.jpg)  
+        ![lookBehindPositive-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lookBehindPositive-2022-04-22.jpg)  
 
         > 👆 匹配` paprika`，前提是` paprika`**后面**（左边）必须要匹配到`paprika`。  
 
-        ![lookAheadPositive-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookAheadPositive-2022-04-22.jpg)  
+        ![lookAheadPositive-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lookAheadPositive-2022-04-22.jpg)  
 
         > 👆 匹配`paprika`，前提是`paprika`**前面**（右边）必须要匹配到` pepper`。  
 
-        ![lookAheadNegative-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/lookAheadNegative-2022-04-22.jpg)  
+        ![lookAheadNegative-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/lookAheadNegative-2022-04-22.jpg)  
 
         > 👆 匹配`paprika`，前提是`paprika`**前面**（右边）**不能**匹配到`pepper`。  
 
     6. 搜索**光标下的单词**
 
-        <a id="searchSub-search-underCursor" title="搜索光标下单词"></a>
+        <a id="searchSub-search-underCursor" for-anchor="true" title="搜索光标下单词"></a>
 
         这一小节的操作是在`命令模式/正常模式`下的：
 
@@ -1706,7 +1706,7 @@
 
         * `#` **向前**搜索**光标目前指向的单词**，只匹配**一整个单词**  
 
-            ![searchWordUnderCursor-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchWordUnderCursor-2022-04-21.gif)  
+            ![searchWordUnderCursor-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/searchWordUnderCursor-2022-04-21.gif)  
 
             > 从这个例子可以看到，实际上Vim是把光标指向的单词转换成了搜索语句。`*` 对应 `/\<accept\>`，`#` 对应 `?\<\accept\>`。  
 
@@ -1714,7 +1714,7 @@
 
         * `g#` **向前**搜索**光标目前指向的单词**，单词可作为**字串的一部分**被匹配。
 
-            ![searchWordPartUnderCursor-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchWordPartUnderCursor-2022-04-21.gif)  
+            ![searchWordPartUnderCursor-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/searchWordPartUnderCursor-2022-04-21.gif)  
 
             > 可以看到 `*` 对应 `/accept`，`#` 对应 `?accept`，单词可作为**字串的一部分**被匹配。 
 
@@ -1722,7 +1722,7 @@
 
     7. 开启**搜索高光显示**
 
-        <a id="searchSub-search-highlight" title="开启搜索匹配高光展示"></a>
+        <a id="searchSub-search-highlight" for-anchor="true" title="开启搜索匹配高光展示"></a>
 
         上面的图示中搜索匹配项都会“**黄的发光**”，这种**匹配结果高光显示**是可以作为配置项使用 `:set` 进行设置的：  
 
@@ -1730,23 +1730,23 @@
 
         * `:set nohlsearch` 或 `:set nohls` 关闭搜索结果**高光显示**  
 
-            ![highlightSearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/highlightSearch-2022-04-21.gif)  
+            ![highlightSearch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/highlightSearch-2022-04-21.gif)  
 
         虽然高亮显示一目了然，但是开了之后光标就不明显了，高光咱已经看够了，怎么**关掉目前结果的高光展示**呢？  
 
         * `:nohlsearch` 或 `:noh` 关闭**目前的高光显示**  
 
-            ![nohlsearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nohlsearch-2022-04-21.gif)  
+            ![nohlsearch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/nohlsearch-2022-04-21.gif)  
 
             > 可以看到输入`:noh`后会取消目前的高亮，但是这并不影响重新开始搜索时高亮展示匹配。  
 
         > 💡 记忆方法：`hlsearch` 即 `Highlight Search`，`Highlight [v]突出，强调`，`Search [n]搜索`。  
 
-        ![hlsearch-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/hlsearch-2022-04-21.png)  
+        ![hlsearch-2022-04-21](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/hlsearch-2022-04-21.png)  
 
 2. **替换**
 
-    <a id="searchSub-substitute" title="替换"></a>
+    <a id="searchSub-substitute" for-anchor="true" title="替换"></a>
 
     替换的指令就是在`末行模式/命令行模式`下输入的了，
 
@@ -1758,7 +1758,7 @@
 
     1. **作用范围**  
 
-        <a id="searchSub-substitute-scope" title="作用范围"></a>
+        <a id="searchSub-substitute-scope" for-anchor="true" title="作用范围"></a>
 
         这里直接列表直观展示一下：  
 
@@ -1774,13 +1774,13 @@
         | `%` | 代表**从第一行到最后一行**（整个文本），和`1,$`相同 |
         | `'<,'>` | 在[**可视模式**](#可视模式)下输入 `:` 进入`末行模式/命令行模式`会自动填充，代表**可视模式下选定的范围 |   
 
-        ![replaceInTheRange-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceInTheRange-2022-04-22.gif)  
+        ![replaceInTheRange-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceInTheRange-2022-04-22.gif)  
 
         > 👆 示例：`.,+3` 代表从光标所在行到光标所在行的下面第三行作为范围进行替换  
 
     2. **搜索模式**  
 
-        <a id="searchSub-substitute-searchPattern" title="搜索模式"></a>
+        <a id="searchSub-substitute-searchPattern" for-anchor="true" title="搜索模式"></a>
 
         同上面的[**搜索模式**](#searchSub-search-pattern)。  
 
@@ -1790,27 +1790,27 @@
 
     3. **替换模式**  
 
-        <a id="searchSub-substitute-subPattern" title="替换模式"></a>
+        <a id="searchSub-substitute-subPattern" for-anchor="true" title="替换模式"></a>
 
         替换模式当然可以是**任意字符串**，  
         
         同时也可以**引用搜索结果中的部分**：  
 
-        ![replaceWithReference-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference-2022-04-22.gif)  
+        ![replaceWithReference-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceWithReference-2022-04-22.gif)  
 
         👆 使用 `\1`, `\2` 引用**搜索结果**中的第一个和第二个**捕获组**的内容。  
 
-        ![replaceWithReference2-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference2-2022-04-22.gif)  
+        ![replaceWithReference2-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceWithReference2-2022-04-22.gif)  
 
         👆 使用 `&` 引用**搜索匹配结果**  
 
-        ![replaceWithReference3-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceWithReference3-2022-04-22.gif)  
+        ![replaceWithReference3-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceWithReference3-2022-04-22.gif)  
 
         👆 很巧妙的用法，利用捕获组引用交换顺序  
 
     4. **替换flag**  
 
-        <a id="searchSub-substitute-flags" title="替换标识(Flag)"></a>
+        <a id="searchSub-substitute-flags" for-anchor="true" title="替换标识(Flag)"></a>
 
         一般正则表达式末尾会加上修饰符以控制匹配行为。而Vim这里的**替换flag**也是类似修饰符，控制替换行为的。  
 
@@ -1828,19 +1828,19 @@
         > 之前在[**搜索模式**](#searchSub-search-pattern)中提到过在模式中加入 `\c` 能忽略大小写进行搜索，而这里替换也是用的搜索模式，  
         > 因此在这里就算不用修饰符`i`，转而在搜索模式中加入`\c`也是完全可以的。  
 
-        ![replaceIgnoreCase-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceIgnoreCase-2022-04-22.gif)  
+        ![replaceIgnoreCase-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/replaceIgnoreCase-2022-04-22.gif)  
 
         > 👆 不使用修饰符而是在搜索模式中使用了`\c`  
 
         -------------
 
-        ![numerateMatches-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/numerateMatches-2022-04-22.gif)  
+        ![numerateMatches-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/numerateMatches-2022-04-22.gif)  
 
         > 👆 使用 `n` 修饰符，并不会实际替换文本，而是**显示匹配的数量**  
 
         -----------
 
-        ![confirmReplace-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/confirmReplace-2022-04-22.gif)  
+        ![confirmReplace-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/confirmReplace-2022-04-22.gif)  
 
         > 👆 使用 `c` 修饰符，在替换前**让用户确认**。  
 
@@ -1858,7 +1858,7 @@
 
 除了这些，搜索替换可能还有一些其他的用法尚未提到，另外还有`:g`这种末行指令。这里就主要记录一下基础的用法啦~  
 
-![exhausted-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exhausted-2022-04-22.png)  
+![exhausted-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/exhausted-2022-04-22.png)  
 
 ## 简单多窗口编辑 
 
@@ -1866,77 +1866,77 @@
 
 * **打开新窗口**  
 
-    <a id="multiWin-new" title="打开新窗口"></a>
+    <a id="multiWin-new" for-anchor="true" title="打开新窗口"></a>
 
     1. ```:new [filename]```  
 
-        <a id="multiWin-new-new" title=":new"></a>
+        <a id="multiWin-new-new" for-anchor="true" title=":new"></a>
 
         使用`:new`指令能在**编辑器顶部**新建一个横向窗口（原本的文件窗口会**下移**） 
 
         如果有指定**文件名**，则会在新窗口打开指定文件（文件不存在就是单纯的创建buffer）  
 
-        ![newWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/newWindow-2022-04-22.gif)  
+        ![newWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/newWindow-2022-04-22.gif)  
 
     2. ```:sp[lit] [filename]``` （也就是`:sp`和`:split`都可以）
 
-        <a id="multiWin-new-split" title=":sp[lit]"></a>
+        <a id="multiWin-new-split" for-anchor="true" title=":sp[lit]"></a>
 
         这个指令行为上和`:new`挺类似的，都会新建一个**横向窗口**，使原本的窗口**下移**。  
 
         不同的是，**没有指定文件名时**会在新窗口打开**当前编辑的文件**！
 
-        ![splitWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/splitWindow-2022-04-22.gif)  
+        ![splitWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/splitWindow-2022-04-22.gif)  
 
         > 👆 split [v]划分，分割
 
     3. ```:vs[plit] [filename]``` 
 
-        <a id="multiWin-new-vsplit" title=":vs[plit]"></a>
+        <a id="multiWin-new-vsplit" for-anchor="true" title=":vs[plit]"></a>
 
         这个指令和`:sp[lit]`类似，但是`:vs[plit]`是新建一个**纵向窗口**，使原本的窗口**右移**。  
 
         和`:sp[lit]`一样的是，**没有指定文件名时**会在新窗口打开**当前编辑的文件**  
 
-        ![verticalSplitWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/verticalSplitWindow-2022-04-22.gif)  
+        ![verticalSplitWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/verticalSplitWindow-2022-04-22.gif)  
 
         > 👆 `:vsplit` 即 `vertical split [v]垂直分割`  
 
 * **在窗口之间切换**  
 
-    <a id="multiWin-switch" title="在窗口之间切换"></a>
+    <a id="multiWin-switch" for-anchor="true" title="在窗口之间切换"></a>
 
     开了这么多窗口，得想个法子来回切换哈！  
 
     1. ```Ctrl+w``` 或 ```Ctrl+W``` （ 可以记成 `Control Window 指挥窗口` ）  
 
-        <a id="multiWin-switch-w" title="Ctrl+w/W循环切换"></a>
+        <a id="multiWin-switch-w" for-anchor="true" title="Ctrl+w/W循环切换"></a>
 
         连按两次 `Ctrl+w/W` 可以在**窗口之间循环切换**  
 
-        ![switchWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/switchWindow-2022-04-22.gif)  
+        ![switchWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/switchWindow-2022-04-22.gif)  
 
     2. ```Ctrl+w/W+方向控制键```  
 
-        <a id="multiWin-switch-wMove" title="Ctrl+w+方向键切换"></a>
+        <a id="multiWin-switch-wMove" for-anchor="true" title="Ctrl+w+方向键切换"></a>
 
         对于**分割成上下关系**的窗口，可以使用 `Ctrl+w/W+↑/↓` 或 `Ctrl+w/W+k/j` 来进行上下切换  
 
-        ![switchSplitWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/switchSplitWindow-2022-04-22.gif)
+        ![switchSplitWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/switchSplitWindow-2022-04-22.gif)
 
         而对于**分割成左右关系**的窗口，就可以用 `Ctrl+w/W+←/→` 或 `Ctrl+w/W+h/l` 来进行左右切换  
 
-        ![switchVSplitWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/switchVSplitWindow-2022-04-22.gif)  
+        ![switchVSplitWindow-2022-04-22](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/switchVSplitWindow-2022-04-22.gif)  
 
 * **调整窗口尺寸**  
 
-    <a id="multiWin-resize" title="调整窗口尺寸"></a>
+    <a id="multiWin-resize" for-anchor="true" title="调整窗口尺寸"></a>
 
     在调整终端尺寸的时候，Vim里的这些窗口可能并不会如意调整展示尺寸。这里记录一些改变窗口尺寸的指令：  
 
     1. **调整窗口高度**  
 
-        <a id="multiWin-resize-height" title="调整高度"></a>
+        <a id="multiWin-resize-height" for-anchor="true" title="调整高度"></a>
 
         ```:res[ize] [±][height]```  
 
@@ -1944,21 +1944,21 @@
         
         第一种是设置**绝对高度**，比如```:res 5```，将窗口高度设置为`5`行：  
 
-        ![resizeWindow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/resizeWindow-2022-04-23.gif)  
+        ![resizeWindow-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/resizeWindow-2022-04-23.gif)  
 
         第二种是设置**相对高度**，比如```:res +5```，将窗口高度增加`5`行：  
 
-        ![resizeWindowRelatively-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/resizeWindowRelatively-2022-04-23.gif)  
+        ![resizeWindowRelatively-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/resizeWindowRelatively-2022-04-23.gif)  
 
     2. **调整窗口宽度**  
 
-         <a id="multiWin-resize-width" title="调整宽度"></a>
+         <a id="multiWin-resize-width" for-anchor="true" title="调整宽度"></a>
 
         ```:vert[ical] res[ize] [±][width]```  
 
         和`:res[ize]`类似，`:vert[ical] res[ize]`也是能相对/绝对地调整**窗口宽度**的：  
 
-        ![vresizeWindow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/vresizeWindow-2022-04-23.gif)  
+        ![vresizeWindow-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/vresizeWindow-2022-04-23.gif)  
 
     > 💡 这个记起来可能有点反直觉，  
     > `vertical resize 垂直方向上调整`，可以**记作**此时只有**垂直高度固定的窗口**，所以调整的是**宽度**；  
@@ -1966,7 +1966,7 @@
 
 * **退出窗口**  
 
-    <a id="multiWin-quit" title="退出窗口"></a>
+    <a id="multiWin-quit" for-anchor="true" title="退出窗口"></a>
 
     同`末行模式/命令行模式`下的 [`:q 退出`](#commandLineMode-quit)  
 
@@ -1986,9 +1986,9 @@
 
 * **拷剪粘三件套**  
 
-    <a id="visualMode-ydp" title="拷剪粘三件套y,d,p..."></a>
+    <a id="visualMode-ydp" for-anchor="true" title="拷剪粘三件套y,d,p..."></a>
 
-    ![cutYankPaste-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/cutYankPaste-2022-04-23.png)  
+    ![cutYankPaste-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/cutYankPaste-2022-04-23.png)  
 
     这里和`命令模式/正常模式`的不同之处就在于文本已经选择完毕，只需要**输入一个指令**就可以完成简单的编辑操作。  
 
@@ -2004,31 +2004,31 @@
 
 * **替换**  
 
-    <a id="visualMode-replace" title="替换r"></a>
+    <a id="visualMode-replace" for-anchor="true" title="替换r"></a>
 
     `r<字符>` 将所选文本替换为`<字符>` （ `Replace` )
 
-    ![visualReplace-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualReplace-2022-04-23.gif)  
+    ![visualReplace-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visualReplace-2022-04-23.gif)  
 
     > 👆 `ra`将所选块文本全部替换为了`a`  
 
 * **行连接**  
 
-    <a id="visualMode-joinRows" title="行连接J,gJ"></a>
+    <a id="visualMode-joinRows" for-anchor="true" title="行连接J,gJ"></a>
 
     这一部分和`命令模式/正常模式`下的[行连接指令](#normalMode-joinRows)几乎是一样了。
 
     * `J` 将所选文本**对应的行**连接成一行，**用空格间隔** （ `Join` ）  
 
-         ![spaceJoinedRow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/spaceJoinedRow-2022-04-23.gif)  
+         ![spaceJoinedRow-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/spaceJoinedRow-2022-04-23.gif)  
 
     * `gJ` 将所选文本**对应的行**连接成一行，**没有间隔** 
 
-        ![directlyJoinedRow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/directlyJoinedRow-2022-04-23.gif)
+        ![directlyJoinedRow-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/directlyJoinedRow-2022-04-23.gif)
 
 * **执行`末行模式/命令行模式`指令**  
 
-    <a id="visualMode-commandLine" title="执行末行语句"></a>
+    <a id="visualMode-commandLine" for-anchor="true" title="执行末行语句"></a>
 
     在可视模式下选择文本后输入 `:` 进入末行模式，会**自动填充成** `:'<,'>`，这代表在**所选文字中进行末行语句操作**。  
 
@@ -2036,27 +2036,27 @@
 
 * **代码缩进**  
 
-    <a id="visualMode-indenting" title="调整代码缩进"></a>
+    <a id="visualMode-indenting" for-anchor="true" title="调整代码缩进"></a>
 
     在`命令模式/正常模式`下要对一行代码进行缩进操作，往往需要输入两次`>`或`<`  
 
     而在可视模式下只需要输入一次：  
 
-    ![visuallyIndent-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent-2022-04-23.gif)  
+    ![visuallyIndent-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visuallyIndent-2022-04-23.gif)  
 
     > 👆 `>` 将所选文本增加一次缩进  
 
-    ![visuallyIndent2-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent2-2022-04-23.gif)  
+    ![visuallyIndent2-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visuallyIndent2-2022-04-23.gif)  
 
     > 👆 `<` 将所选文本减少一次缩进（因为选择不完全，只减少了一部分）  
 
-    ![visuallyIndent3-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent3-2022-04-23.gif)  
+    ![visuallyIndent3-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/visuallyIndent3-2022-04-23.gif)  
 
     > 👆 `>` 将所选文本增加`2`次缩进   
 
 * **大小写转换**  
 
-    <a id="visualMode-caseSwitch" title="大小写转换u,U,~"></a>
+    <a id="visualMode-caseSwitch" for-anchor="true" title="大小写转换u,U,~"></a>
 
     这一部分和`命令模式/正常模式`下的[大小写转换指令](#normalMode-caseSwitch)是很类似的：  
 
@@ -2066,7 +2066,7 @@
 
     * `~` 将所选文本中的**大写**和**小写**分别转换为**小写**和**大写**  
 
-    ![caseSwitchInVisualMode-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseSwitchInVisualMode-2022-04-23.gif)  
+    ![caseSwitchInVisualMode-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/caseSwitchInVisualMode-2022-04-23.gif)  
 
     > 👆 演示了一下使用`~`进行大小写转换  
 
@@ -2082,4 +2082,4 @@
 
 最后...感谢你读到这里，再会~  
 
-![bye-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/bye-2022-04-23.png)
+![bye-2022-04-23](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/bye-2022-04-23.png)
