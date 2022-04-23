@@ -19,7 +19,8 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 6. [JavaScript正则表达式replace的一个细节点](JavaScript/watchOutRegexInReplace.md)  
 7. [Python面向对象小备忘](Python/NoteOfPythonOOP.md)  
 8. [【动画笔记】二分查找（折半查找）](Algo/BinarySearch.md)  
-9. [物理实验霍尔效应判断P/N型半导体笔记](Physics/HallEfxAndSemiconductor.md)  
+9. [物理实验霍尔效应判断P/N型半导体笔记](Physics/HallEfxAndSemiconductor.md) 
+10. [想法子记忆Vi/Vim常用操作及指令](Linux/ViMemorizingTricks.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](Python/SimplePokerDistribution/poker.py)  
