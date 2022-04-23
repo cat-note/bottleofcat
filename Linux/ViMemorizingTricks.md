@@ -152,6 +152,8 @@
 
 * **可视模式**  
 
+    <a id="switch2VisualMode"></a>
+
     可视模式是```Vim```中新引入的模式，支持在高光选择下进行指令操作。
 
     可视模式即 ```Visual Mode```，进入可视模式的按键则是```v``` / ```V```，
@@ -162,7 +164,11 @@
     
     而 ```V``` 在进入可视模式后**会保持高光选择到光标所在行**（**可视行**模式）：
 
-    ![visualLine-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualLine-2022-04-07.gif)
+    ![visualLine-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualLine-2022-04-07.gif)  
+
+    还有一种便是使用 ```Ctrl+V/v``` 进入可视模式了，这种模式叫**可视块**模式，如字面所言，是选择“一块文字”：  
+
+    ![visuallySelectBlock-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallySelectBlock-2022-04-23.gif)  
 
 
 </details>
@@ -906,6 +912,8 @@
 
 16. **字母大小写切换**  
 
+    <a id="caseSwitch"></a> 
+
     数字增减有了，字母其实也是可以“随地大小变”的！
 
     * `gu后接光标移动指令`
@@ -964,6 +972,8 @@
     > 👆 记忆方法：硬背
 
 18. 其他可能常用到的指令  
+
+    <a id="joinRows"></a>
 
     * 大写 `J`  
 
@@ -1027,6 +1037,8 @@
 
 
 2. ```:q``` **退出**（记为```Quit [v]离开；关闭```）  
+
+    <a id="commandLine-quit"></a> 
 
     文本编辑器必备操作——关闭文件。  
 
@@ -1265,78 +1277,78 @@
         
         > 💡 记忆方法：`nrformats`可以看成`number recognizing formats`，也就是`数字识别格式`。取`n`和`f`即为`nf`，因此`nf`也可以简单记为`number format`！  
 
-    * **执行Shell指令**  
+12. **执行Shell指令**  
 
-        编辑文本到一半突然想执行一个Shell指令。我之前可能会利用`:wq`先退出编辑器，输入执行指令后再重新打开编辑器。  
+    编辑文本到一半突然想执行一个Shell指令。我之前可能会利用`:wq`先退出编辑器，输入执行指令后再重新打开编辑器。  
 
-        实际上在`末行模式/命令行模式`下Vi/Vim也是能快捷切换到Shell执行指令的：  
+    实际上在`末行模式/命令行模式`下Vi/Vim也是能快捷切换到Shell执行指令的：  
 
-        * ```:! <command>``` **暂时离开**编辑界面，在Shell下执行指令**并打印结果**   
+    * ```:! <command>``` **暂时离开**编辑界面，在Shell下执行指令**并打印结果**   
 
-            ![temporaryShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/temporaryShell-2022-04-19.gif)  
+        ![temporaryShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/temporaryShell-2022-04-19.gif)  
 
-            👆 **临时**跳转到命令行执行`清屏`及`查询日期`指令并展示结果。  
+        👆 **临时**跳转到命令行执行`清屏`及`查询日期`指令并展示结果。  
 
-            > 💡 `:!` 还有很多神奇的用法，比如执行指令后将返回的结果插入下一行：`:r! <command>`；  
-            > 又比如将文本`21`至`25`行进行升序排序，并替换原文本：`:21,25! sort`，这里就很像Shell中`管道符`的用法了。  
-            
-            ![sortByShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/sortByShell-2022-04-19.gif)  
+        > 💡 `:!` 还有很多神奇的用法，比如执行指令后将返回的结果插入下一行：`:r! <command>`；  
+        > 又比如将文本`21`至`25`行进行升序排序，并替换原文本：`:21,25! sort`，这里就很像Shell中`管道符`的用法了。  
+        
+        ![sortByShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/sortByShell-2022-04-19.gif)  
 
-            👆 演示 `:21,25! sort`  
+        👆 演示 `:21,25! sort`  
 
-            > 更多用法在这里就不多赘述了╮(╯3╰)╭  
+        > 更多用法在这里就不多赘述了╮(╯3╰)╭  
 
-        * ```:sh``` **创建一个新的Shell会话**
+    * ```:sh``` **创建一个新的Shell会话**
 
-            这个指令就比较简单粗暴了，在执行后会创建一个新的Shell会话，我可以直接在Shell中执行指令！  
+        这个指令就比较简单粗暴了，在执行后会创建一个新的Shell会话，我可以直接在Shell中执行指令！  
 
-            ![createNewShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/createNewShell-2022-04-19.gif)  
+        ![createNewShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/createNewShell-2022-04-19.gif)  
 
-            这个Shell是一个**非登入**Shell，所以需要使用 `exit` 指令退出。  
+        这个Shell是一个**非登入**Shell，所以需要使用 `exit` 指令退出。  
 
-            该Shell退出后会**回到编辑器界面！**  
+        该Shell退出后会**回到编辑器界面！**  
 
-            ![exitShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exitShell-2022-04-19.gif) 
+        ![exitShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/exitShell-2022-04-19.gif) 
 
-            > 👆 这个直接记忆 `Shell` 就行   
+        > 👆 这个直接记忆 `Shell` 就行   
 
-    * **重复上一条指令**  
+13. **重复上一条指令**  
 
-        在`命令模式/正常模式`下我可以使用 `.` 句点来重复上一次更改。在`末行模式/命令行模式`下也有类似的方法。  
+    在`命令模式/正常模式`下我可以使用 `.` 句点来重复上一次更改。在`末行模式/命令行模式`下也有类似的方法。  
 
-        * **经典方法**  
+    * **经典方法**  
 
-            在`末行模式/命令行模式`下输入 `:` 后会进入`末行模式/命令行模式`，此时可以通过：  
+        在`末行模式/命令行模式`下输入 `:` 后会进入`末行模式/命令行模式`，此时可以通过：  
 
-            ⭐ `↑`, `↓`, `PageUp`, `PageDown` 
-            
-            来浏览之前的输入历史  
+        ⭐ `↑`, `↓`, `PageUp`, `PageDown` 
+        
+        来浏览之前的输入历史  
 
-            ![scrollHistory-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistory-2022-04-19.gif)  
+        ![scrollHistory-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistory-2022-04-19.gif)  
 
-            💡 可以在 `:` 后面输入一些字符以**加快检索**：  
+        💡 可以在 `:` 后面输入一些字符以**加快检索**：  
 
-            ![scrollHistoryWithHint-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistoryWithHint-2022-04-19.gif)  
+        ![scrollHistoryWithHint-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/scrollHistoryWithHint-2022-04-19.gif)  
 
-            👆 输入`:s`后，能快速浏览`:s`开头的历史指令记录；`:se`则能快速浏览`:se`开头的历史指令。  
+        👆 输入`:s`后，能快速浏览`:s`开头的历史指令记录；`:se`则能快速浏览`:se`开头的历史指令。  
 
-        * **`@` 方法**  
+    * **`@` 方法**  
 
-            在`命令模式/正常模式`下输入：
+        在`命令模式/正常模式`下输入：
 
-            `@:`  
+        `@:`  
 
-            能重新执行**上一条`末行模式/命令行模式`指令**。  
+        能重新执行**上一条`末行模式/命令行模式`指令**。  
 
-            > 👆 记忆方法：把 `:` 末行指令给**at**出来！  
+        > 👆 记忆方法：把 `:` 末行指令给**at**出来！  
 
-            虽然我把这个方法写在末行模式这里了，但实际上其可以算是`命令模式/正常模式`的指令。  
+        虽然我把这个方法写在末行模式这里了，但实际上其可以算是`命令模式/正常模式`的指令。  
 
-            因此也是**可以重复执行的！**  
+        因此也是**可以重复执行的！**  
 
-            ![repeatLastLine-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatLastLine-2022-04-19.gif)  
+        ![repeatLastLine-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/repeatLastLine-2022-04-19.gif)  
 
-            👆 演示：先用`:d`删除一行，然后再用`3@:`重复执行`:d`三次以继续删除下面三行。  
+        👆 演示：先用`:d`删除一行，然后再用`3@:`重复执行`:d`三次以继续删除下面三行。  
 
     ![however-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/however-2022-04-19.png)  
 
@@ -1544,6 +1556,8 @@
 
     1. **作用范围**  
 
+        <a id="substitute-effectScopes"></a>
+
         这里直接列表直观展示一下：  
 
         |作用范围|说明|
@@ -1694,5 +1708,134 @@
 
 * **调整窗口尺寸**  
 
+    在调整终端尺寸的时候，Vim里的这些窗口可能并不会如意调整展示尺寸。这里记录一些改变窗口尺寸的指令：  
+
+    1. **调整窗口高度**  
+
+        ```:res[ize] [±][height]```  
+
+        > `:res[ize]`指令有两种调整**窗口高度**的方法。  
+        
+        第一种是设置**绝对高度**，比如```:res 5```，将窗口高度设置为`5`行：  
+
+        ![resizeWindow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/resizeWindow-2022-04-23.gif)  
+
+        第二种是设置**相对高度**，比如```:res +5```，将窗口高度增加`5`行：  
+
+        ![resizeWindowRelatively-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/resizeWindowRelatively-2022-04-23.gif)  
+
+    2. **调整窗口宽度**  
+
+        ```:vert[ical] res[ize] [±][width]```  
+
+        和`:res[ize]`类似，`:vert[ical] res[ize]`也是能相对/绝对地调整**窗口宽度**的：  
+
+        ![vresizeWindow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/vresizeWindow-2022-04-23.gif)  
+
+    > 💡 这个记起来可能有点反直觉，  
+    > `vertical resize 垂直方向上调整`，可以**记作**此时只有**垂直高度固定的窗口**，所以调整的是**宽度**；  
+    > 而普通的`resize`则是调整的**窗口高度**，可以**记作**此时只有**水平宽度是固定的窗口**。   
+
+* **退出窗口**  
+
+    同`末行模式/命令行模式`下的 [`:q 退出`](#commandLine-quit)  
+
 ## 可视模式 
 
+前面的笔记有几个地方涉及到了**可视模式**：  
+
+* [模式切换->可视模式](#switch2VisualMode)  
+
+* [基本搜索替换->作用范围](#substitute-effectScopes)  
+
+可视模式下的操作可谓是**简化版的**```命令模式/正常模式```了，显而易见，“简化”的就是“选择文本”的操作了。  
+
+-----
+
+**在高光选择了文本后**可以进行以下操作：  
+
+* **拷剪粘三件套**  
+
+    ![cutYankPaste-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/cutYankPaste-2022-04-23.png)  
+
+    这里和`命令模式/正常模式`的不同之处就在于文本已经选择完毕，只需要**输入一个指令**就可以完成简单的编辑操作。  
+
+    * `y` 输入一次即可拷贝**选择的文本**，而`Y`则是拷贝**所有选择文本所在的行** （`Yank`）
+
+    * `d` 输入一次即可剪切**选择的文本**，`D`也是会剪切**所有选择文本所在的行**的。（`Delete`） 
+
+    * `x` 和`d`操作一致 （给文本画叉叉） 
+
+    * `c` 和`d`操作一样，不过剪切完之后会**进入插入模式**  
+
+    * `p` 在选择的区域中**粘贴文本** （ `Paste` ）  
+
+* **替换**  
+
+    `r<字符>` 将所选文本替换为`<字符>` （ `Replace` )
+
+    ![visualReplace-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualReplace-2022-04-23.gif)  
+
+    > 👆 `ra`将所选块文本全部替换为了`a`  
+
+* **行连接**  
+
+    这一部分和`命令模式/正常模式`下的[行连接指令](#joinRows)几乎是一样了。
+
+    * `J` 将所选文本**对应的行**连接成一行，**用空格间隔** （ `Join` ）  
+
+         ![spaceJoinedRow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/spaceJoinedRow-2022-04-23.gif)  
+
+    * `gJ` 将所选文本**对应的行**连接成一行，**没有间隔** 
+
+        ![directlyJoinedRow-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/directlyJoinedRow-2022-04-23.gif)
+
+* **执行`末行模式/命令行模式`指令**  
+
+    在可视模式下选择文本后输入 `:` 进入末行模式，会**自动填充成** `:'<,'>`，这代表在**所选文字中进行末行语句操作**。  
+
+    之前的搜索替换中就有提到过：[基本搜索替换->作用范围](#substitute-effectScopes)  
+
+* **代码缩进**  
+
+    在`命令模式/正常模式`下要对一行代码进行缩进操作，往往需要输入两次`>`或`<`  
+
+    而在可视模式下只需要输入一次：  
+
+    ![visuallyIndent-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent-2022-04-23.gif)  
+
+    > 👆 `>` 将所选文本增加一次缩进  
+
+    ![visuallyIndent2-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent2-2022-04-23.gif)  
+
+    > 👆 `<` 将所选文本减少一次缩进（因为选择不完全，只减少了一部分）  
+
+    ![visuallyIndent3-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visuallyIndent3-2022-04-23.gif)  
+
+    > 👆 `>` 将所选文本增加`2`次缩进   
+
+* **大小写转换**  
+
+    这一部分和`命令模式/正常模式`下的[大小写转换指令](#caseSwitch)是很类似的：  
+
+    * `u` 将所选文本转换为**小写**  
+
+    * `U` 将所选文本转换为**大写** （ `UPPERCASE` ）  
+
+    * `~` 将所选文本中的**大写**和**小写**分别转换为**小写**和**大写**  
+
+    ![caseSwitchInVisualMode-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/caseSwitchInVisualMode-2022-04-23.gif)  
+
+    > 👆 演示了一下使用`~`进行大小写转换  
+
+可视模式还有很多用法，这里就不再写更多了（再写更多就成语法手册了喂！）  
+
+## In the end  
+
+回过头来...我又写了这么长一篇笔记...稍后我会完善一下目录功能以增加阅读体验。  
+
+这篇笔记虽然写得多，但是涉及的内容实际上还是**比较浅层**的，毕竟这篇笔记主要目的是为了记忆**常用方法**。如果有写错的地方，也请大家多指教！  
+
+最后...感谢你读到这里，再会~  
+
+![bye-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/bye-2022-04-23.png)
