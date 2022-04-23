@@ -53,6 +53,8 @@
 
 * **命令模式**
 
+    <a id="modeSwitch-normalMode" title="命令模式"></a>
+
     作为进入```Vi```的默认模式，我们可以把这儿当作一个小家，  
     无论在哪个模式下**按```Esc```**（可以记成```Escape``` [v.]逃离。逃回家了）都可以回到命令模式。（家是永远的港湾啊）
 
@@ -62,11 +64,15 @@
 
 * **插入模式**  
 
+    <a id="modeSwitch-insertMode" title="插入模式"></a>
+
     通过以下按键指令能进入插入模式。这些按键通常是**大小写成对**的，**小写**对应的指令略显 **“温和”** ，**大写**对应的就比较 **“走极端”** 了。
 
     ![InsertModeUpperAndLower-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/InsertModeUpperAndLower-2022-04-07.png)
 
     1. ```i``` / ```I``` 插入 （记作```Insert [v]插入；嵌入；（在文章中）添加``` ） 
+
+        <a id="modeSwitch-insertMode-i" title="i/I 插入"></a>
 
         小写的```i```，就是在**光标所在位置**进入插入模式：
 
@@ -76,7 +82,9 @@
 
         ![upperInsert-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/upperInsert-2022-04-07.gif)
 
-    2. ```a``` / ```A``` 附加 （记作```Append [v]增补，追加```）
+    2. ```a``` / ```A``` 附加 （记作```Append [v]增补，追加```） 
+
+        <a id="modeSwitch-insertMode-a" title="a/A 附加"></a>
 
         小写的```a```，就是在**光标所在位置之后一位**进入插入模式，即所谓的“附加”：
 
@@ -86,7 +94,9 @@
 
         ![upperAppend-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/upperAppend-2022-04-07.gif)
 
-    3. ```o``` / ```O``` 新增一行 （暂且记作```Open``` new line）
+    3. ```o``` / ```O``` 新增一行 （暂且记作```Open``` new line） 
+
+        <a id="modeSwitch-insertMode-o" title="o/O 新增一行"></a>  
 
         都是新增行，差别无非是往下新增还是往上新增了。
 
@@ -99,8 +109,8 @@
         ![newLineBefore-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/newLineBefore-2022-04-07.gif)
 
     4. ```s``` / ```S``` 剪切(取代) （可以直接记删的拼音```Shan```，也可以记成```Substitute [v]取代```）
-        
-        <a id="cutAndInsert"></a>
+
+        <a id="modeSwitch-insertMode-s" title="s/S 剪切(取代)"></a>
 
         小写的```s```，会**剪切光标所在位置右边的字符**，然后进入插入模式：
 
@@ -112,9 +122,11 @@
 
         > 记```Substitute```的话，可以理解为这个操作是剪切原有`字符/行`后进行插入，**取代**原有的`字符/行`。
 
-        💡 `S` 和 `cc` 指令的功能是相同的！这个在下面的[**“剪切一行”**](#cutSingleLine)这一节中也提到了。
+        💡 `S` 和 `cc` 指令的功能是相同的！这个在下面的[**“剪切一行”**](#normalMode-cut-singleLine)这一节中也提到了。
 
     上面这些按键指令都是在```命令模式/正常模式```下输入的，通过**在指令前附加数字**，能重复这个指令的操作：
+
+    <a id="modeSwitch-insertMode-repeat" title="切换指令的重复"></a>
 
     * ```3s``` -> 删除光标后```3```个字符
 
@@ -125,6 +137,8 @@
         ![appendFourTimes-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/appendFourTimes-2022-04-07.gif)  
 
 * **替换模式** 
+
+    <a id="modeSwitch-replaceMode" title="替换模式"></a>
 
     这个模式和插入模式一样是用于编辑文本的，不同的是替换模式下**输入所至之处会覆盖一切。**  
 
@@ -144,7 +158,9 @@
 
     (指令分别是`3rp`，`3R`->`hello`->`Esc`)
 
-* **末行模式** 
+* **末行模式（Vim中的命令行模式）** 
+
+    <a id="modeSwitch-commandLineMode" title="末行模式/命令行模式"></a>
 
     输入 ```Shift```+```:``` 进入末行模式（事实上我们一般都是这样打出冒号来的）
 
@@ -152,7 +168,7 @@
 
 * **可视模式**  
 
-    <a id="switch2VisualMode"></a>
+    <a id="modeSwitch-visualMode" title="可视模式"></a>
 
     可视模式是```Vim```中新引入的模式，支持在高光选择下进行指令操作。
 
@@ -177,11 +193,13 @@
 
 这是进入```Vi/Vim```后所处的默认模式，和文本处理是靠的非常近的，我决定先记一下这部分。
 
+<a id="normalMode-modeSwitch" title="模式切换"></a>
+
 1. [**模式切换**](#模式切换)
 
 2. **基本光标移动（上下左右）**
 
-    <a id="arrowMovement"></a>
+    <a id="normalMode-arrowMovement" title="基本光标移动（上下左右）"></a>
 
     在交互式字符界面下没有能动的鼠标，只有闪烁的光标来标注位置。要编辑文本，真得先掌握移动光标的指令。  
 
@@ -205,6 +223,8 @@
 
     * **“经典”款**
 
+        <a id="normalMode-arrowMovement-classical" title="h l k j移动"></a>
+
         ```h``` 向左移动光标  
         ```l``` 向右移动光标  
         ```k``` 向上移动光标  
@@ -220,12 +240,16 @@
 
     * **现代款**
 
+        <a id="normalMode-arrowMovement-modern" title="↑ ↓ ← →移动"></a>
+
         ```←``` 向左移动光标  
         ```→``` 向右移动光标  
         ```↑``` 向上移动光标  
         ```↓``` 向下移动光标 
 
     * **“隐藏”款**
+
+        <a id="normalMode-arrowMovement-others" title="其他款式"></a>
 
         ```Backspace(退格键)``` 向左移动光标  
         ```Space(空格键)``` 向右移动光标  
@@ -248,11 +272,13 @@
 
 3. **行内光标移动**
 
+    <a id="normalMode-moveInsideRow" title="行内光标移动"></a>
+
     这里记录一下在**一行**文本中光标的移动指令：
 
     * **跳到行首**
 
-        <a id="jumpAheadOfLine"></a> 
+        <a id="normalMode-moveInsideRow-jumpAheadOfLine" title="跳到行首"></a>
 
         ```0``` 回到行首，`列数`=`1`的地方   
         ```Home``` 同上👆   
@@ -263,6 +289,8 @@
 
     * **跳到行尾**
 
+        <a id="normalMode-moveInsideRow-jumpEndOfLine" title="跳到行末"></a>
+
         ```$``` 回到行尾**最后一个字符**的地方  
         ```End``` 同上👆   
         ```g_``` 回到行尾**最后一个不为空白符**的字符处
@@ -272,11 +300,15 @@
 
 4. **屏幕可见行中移动光标**
 
+    <a id="normalMode-moveInScreenLine" title="屏幕可见行中移动光标"></a>
+
     上面所说的“行”取决于**换行符`\n`**的位置，但这里的**屏幕可见行**是取决于窗口大小的：
 
     ![screenLine-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/screenLine-2022-04-10.jpg)
 
-    （图中标注的即为**一个屏幕可见行**）
+    （图中标注的即为**一个屏幕可见行**）  
+
+    <a id="normalMode-moveInScreenLine-g" title="g^ g0 gm g$ 等等"></a>
 
     针对这样的一个行，也是有指令可用于行内移动的：
 
@@ -310,6 +342,8 @@
 
     -------
 
+    <a id="normalMode-moveInScreenLine-HML" title="H M L 指令"></a>
+
     针对屏幕可见行，还有几个指令：
 
     * 大写 `H` 用于将光标移动到**屏幕可见**的**最上面一行**（这个判定有点怪，可能不太准确！）  
@@ -326,9 +360,13 @@
 
 5. **文件内光标移动**  
 
+    <a id="normalMode-moveInFile" title="文件内光标移动"></a>  
+
     除了上述几种移动外，还有几个常用指令能按词、按句、按段等移动光标：
 
     * **按词移动**  
+
+        <a id="normalMode-moveInFile-moveByWord" title="按词移动w,b"></a>
 
         `w` 跳转到**下一个词**的开头部分（**考虑标点符号**），演示如下👇
 
@@ -350,7 +388,7 @@
 
         ------
 
-        <a id="jumpToTheEndOfWord"></a> 
+        <a id="normalMode-moveInFile-endOfWord" title="移动到词尾e"></a>
 
         `e` 跳转到当前**光标所在词**的**词尾**，如果光标在词尾，就跳转到**下一个词的词尾** （**考虑标点符号**）。  
 
@@ -360,7 +398,7 @@
 
     * **按句移动**  
 
-        <a id="jumpAheadOfSentence"></a>
+        <a id="normalMode-moveInFile-moveAheadSentence" title="移动到句首( )"></a>  
 
         `(` 移动到**光标所在句子的开头部分**，如果已经在开头，就移动到**上一个句子**的开头部分
 
@@ -369,6 +407,8 @@
         > **👆记忆方法**：写代码的时候会用半角括号`()`把表达式括起来，可以理解为“一句”。
 
     * **按段落移动**  
+
+        <a id="normalMode-moveInFile-moveAheadParagraph" title="移动到段首{ }"></a>  
 
         `{` 移动到**光标所在段落的开头部分**，如果已经在开头，就移动到**上一个段落**的开头部分
 
@@ -382,6 +422,8 @@
     --------
 
     * **在整个文件中跳转光标**  
+
+        <a id="normalMode-moveInFile-arrowJump" title="跳转光标gg,G"></a>  
 
         ⚠️ 下面的指令全部都会使光标**跳转到行首第一个不为空白符的字符**处。    
 
@@ -401,11 +443,13 @@
 
 6. **自定义跳转标记**
 
-    <a id="makeMarks"></a> 
+    <a id="normalMode-makeMarks" title="自定义跳转标记"></a> 
 
     在这一坨文本中进行移动时，我经常要使用指令反复横跳。有一个地方我**经常跳转过去**，如果一步步来实在很麻烦！此时就可以用**自定义跳转标记**来解决。  
 
     * **设置标记**  
+
+        <a id="normalMode-makeMarks-set" title="设置标记m"></a> 
 
         指令非常简单：  
 
@@ -421,6 +465,8 @@
 
     * **跳转到标记处**  
 
+        <a id="normalMode-makeMarks-goto" title="跳转到标记处`"></a> 
+
         ``` `a ```   
 
         这样就能跳转到`a`标记处~  
@@ -431,6 +477,8 @@
 
     * **跳转到标记所在行的行首**
 
+        <a id="normalMode-makeMarks-goAheadLine" title="跳转到标记所在行的行首'"></a> 
+
         ``` 'a ```  
 
         使用单引号 `'` 加标记名能跳转到**该标记所在行**的行首**第一个不为空白符的**字符处！  
@@ -440,6 +488,8 @@
         > 这样是不是就相当于标记了一个行的行首呢？ 
 
     * **删除标记**  
+
+        <a id="normalMode-makeMarks-del" title="删除标记delm"></a> 
 
         ma可以设置名为`a`的标记，删除的话其实在前面加个del即可：  
 
@@ -455,11 +505,15 @@
         
     > 💡 在进行了[**缩进操作**](#indenting)后，标记的位置仍然在文本的相应位置，无需担心。 
 
-    `末行模式/命令行模式`下可以**查看标记信息**：[:marks](#LLmarks)  
+    `末行模式/命令行模式`下可以**查看标记信息**：[:marks](#commandLineMode-viewMarks)  
 
 7. **翻页**  
 
+    <a id="normalMode-scrollPage" title="翻页"></a> 
+
     * **后空翻**  
+
+        <a id="normalMode-scrollPage-back" title="往回翻"></a>
 
         ```Ctrl + b``` 往回翻**一整页**  
         ```PageUp``` 往回翻**一整页**   
@@ -470,6 +524,8 @@
         > `PageUp`不多赘述，在现在的大多系统中都是支持的。
 
     * **前空翻**
+
+        <a id="normalMode-scrollPage-forward" title="往前翻"></a>
 
         ```Ctrl + f``` 往前翻**一整页**  
         ```PageDown``` 往前翻**一整页**   
@@ -484,9 +540,13 @@
 
 8. **复制**
 
+    <a id="normalMode-yank" title="复制y"></a>
+
     复制是文本的经典便捷操作之一。
 
     * **复制一行**
+
+        <a id="normalMode-yank-singleLine" title="复制一行"></a>
 
         `yy` 复制光标所在行（到寄存器中）  
         `Y` 同上
@@ -495,7 +555,7 @@
 
     * **多行复制**
 
-        <a id="multiLineCopy"></a>
+        <a id="normalMode-yank-multiLines" title="复制多行"></a>
 
         `2yy` 复制**光标所在行**以及**下一行**，共`2`行  
         `2Y` 同上
@@ -505,22 +565,26 @@
 
     * **打一套复制组合拳！（选区复制）**  
 
+        <a id="normalMode-yank-withMove" title="光标移动复制"></a>
+
         `y`其实可以和很多**光标移动指令**结合使用！利用好这套“组合拳”，效率倍增有木有！  
 
         ![yankBoxing-2022-04-10](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/yankBoxing-2022-04-10.png)  
 
-        比如 `ye` 就能复制光标所在位置到[**单词尾部**](#jumpToTheEndOfWord)的部分，
+        比如 `ye` 就能复制光标所在位置到[**单词尾部**](#normalMode-moveInFile-endOfWord)的部分，
 
-        而 `y^` 能复制光标所在位置[**到行首**](#jumpAheadOfLine)第一个非空白符的单词部分，
+        而 `y^` 能复制光标所在位置[**到行首**](#normalMode-moveInsideRow-jumpAheadOfLine)第一个非空白符的单词部分，
 
-        再者 `y↓` 或 `yj` 能实现同`2yy`一样的功能：**复制光标所在行**以及[**下一行**](#arrowMovement)，
+        再者 `y↓` 或 `yj` 能实现同`2yy`一样的功能：**复制光标所在行**以及[**下一行**](#normalMode-arrowMovement)，
 
-        甚至 `y(` 都是可以的，复制**光标所在位置**到[**光标所在句开头**](#jumpAheadOfSentence)。  
+        甚至 `y(` 都是可以的，复制**光标所在位置**到[**光标所在句开头**](#normalMode-moveInFile-moveAheadSentence)。  
 
         > 也就是说 `y{`, `y}`, `yk` ,`yl` ,`y$` ,`yg^`, ```y`a``` 等等其实都是可以的！  
         > 另外还可以复制多行，比如`3ygj`。
 
         ------
+
+        <a id="normalMode-yank-summary" title="光标移动复制总结"></a>
 
         🤩 **总结一下**就是：
         
@@ -536,15 +600,17 @@
 
 9. **剪切**  
 
+    <a id="normalMode-cut" title="剪切d,c,x..."></a>
+
     有了复制，就不得不提到**复制并移除**——剪切了。通过这些指令移除的文本会被存进寄存器，可用于**粘贴**。
 
     * **剪切一行**  
-        
-        <a id="cutSingleLine"></a>
+
+        <a id="normalMode-cut-singleLine" title="剪切一行"></a>
 
         `dd` 剪切**光标所在行**  
         `cc` 剪切**光标所在行**，并且**进入插入模式**  
-        `S` 同上👆，这个其实在[**模式切换**](#cutAndInsert)这一节里面写了  
+        `S` 同上👆，这个其实在[**模式切换**](#modeSwitch-insertMode-s)这一节里面写了  
 
         > **👆记忆方法**：`dd` 中的 `d`记为`delete [v]删除`；   
         > `cc`中的`c`记为`change[v]改变`，亦可记成`Chi 吃`；   
@@ -552,7 +618,9 @@
 
     * **剪切多行**
 
-        这一部分和复制多行真的相差无几，可以说会用[**多行复制**](#multiLineCopy)了，肯定是会剪切多行的。  
+        <a id="normalMode-cut-multiLines" title="剪切多行"></a>
+
+        这一部分和复制多行真的相差无几，可以说会用[**多行复制**](#normalMode-yank-multiLines)了，肯定是会剪切多行的。  
 
         `2dd` 剪切**光标所在行**和**下面一行**，共`2`行  
         `6dd` 剪切**光标所在行**及**下面5行**，共`6`行  
@@ -561,6 +629,8 @@
 
     * **剪切一个字符**
 
+        <a id="normalMode-cut-chr" title="剪切一个字符x"></a>
+
         `x` 剪切**光标右边的一个字符** （相当于`dl`或`d→`）  
         `s` 剪切**光标右边的一个字符**，并且**进入插入模式**  
 
@@ -568,6 +638,8 @@
         > `s`则可以记为`shan 删`。
 
     * **行内剪切**
+
+        <a id="normalMode-cut-inLine" title="行内剪切D,C"></a>
 
         和复制不同的是，大写 `D` 和 `C` 的作用**并不等同于** `dd` 和 `cc`！
 
@@ -578,10 +650,12 @@
 
     * **组合剪切（选区剪切）**
 
+        <a id="normalMode-cut-withMove" title="光标移动剪切"></a>
+
         复制`y`能打组合拳，我堂堂剪切为什么不行！
 
         确实，剪切 `d` 或 `c` 都是可以和**光标操作指令**进行结合的，  
-        他俩不同的地方在于 `d` 只是普通的剪切，`c` 还附赠了[**切换到插入模式**](#cutAndInsert)服务!  
+        他俩不同的地方在于 `d` 只是普通的剪切，`c` 还附赠了[**切换到插入模式**](#modeSwitch-insertMode-s)服务!  
 
         ![arrogantCandD-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/arrogantCandD-2022-04-11.png)  
 
@@ -594,7 +668,7 @@
         `cw` 在进行上面的操作👆后，会进入**插入模式**  
         `d^` 剪切从**当前光标位置**到**本行头部一个不是空白符的字符**的部分   
         `c^` 在进行上面的操作👆后，会进入**插入模式** 
-        ```d`a``` 剪切从**当前光标**位置到`a`[**标记位置**](#makeMarks)的部分  
+        ```d`a``` 剪切从**当前光标**位置到`a`[**标记位置**](#normalMode-makeMarks)的部分  
 
         ![3dgj-2022-04-11](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/3dgj-2022-04-11.gif)  
 
@@ -609,6 +683,8 @@
 
         ------
 
+        <a id="normalMode-cut-summary" title="光标移动剪切总结"></a>
+
         🤩 **总结一下**就是：
         
         `d` / `c` 可以和很多**光标移动指令**结合使用达成**部分剪切**的效果，  
@@ -619,6 +695,8 @@
 
 10. **粘贴**
 
+    <a id="normalMode-paste" title="粘贴p"></a>
+
     Copy和Cut都记了，接下来咱要想办法粘贴(Paste)内容咯~ 
 
     粘贴的指令其实非常简单！( ´･ω･)ﾉ 
@@ -628,6 +706,8 @@
     * 大写 `P` （向上一行/向左）粘贴文本一次（记为 `Upper(大写，同时也有“上边”的意思) Paste`）
 
     -------
+
+    <a id="normalMode-paste-lines" title="粘贴行文本"></a>
 
     当**寄存器**中的内容是**一行或多行**文本（开头有换行符`\n`）时：  
     * `p`会把文本粘贴到当前**光标所在行**的**下一行**，  
@@ -642,6 +722,8 @@
         > 而使用`P`时，该行文本会被粘贴到`line2`这一行的上方。
 
     -------
+
+    <a id="normalMode-paste-lessThanLine" title="粘贴不足一行文本"></a>
 
     当**寄存器**中的内容是**不足一行的文本**（**开头没有**换行符`\n`）时：
 
@@ -661,12 +743,16 @@
 
 11. **Vim上下文编辑**
 
+    <a id="normalMode-contextEdit" title="Vim上下文编辑"></a>
+
     Vim在复制`y`，剪切`c`、`d`这些操作的基础上复用了`i`和`a`指令用于对上下文进行操作：  
 
     > 👆记忆方法：`i` 记作 `inner 内部的`，在下面使用这个指令，操作**不会考虑周围的空格或符号**；  
     > `a` 记作 `around 周围`，这个则**会考虑周围的空格或符号**。具体视情况而定。  
 
     * **针对单词**（`w` / `W`）
+
+        <a id="normalMode-contextEdit-forWord" title="针对单词diw,daw..."></a>
 
         > ⭐ 记作`Word`
 
@@ -693,6 +779,8 @@
 
     * **针对句子**（`s`） 
 
+        <a id="normalMode-contextEdit-forSentence" title="针对句子yis,das..."></a>  
+
         > ⭐ 记作`Sentence`。注意，这里**没有大写** `S` 的用法！  
 
         其上下文操作和上面单词的是一样的！比如：
@@ -709,6 +797,8 @@
 
     * **针对段落**（`p`）
 
+        <a id="normalMode-contextEdit-forParagraph" title="针对段落yip,dap..."></a>  
+
         > ⭐ 记作`Paragraph`。注意，这里**没有大写** `P` 的用法！   
 
         这里的用法也和上面是一样的：
@@ -723,6 +813,8 @@
         -------
 
     * **针对单/双引号**（ `'` / `"` ） 
+
+        <a id="normalMode-contextEdit-forQuotes" title="针对单/双引号"></a>
 
         很明显，这一部分操作是用来处理单/双引号**引起来的文本**的，和上面的`w`、`W`、`s`、`p`不同的是这里的 `i` / `a` 的含义：
 
@@ -742,6 +834,8 @@
         -------
     
     * **针对括号** （ `( )`, `< >`, `[ ]`, `{ }` ）  
+
+        <a id="normalMode-contextEdit-forBracket" title="针对括号"></a>
 
         这一部分用来处理**括号括起来的文本**。
 
@@ -765,11 +859,13 @@
 
 12. **双引号指定寄存器**
 
-    <a id="specifyRegs"></a> 
+    <a id="normalMode-specifyRegs" title="双引号指定寄存器"></a>
 
     默认情况下使用复制粘贴似乎用的都是一个公共的寄存器（Registers），Vim实际上是支持寄存多条文本的，**只需要在指令前指定寄存器名**即可。
 
     * **默认的寄存器**被系统记为 `"` ，一个双引号
+
+        <a id="normalMode-specifyRegs-default" title="默认寄存器"></a>
 
         当执行`yy`时，会将目标文本行存入 `"` 寄存器，操作等同于：  
 
@@ -782,6 +878,8 @@
         ------
 
     * **指定寄存器名字**
+
+        <a id="normalMode-specifyRegs-setName" title="命名寄存器"></a>
 
         把上述第二个单引号改成 `a-z` 的**小写字母**即可！这样就相当于得到了`26`个“剪贴板”呢~  
 
@@ -797,6 +895,8 @@
 
     * **往已命名寄存器中附加内容**
 
+        <a id="normalMode-specifyRegs-appendByName" title="往命名寄存器中附加内容"></a>
+
         上面写到用**小写字母**对寄存器进行命名，那么**大写字母**呢？
 
         大写字母用于往寄存器中**附加内容**：
@@ -809,20 +909,24 @@
 
     > 👆记忆方法：`"` 就像个图钉📌，标明是哪一个寄存器。  
 
-    `末行模式/命令行模式`下可以**查看寄存器信息**：[:reg\[isters\]](#LLregisters)  
+    `末行模式/命令行模式`下可以**查看寄存器信息**：[:reg\[isters\]](#commandLineMode-viewRegs)  
 
 13. **缩进**  
 
-    <a id="indenting"></a> 
+    <a id="normalMode-indenting" title="缩进"></a>
 
     Vi/Vim 常用于编辑代码，缩进功能当然也是比较常用的了。  
 
     * **增加缩进**  
 
+        <a id="normalMode-indenting-add" title="增加缩进"></a>
+
         `>>` 给**光标所在行**增加缩进   
         `4>>` 给**光标所在行**以及下面`3`行增加缩进，共`4`行  
 
     * **减少缩进**  
+
+        <a id="normalMode-indenting-rmv" title="减少缩进"></a>
 
         `<<` 给**光标所在行**减少缩进   
         `5<<` 给**光标所在行**以及下面`4`行减少缩进，共`5`行  
@@ -831,9 +935,13 @@
 
 14. **撤销与重做** 
 
+    <a id="normalMode-undoAndRedo" title="撤销与重做"></a>
+
     文本编辑必不可少的便是撤销与重做功能了！  
 
     * **撤销** 
+
+        <a id="normalMode-undoAndRedo-undo" title="撤销"></a>
 
         `u` 撤销**上一步操作**  
 
@@ -844,6 +952,8 @@
 
     * **重做**  
 
+        <a id="normalMode-undoAndRedo-redo" title="重做"></a>
+
         `Ctrl + r` 或者 `Ctrl + R`  
 
         重做操作和小写`u`的操作是反向的！重新执行撤销掉的操作。  
@@ -853,11 +963,13 @@
 
 15. **数字快捷增减**
 
-    <a id="numberAscDesc"></a> 
+    <a id="normalMode-numAscDesc" title="数字快捷增减"></a>
 
     要修改一个数值的时候可以进入插入模式，移动光标到数值上进行修改，这样可能略嫌麻烦了。在`命令模式/普通模式`下提供了对**数值**进行**递增**或**递减**的操作指令：  
 
     * `Ctrl + a` （`Ctrl + A`亦可） 
+
+        <a id="normalMode-numAscDesc-ascend" title="数字递增Ctrl+A/a"></a>
     
         对光标指针所在数值进行**递增操作**。如果光标没有指向数值，会**向右查找**数值进行递增。  
 
@@ -873,6 +985,8 @@
 
     * `Ctrl + x` （`Ctrl + X`亦可）  
 
+        <a id="normalMode-numAscDesc-descend" title="数字递减Ctrl+X/x"></a>
+
         对光标指针所在数值进行**递减操作**。如果光标没有指向数值，同样会**向右查找**数值进行递减。  
 
         > 💡 记忆方法： `x` 可以记成 `叉掉数字，从而让数值减小`。  
@@ -881,6 +995,8 @@
         -------
 
     * **重复指令**  
+
+        <a id="normalMode-numAscDesc-repeat" title="重复递增/递减操作"></a>
 
         设想一下，如果我要增加10亿，难不成要一直按住按键不动？当然不是这样啦！  
 
@@ -896,6 +1012,8 @@
 
     * **进制的表示方法**
 
+        <a id="normalMode-numAscDesc-type" title="进制的表示方法"></a>
+
         `0x` 前缀表示**十六进制**  （记**hex**的**x**）
 
         `0` 前缀表示**八进制**  （记**octal**的**o**，虽然这里是**0**）
@@ -904,19 +1022,21 @@
 
         ---------
 
-    <a id="availableNumTypes"></a> 
+    <a id="normalMode-numAscDesc-available" title="Vim可识别类型"></a>
 
     > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical）。
 
-    👆 具体配置见`末行模式/命令(行)模式`的[nrformats配置](#nrformats)一节。  
+    👆 具体配置见`末行模式/命令(行)模式`的[nrformats配置](#commandLineMode-settings-nrformats)一节。  
 
 16. **字母大小写切换**  
 
-    <a id="caseSwitch"></a> 
+    <a id="normalMode-caseSwitch" title="字母大小写切换"></a>
 
     数字增减有了，字母其实也是可以“随地大小变”的！
 
     * `gu后接光标移动指令`
+
+        <a id="normalMode-caseSwitch-gu" title="转换为小写gu"></a>
 
         将从光标位置开始到**执行移动指令后**光标的位置结束作为选区，  
         将选区内的所有字母转换为**小写**!  
@@ -927,11 +1047,15 @@
 
     * `gU后接光标移动指令`  
 
+        <a id="normalMode-caseSwitch-gupper" title="转换为大写gU"></a>
+
         将选区内的所有字母转换为**大写**  
 
     > 💡 记忆方法：`gu`和`gU`中一个是小写`u`，一个是大写`U`。大写`U`可以记成`UPPERCASE 大写`，而当U小写成为`u`，对应的便是`小写`了。`g`仍然可以记成`go`，`go UPPERCASE`。  
 
     * `~` (波浪符)  
+
+        <a id="normalMode-caseSwitch-swap" title="大小写交换~"></a>
 
         波浪符将**光标**所在的字母进行**大小写交换**，比如`b`会转换为`B`；`B`则会转换为`b`。  
 
@@ -942,6 +1066,8 @@
         👆 `50~`，将本行中自光标往后50个字符进行大小写转换。  
 
     * `g~后接光标移动指令`  
+
+        <a id="normalMode-caseSwitch-swap" title="光标移动大小写交换g~"></a>
 
         上面的`~`只能对**光标所在行**的字符进行大小写交换，如果要涉及**一个选区**呢？  
 
@@ -957,6 +1083,8 @@
 
 17. **重复最后一次更改**  
 
+    <a id="normalMode-repeatLast" title="重复最后一次更改."></a>
+
     `.`  
 
     ↑ 没错，指令就是一个句点！  
@@ -971,11 +1099,13 @@
     
     > 👆 记忆方法：硬背
 
-18. 其他可能常用到的指令  
+18. **行连接指令**  
 
-    <a id="joinRows"></a>
+    <a id="normalMode-joinRows" title="行连接"></a>
 
     * 大写 `J`  
+
+        <a id="normalMode-joinRows-j" title="带空格间隔"></a>
 
          这个指令能将**光标所在行**和其下面一行**连接成一行**，之间用**一个空格间隔**：  
 
@@ -987,11 +1117,11 @@
         
     * `gJ`  
 
+        <a id="normalMode-joinRows-gj" title="无间隔"></a>
+
         同样是连接行。和上面`J`不同的是，这个指令在连接行之后**不会在之间添加空格！**。  
 
         > 💡 记忆方法：可以记成`gross Join`，`gross`有`总的；粗鲁的`的意思，gross Join就可以记成 “**连接成一个总体**” 或者 “**粗鲁地直接连在一起**”。  
-
-    ...to be updated  
 
 
 ## 末行模式/命令(行)模式
@@ -1000,11 +1130,15 @@
 
 1. ```:w``` **写入** （记为```Write [v]写文件```）
 
+    <a id="commandLineMode-write" title="写入(保存)文件:w"></a>
+
     顾名思义，这个指令会将**自开始编辑以来**的更改写入文件中：
 
     ![write-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/write-2022-04-07.gif)  
 
     ![writeFile-2022-04-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeFile-2022-04-07.png)
+
+    <a id="commandLineMode-write-as" title="另写入文件(另存为)"></a>
 
     文件保存总让人想起桌面软件的“另存为”功能，当然```Vi```也是能实现的：
 
@@ -1014,6 +1148,8 @@
 
     ![writeAnotherFile-2022-04-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/writeAnotherFile-2022-04-08.png)  
 
+    <a id="commandLineMode-write-all" title="写入所有文件"></a>
+
     除了上面针对单一文件的写入指令，还可以同时**写入多个文件**，下面这个指令适用于Vim编辑器中同时打开多个文件的情况：
 
     ⭐ ```:wa```  
@@ -1021,6 +1157,8 @@
     👆 将所有打开的文件进行写入保存。（可以记成`Write All 写入所有`）  
 
     ![WriteAll-2022-04-17](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/WriteAll-2022-04-17.png)  
+
+    <a id="commandLineMode-write-part" title="写入文件部分行"></a>  
 
     如果只想保存文本中的一部分呢？Vim还支持指定行写入文件：  
 
@@ -1038,7 +1176,7 @@
 
 2. ```:q``` **退出**（记为```Quit [v]离开；关闭```）  
 
-    <a id="commandLine-quit"></a> 
+    <a id="commandLineMode-quit" title="退出文件:q"></a>
 
     文本编辑器必备操作——关闭文件。  
 
@@ -1052,6 +1190,8 @@
     > 怎么强制退出呢？下面就将写到.....  
 
 3. **联合使用** ```w``` 与 ```q```   
+
+    <a id="commandLineMode-combineWQ" title="联合使用:wq"></a>
 
     ![wCombineWithQ-2022-04-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/wCombineWithQ-2022-04-18.png)  
 
@@ -1070,6 +1210,8 @@
 
 4. 感叹号 ```!``` **强制执行指令**  
 
+    <a id="commandLineMode-force" title="强制执行!"></a>
+
     有些情况下末行模式指令的执行可能会被拒绝，比如上面的`:q`在文件保存前不能直接执行。（这一点其实也是为了数据安全）  
 
     ⭐ 然而，只需要在这些指令**末尾**加上感叹号 ```!``` 就可以**强制执行**了！  
@@ -1086,6 +1228,8 @@
 
 5. ```:r``` **在下一行读入文件** （记成 ```Read [v]读取```） 
 
+    <a id="commandLineMode-readNextLine" title="在下一行读入文件:r"></a>
+
     在编辑文本的时候可能需要将**另一个文件的文本**插入进来，这个时候就轮到`:r`大显身手了。  
 
     ⭐ ```:r``` 能够**读取一个文件**，并将文件内容**追加**到光标所在行的**后一行**。  
@@ -1094,7 +1238,9 @@
 
     👆 左边是待读取的文件，右边是正在编辑的文件。利用`:r`指令，成功将文件内容插入到光标后一行。  
 
-6. ```:e``` **开启新buffer或刷新当前buffer** （记成 ```Edit [v]编辑```）  
+6. ```:e``` **开启新buffer或刷新当前buffer** （记成 ```Edit [v]编辑```）
+
+    <a id="commandLineMode-newBuffer" title=":e开启或刷新当前buffer"></a>
 
     当编辑文件编辑到一半，想要推翻当前的所有修改，该怎么办呢？  
 
@@ -1104,13 +1250,19 @@
 
     * 文件在`Vi/Vim`中未经修改但是在**别的软件中受到了修改**时，可以直接使用 `:e` 在编辑器里**刷新（重新载入）文件内容**。  
 
+    <a id="commandLineMode-newBuffer-reload" title="强制重载文件内容"></a>
+
     * 文件做了修改后，也可以用 `:e!` 强制**重载文件内容**，也就是抛弃文件开启以来的所有修改。  
 
-        ![forcedRefreshBuffer-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedRefreshBuffer-2022-04-22.gif)
+        ![forcedRefreshBuffer-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/forcedRefreshBuffer-2022-04-22.gif)  
+
+    <a id="commandLineMode-newBuffer-buffer" title="简述buffer"></a>
 
     > buffer可以理解为文件的一个**缓冲区**，文件在编辑器中被编辑实际上也就是临时buffer在被编辑。当写入文件的时候就是把buffer中的内容**写入到原文件**中，以达成编辑的效果。
 
     ----------
+
+    <a id="commandLineMode-newBuffer-newFile" title="打开新文件"></a>
 
     除了刷新当前文件的buffer外，```:e```指令还可以用于**打开新的文件**并创建buffer。  
 
@@ -1122,13 +1274,19 @@
 
 7. ```:buffers``` 和 ```:bn```, ```:bp``` 以及 ```:b<id>```  
 
+    <a id="commandLineMode-buffers" title=":buffers, :bn, :bp, :b<id>"></a>
+
     * ```:buffers``` 
+
+        <a id="commandLineMode-buffers-all" title="查看所有:buffers"></a>
 
         **列出所有buffer**，在这里可以看到buffer的ID（最左边一列）。  
 
         ![viewBuffers-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/viewBuffers-2022-04-22.jpg)  
 
     * ```:b<id>``` 
+
+        <a id="commandLineMode-buffers-id" title=":b<id>跳转指定buffer"></a>
 
         既然拿到了buffer的ID，我就可以在buffer之间跳转了，比如：
 
@@ -1137,6 +1295,8 @@
         > 注意：这个操作也要求当前编辑的文件**不能有未保存**的修改。  
 
     * ```:bn``` 和 ```:bp```  
+
+        <a id="commandLineMode-buffers-switch" title="buffers之间互相切换:bn,:bp"></a>
 
         就算不知道buffer的ID，利用这两个指令也能在buffer间互相切换：  
 
@@ -1150,6 +1310,8 @@
 
 8. ```:help [command]``` 或 ```:h [command]``` **查看帮助**  
 
+    <a id="commandLineMode-help" title="查看帮助:h[elp]"></a>
+
     就像Linux中的`man`指令一样，Vi/Vim的`末行模式/命令行模式`也有个`:help`指令用来查看编辑器使用帮助。  
 
     ⭐ 直接使用 ```:help``` 时会打开帮助文件，并将光标移动到顶部。  
@@ -1160,9 +1322,9 @@
 
 9. ```:registers``` 或 ```:reg``` **查看寄存器**  
 
-    <a id="LLregisters"></a> 
+    <a id="commandLineMode-viewRegs" title="查看寄存器:reg[isters]"></a>
 
-    这一部分可以结合```命令模式/正常模式```的[双引号指定寄存器](#specifyRegs)一起记。    
+    这一部分可以结合```命令模式/正常模式```的[双引号指定寄存器](#normalMode-specifyRegs)一起记。    
 
     ⭐ 直接使用 ```:registers``` 或 ```:reg``` 时会展示**所有的寄存器** 👇  
 
@@ -1181,11 +1343,11 @@
 
 10. ```:marks``` **查看标记信息**  
 
-    <a id="LLmarks"></a> 
+    <a id="commandLineMode-viewMarks" title="查看标记:marks"></a>
 
     这个和上面```:reg[isters]```的使用**很类似**，所以咱给写一起了。  
 
-    这一部分可以结合```命令模式/正常模式```的[自定义跳转标记](#makeMarks)一起记。 
+    这一部分可以结合```命令模式/正常模式```的[自定义跳转标记](#normalMode-makeMarks)一起记。 
 
     ⭐ 直接使用 ```:marks``` 能查询到**所有现有的标记**  
 
@@ -1195,9 +1357,13 @@
 
 11. ```:set``` **设置项**  
 
+    <a id="commandLineMode-settings" title="设置项:set"></a>
+
     这个指令用于设置一些配置项，这里就记几个比较常用的（因为配置项有非常多，全写出来太累赘了）  
 
     * **开启/关闭行号显示**  
+
+        <a id="commandLineMode-settings-nu" title="开启/关闭行号显示"></a>
 
         ```:set number``` 或 ```:set nu``` 可以在行首显示行号  
 
@@ -1210,6 +1376,8 @@
         > 👆 记忆方法：直接记 `Number [n]号码 [v]标号`  
 
     * **开启/关闭相对行号显示**  
+
+        <a id="commandLineMode-settings-rnu" title="开启/关闭相对行号显示"></a>
 
         ```:set relativenumber``` 或 ```:set rnu``` 可以显示相对行号  
 
@@ -1227,19 +1395,23 @@
 
     * **识别数字进制的配置**  
 
-        <a id="nrformats"></a> 
+        <a id="commandLineMode-settings-nrformats" title="识别数字进制的配置"></a>
 
-        上面已经写过`Ctrl+x`和`Ctrl+a`能[快捷减增数字](#numberAscDesc)。不过呢，Vim怎么识别**增减的类型**呢? 这就涉及到下面这个配置项了：  
+        上面已经写过`Ctrl+x`和`Ctrl+a`能[快捷减增数字](#normalMode-numAscDesc)。不过呢，Vim怎么识别**增减的类型**呢? 这就涉及到下面这个配置项了：  
 
         * ```:set nrformats``` 或 ```:set nf```  
+
+            <a id="commandLineMode-settings-nrformats-view" title="查看当前的配置"></a>
 
             直接输入这个指令会查询**该配置项当前的设置**：  
 
             ![queryNrformats-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/queryNrformats-2022-04-19.gif)  
 
-            上面也写过Vim[能识别的增减类型](#availableNumTypes)。这里的`octal,hex` 则代表会尝试识别**八进制**，**十六进制**以及**十进制**的数字。（十进制是默认支持的）  
+            上面也写过Vim[能识别的增减类型](#normalMode-numAscDesc-available)。这里的`octal,hex` 则代表会尝试识别**八进制**，**十六进制**以及**十进制**的数字。（十进制是默认支持的）  
 
         * 使用 `+=` 或 `-=` 进行配置  
+
+            <a id="commandLineMode-settings-nrformats-add" title="运算赋值配置±="></a>
 
             这种写法其实可以理解为一些编程语言中的**运算赋值**操作：
 
@@ -1269,6 +1441,8 @@
 
         * 直接使用 `=` 进行配置  
 
+            <a id="commandLineMode-settings-nrformats-eq" title="赋值配置="></a>
+
             同样可以按编程语言里的**赋值**来理解，会直接**改变整个配置**  
 
             ```:set nrformats=octal,hex```  
@@ -1279,11 +1453,15 @@
 
 12. **执行Shell指令**  
 
+    <a id="commandLineMode-shell" title="执行Shell指令"></a>
+
     编辑文本到一半突然想执行一个Shell指令。我之前可能会利用`:wq`先退出编辑器，输入执行指令后再重新打开编辑器。  
 
     实际上在`末行模式/命令行模式`下Vi/Vim也是能快捷切换到Shell执行指令的：  
 
     * ```:! <command>``` **暂时离开**编辑界面，在Shell下执行指令**并打印结果**   
+
+        <a id="commandLineMode-shell-temporary" title="暂时离开编辑执行语句"></a>
 
         ![temporaryShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/temporaryShell-2022-04-19.gif)  
 
@@ -1300,6 +1478,8 @@
 
     * ```:sh``` **创建一个新的Shell会话**
 
+        <a id="commandLineMode-shell-new" title="创建新的Shell会话"></a>
+
         这个指令就比较简单粗暴了，在执行后会创建一个新的Shell会话，我可以直接在Shell中执行指令！  
 
         ![createNewShell-2022-04-19](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/createNewShell-2022-04-19.gif)  
@@ -1314,9 +1494,13 @@
 
 13. **重复上一条指令**  
 
+    <a id="commandLineMode-repeatLast" title="重复上一条指令"></a>
+
     在`命令模式/正常模式`下我可以使用 `.` 句点来重复上一次更改。在`末行模式/命令行模式`下也有类似的方法。  
 
     * **经典方法**  
+
+        <a id="commandLineMode-repeatLast-classical" title="经典方法"></a>
 
         在`末行模式/命令行模式`下输入 `:` 后会进入`末行模式/命令行模式`，此时可以通过：  
 
@@ -1332,7 +1516,9 @@
 
         👆 输入`:s`后，能快速浏览`:s`开头的历史指令记录；`:se`则能快速浏览`:se`开头的历史指令。  
 
-    * **`@` 方法**  
+    * **`@:` 方法**  
+
+        <a id="commandLineMode-repeatLast-at" title="@:方法"></a>
 
         在`命令模式/正常模式`下输入：
 
@@ -1358,7 +1544,7 @@
 
 1. **搜索**  
 
-    <a id="searching"></a> 
+    <a id="searchSub-search" title="搜索"></a>
 
     **前提**：在`命令模式/正常模式`下：  
 
@@ -1378,15 +1564,19 @@
 
     -------------
 
-    <a id="searchPattern"></a> 
+    <a id="searchSub-search-pattern" title="搜索模式(Pattern)"></a>
 
     这里的`搜索模式`实际上就是**正则表达式**，不过和普通的正则略微有些不同！  
 
     1. 当然是可以直接搜索字串的  
 
+        <a id="searchSub-search-pattern-str" title="直接搜索字串"></a>
+
         ![searchStr-2022-04-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/searchStr-2022-04-21.gif)  
 
     2. **大小写不敏感**搜索  
+
+        <a id="searchSub-search-pattern-casei" title="大小写不敏感搜索"></a>
 
         一般在写正则表达式时要进行大小写不敏感匹配我一般会在正则表达式末尾加上`i`标记，但是在`搜索模式`里是不行的，需要用到特殊转义标记：
         
@@ -1401,6 +1591,8 @@
         > 👆 记忆方法：这里的 `\c` 可以记成 `case [n]大小写`。
 
     3. 利用**正则表达式**进行搜索  
+
+        <a id="searchSub-search-pattern-regex" title="利用正则表达式"></a>
 
         这里使用正则表达式和在编程语言里有些小区别，这里简单写一下：  
 
@@ -1437,6 +1629,8 @@
 
     4. 神奇的**非贪婪模式**  
 
+        <a id="searchSub-search-pattern-nonGreedy" title="非贪婪匹配"></a>
+
         Vim这里的非贪婪模式用的就不是元字符 `?` 了，取而代之借用了一下大括号 ```{...,...} ```  
 
         > 官方说明可以在`末行模式/命令行模式`下输入`:help non-greedy`查看。
@@ -1462,6 +1656,8 @@
         > 例：用模式 `ke\{-}` 匹配字串`keep`只匹配到了`k`，因为`\{-}`代表匹配`0-任意次`，但是**非贪婪匹配**，所以这里`e`匹配了`0`次。
 
     5. **非捕获组与向前/向后预查**  
+
+        <a id="searchSub-search-pattern-groups" title="非捕获组与向前/向后预查"></a>
 
         在编程语言使用的正则表达式中，非捕获组一般用`(?:模式)`来表示，这一个子模式不会参与分组。 
 
@@ -1502,6 +1698,8 @@
 
     6. 搜索**光标下的单词**
 
+        <a id="searchSub-search-underCursor" title="搜索光标下单词"></a>
+
         这一小节的操作是在`命令模式/正常模式`下的：
 
         * `*` **往后**搜索**光标目前指向的单词**，只匹配**一整个单词**  
@@ -1523,6 +1721,8 @@
         >💡 因为这几个指令被转换为末行搜索操作了，所以在搜索中可以用的`n`、`N`这一类指令也是可以用的。 
 
     7. 开启**搜索高光显示**
+
+        <a id="searchSub-search-highlight" title="开启搜索匹配高光展示"></a>
 
         上面的图示中搜索匹配项都会“**黄的发光**”，这种**匹配结果高光显示**是可以作为配置项使用 `:set` 进行设置的：  
 
@@ -1546,6 +1746,8 @@
 
 2. **替换**
 
+    <a id="searchSub-substitute" title="替换"></a>
+
     替换的指令就是在`末行模式/命令行模式`下输入的了，
 
     其完全可以结合搜索指令一起记忆：  
@@ -1556,7 +1758,7 @@
 
     1. **作用范围**  
 
-        <a id="substitute-effectScopes"></a>
+        <a id="searchSub-substitute-scope" title="作用范围"></a>
 
         这里直接列表直观展示一下：  
 
@@ -1566,7 +1768,7 @@
         | `.` | 同样代表**光标所在行** |
         | `n` (整数) | 代表**第`n`行**。比如`233`代表第233行|
         | `$` | 代表**最后一行** |  
-        | `'a` | 代表`a`**标记所在行**（关于设定跳转标记可以看[自定义跳转标记](#makeMarks)） |
+        | `'a` | 代表`a`**标记所在行**（关于设定跳转标记可以看[自定义跳转标记](#normalMode-makeMarks)） |
         | `上述符号±相对行数` | 比如`'a+2`就代表`a`标记所在行的下面第二行；`.-1` 就代表光标所在行的上面一行 |
         | `上述符号1,上述符号2` | 代表从`上述符号1`代表的行到`上述符号2`代表的行。比如`.,$`代表从光标所在行到最后一行。|
         | `%` | 代表**从第一行到最后一行**（整个文本），和`1,$`相同 |
@@ -1578,13 +1780,17 @@
 
     2. **搜索模式**  
 
-        同上面的[**搜索模式**](#searchPattern)。  
+        <a id="searchSub-substitute-searchPattern" title="搜索模式"></a>
 
-        💡 值得一提的是这里可以留空。如果留空的话**默认使用**上一次[**搜索**](#searching)的匹配。  
+        同上面的[**搜索模式**](#searchSub-search-pattern)。  
+
+        💡 值得一提的是这里可以留空。如果留空的话**默认使用**上一次[**搜索**](#searchSub-search)的匹配。  
 
         > 比如我先搜索了`/\<paprika\>`，然后我想替换全文的`/\<paprika\>/`为`pepper`，在替换时可以这样写：`:%s//pepper/g`（省略了搜索模式）。
 
     3. **替换模式**  
+
+        <a id="searchSub-substitute-subPattern" title="替换模式"></a>
 
         替换模式当然可以是**任意字符串**，  
         
@@ -1604,6 +1810,8 @@
 
     4. **替换flag**  
 
+        <a id="searchSub-substitute-flags" title="替换标识(Flag)"></a>
+
         一般正则表达式末尾会加上修饰符以控制匹配行为。而Vim这里的**替换flag**也是类似修饰符，控制替换行为的。  
 
         下面列出几个比较常用的： 
@@ -1617,7 +1825,7 @@
         | `c` | 在替换前**让用户确认** | `confirm [v]确认` |  
 
         > 💡 值得一提的是 `i`——忽略大小写。  
-        > 之前在[**搜索模式**](#searchPattern)中提到过在模式中加入 `\c` 能忽略大小写进行搜索，而这里替换也是用的搜索模式，  
+        > 之前在[**搜索模式**](#searchSub-search-pattern)中提到过在模式中加入 `\c` 能忽略大小写进行搜索，而这里替换也是用的搜索模式，  
         > 因此在这里就算不用修饰符`i`，转而在搜索模式中加入`\c`也是完全可以的。  
 
         ![replaceIgnoreCase-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/replaceIgnoreCase-2022-04-22.gif)  
@@ -1658,7 +1866,11 @@
 
 * **打开新窗口**  
 
+    <a id="multiWin-new" title="打开新窗口"></a>
+
     1. ```:new [filename]```  
+
+        <a id="multiWin-new-new" title=":new"></a>
 
         使用`:new`指令能在**编辑器顶部**新建一个横向窗口（原本的文件窗口会**下移**） 
 
@@ -1667,6 +1879,8 @@
         ![newWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/newWindow-2022-04-22.gif)  
 
     2. ```:sp[lit] [filename]``` （也就是`:sp`和`:split`都可以）
+
+        <a id="multiWin-new-split" title=":sp[lit]"></a>
 
         这个指令行为上和`:new`挺类似的，都会新建一个**横向窗口**，使原本的窗口**下移**。  
 
@@ -1678,6 +1892,8 @@
 
     3. ```:vs[plit] [filename]``` 
 
+        <a id="multiWin-new-vsplit" title=":vs[plit]"></a>
+
         这个指令和`:sp[lit]`类似，但是`:vs[plit]`是新建一个**纵向窗口**，使原本的窗口**右移**。  
 
         和`:sp[lit]`一样的是，**没有指定文件名时**会在新窗口打开**当前编辑的文件**  
@@ -1688,15 +1904,21 @@
 
 * **在窗口之间切换**  
 
+    <a id="multiWin-switch" title="在窗口之间切换"></a>
+
     开了这么多窗口，得想个法子来回切换哈！  
 
     1. ```Ctrl+w``` 或 ```Ctrl+W``` （ 可以记成 `Control Window 指挥窗口` ）  
+
+        <a id="multiWin-switch-w" title="Ctrl+w/W循环切换"></a>
 
         连按两次 `Ctrl+w/W` 可以在**窗口之间循环切换**  
 
         ![switchWindow-2022-04-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/switchWindow-2022-04-22.gif)  
 
     2. ```Ctrl+w/W+方向控制键```  
+
+        <a id="multiWin-switch-wMove" title="Ctrl+w+方向键切换"></a>
 
         对于**分割成上下关系**的窗口，可以使用 `Ctrl+w/W+↑/↓` 或 `Ctrl+w/W+k/j` 来进行上下切换  
 
@@ -1708,9 +1930,13 @@
 
 * **调整窗口尺寸**  
 
+    <a id="multiWin-resize" title="调整窗口尺寸"></a>
+
     在调整终端尺寸的时候，Vim里的这些窗口可能并不会如意调整展示尺寸。这里记录一些改变窗口尺寸的指令：  
 
     1. **调整窗口高度**  
+
+        <a id="multiWin-resize-height" title="调整高度"></a>
 
         ```:res[ize] [±][height]```  
 
@@ -1726,6 +1952,8 @@
 
     2. **调整窗口宽度**  
 
+         <a id="multiWin-resize-width" title="调整宽度"></a>
+
         ```:vert[ical] res[ize] [±][width]```  
 
         和`:res[ize]`类似，`:vert[ical] res[ize]`也是能相对/绝对地调整**窗口宽度**的：  
@@ -1738,15 +1966,17 @@
 
 * **退出窗口**  
 
-    同`末行模式/命令行模式`下的 [`:q 退出`](#commandLine-quit)  
+    <a id="multiWin-quit" title="退出窗口"></a>
+
+    同`末行模式/命令行模式`下的 [`:q 退出`](#commandLineMode-quit)  
 
 ## 可视模式 
 
 前面的笔记有几个地方涉及到了**可视模式**：  
 
-* [模式切换->可视模式](#switch2VisualMode)  
+* [模式切换->可视模式](#modeSwitch-visualMode)  
 
-* [基本搜索替换->作用范围](#substitute-effectScopes)  
+* [基本搜索替换->作用范围](#searchSub-substitute-scope)  
 
 可视模式下的操作可谓是**简化版的**```命令模式/正常模式```了，显而易见，“简化”的就是“选择文本”的操作了。  
 
@@ -1755,6 +1985,8 @@
 **在高光选择了文本后**可以进行以下操作：  
 
 * **拷剪粘三件套**  
+
+    <a id="visualMode-ydp" title="拷剪粘三件套y,d,p..."></a>
 
     ![cutYankPaste-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/cutYankPaste-2022-04-23.png)  
 
@@ -1772,6 +2004,8 @@
 
 * **替换**  
 
+    <a id="visualMode-replace" title="替换r"></a>
+
     `r<字符>` 将所选文本替换为`<字符>` （ `Replace` )
 
     ![visualReplace-2022-04-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/visualReplace-2022-04-23.gif)  
@@ -1780,7 +2014,9 @@
 
 * **行连接**  
 
-    这一部分和`命令模式/正常模式`下的[行连接指令](#joinRows)几乎是一样了。
+    <a id="visualMode-joinRows" title="行连接J,gJ"></a>
+
+    这一部分和`命令模式/正常模式`下的[行连接指令](#normalMode-joinRows)几乎是一样了。
 
     * `J` 将所选文本**对应的行**连接成一行，**用空格间隔** （ `Join` ）  
 
@@ -1792,11 +2028,15 @@
 
 * **执行`末行模式/命令行模式`指令**  
 
+    <a id="visualMode-commandLine" title="执行末行语句"></a>
+
     在可视模式下选择文本后输入 `:` 进入末行模式，会**自动填充成** `:'<,'>`，这代表在**所选文字中进行末行语句操作**。  
 
-    之前的搜索替换中就有提到过：[基本搜索替换->作用范围](#substitute-effectScopes)  
+    之前的搜索替换中就有提到过：[基本搜索替换->作用范围](#searchSub-substitute-scope)  
 
 * **代码缩进**  
+
+    <a id="visualMode-indenting" title="调整代码缩进"></a>
 
     在`命令模式/正常模式`下要对一行代码进行缩进操作，往往需要输入两次`>`或`<`  
 
@@ -1816,7 +2056,9 @@
 
 * **大小写转换**  
 
-    这一部分和`命令模式/正常模式`下的[大小写转换指令](#caseSwitch)是很类似的：  
+    <a id="visualMode-caseSwitch" title="大小写转换u,U,~"></a>
+
+    这一部分和`命令模式/正常模式`下的[大小写转换指令](#normalMode-caseSwitch)是很类似的：  
 
     * `u` 将所选文本转换为**小写**  
 
@@ -1834,7 +2076,9 @@
 
 回过头来...我又写了这么长一篇笔记...稍后我会完善一下目录功能以增加阅读体验。  
 
-这篇笔记虽然写得多，但是涉及的内容实际上还是**比较浅层**的，毕竟这篇笔记主要目的是为了记忆**常用方法**。如果有写错的地方，也请大家多指教！  
+这篇笔记虽然写得多，但是涉及的内容实际上还是**比较浅层**的，毕竟这篇笔记主要目的是为了记忆**常用方法**。也就是说，`Vi/Vim`的使用技巧远不止这么一点，更多高级的操作还需日常多加使用才能更加熟练！  
+
+因个人能力极其有限，可能文章中会出现部分错误。如果有写错的地方，也请大家多指教！  
 
 最后...感谢你读到这里，再会~  
 
