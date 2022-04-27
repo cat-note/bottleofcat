@@ -1026,7 +1026,15 @@
 
     <a id="normalMode-numAscDesc-available" for-anchor="true" title="Vim可识别类型"></a>
 
-    > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical）。
+    > 💡 Vim支持**进行增减**的类型有：二进制数（**bin**ary），八进制数（**octal**），十进制数（decimal，默认支持），十六进制数（**hex**adecimal），无符号数（**unsigned**），字母（**alpha**betical） 。
+
+    | 类型 | `nrformats`中的表示 |
+    |:---:|:---:|
+    | 二进制binary | `bin` |
+    | 八进制octal | `octal` |
+    | 十六进制hexadecimal | `hex` |
+    | 无符号数unsigned | `unsigned` |
+    | 字母alphabetical | `alpha` |  
 
     👆 具体配置见`末行模式/命令(行)模式`的[nrformats配置](#commandLineMode-settings-nrformats)一节。  
 
