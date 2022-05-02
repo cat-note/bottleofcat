@@ -326,24 +326,6 @@ long int ArrLCM(long int *arr, int arrLen) {
 
 ## 相关文章  
 
-* [辗转相除法介绍](https://zhuanlan.zhihu.com/p/324578532) - 
-林择枝  
+* [辗转相除法介绍](https://zhuanlan.zhihu.com/p/324578532) - 林择枝  
 * [辗转相除法](https://zh.wikipedia.org/wiki/%E8%BC%BE%E8%BD%89%E7%9B%B8%E9%99%A4%E6%B3%95) - Wikipedia  
 
-<!---
-公式的意义
-动图演示辗转
-两个数字中选大的除小的
-辗转是什么
-动图直观演示辗转相除法原理
-时间复杂度
-
-解决求多个整数的最大公约数->二元递归
-时间复杂度
-
-最小公倍数：关键是通分
-以往直接把分母相乘通分，容易溢出
-
-求多个数的最小公倍数
-
---->
