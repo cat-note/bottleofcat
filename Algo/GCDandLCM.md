@@ -182,7 +182,7 @@ long int GCD(long int num1, long int num2) {
 
 * **最糟糕的情况**  
 
-    一直迭代到**除数**为 `1` （1是所有整数的公因数），时间复杂度级别为![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20O(\log_{}{n})%20%20%20%20})  
+    一直迭代到**除数**为 `1` （1是所有整数的公因数），**余数为0**，时间复杂度级别为![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20O(\log_{}{n})%20%20%20%20})  
 
 
 ## 求多个整数的最大公约数  
