@@ -16,9 +16,19 @@
 
 因为上面说的过程中进行的都是**整除运算**，所以最大公约数也称为**最大公因数**。  
 
-不妨说得更直接一点，**公因数就是公约数**。  
+不妨说得更直接一点，**公因数就是公约数**。 
 
-> 注：公因数/公约数是针对**整数**而言的。
+---------
+
+关于最大公约数的定义有两点需要注意：
+
+1. 公因数/公约数是针对**整数**而言的。
+
+2. 一般规定**最大公约数**为**正整数**，也就是满足如下公式：
+
+    ![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20\gcd(a,b)%20=%20\gcd(\left%20|%20a%20\right%20|,b)%20=%20\gcd%20(a,\left%20|%20b%20\right%20|%20)%20=%20\gcd%20(\left%20|%20a%20\right%20|%20,\left%20|%20b%20\right%20|%20)%20})  
+
+    要算带有负号的数值时，可以给其套上绝对值，再计算。
 
 ## 手算 
 
@@ -111,21 +121,23 @@
 这里用C语言实现辗转相除算法：  
 
 ```c
+// #include <math.h>
 long int GCD(long int num1, long int num2) {
     // 寻找两数最大公约数(欧几里得算法)
     // 公式 GCD(被除数,除数)=GCD(除数,余数)
+    // 这里为了便于理解写的复杂了一些，新定义了三个局部变量
     long int dividend; // 被除数
     long int divisor; // 除数
     long int remainder; // 余数
-
-    if (labs(num1) > labs(num2)) { // 绝对值大的作为被除数
+    num1 = labs(num1); // 给两个数套上绝对值
+    num2 = labs(num2);
+    if (num1 > num2) { // 较小的数作为除数
         dividend = num1;
         divisor = num2;
     } else {
         dividend = num2;
         divisor = num1;
     }
-
     do {
         remainder = dividend % divisor;
         dividend = divisor; // 把被除数换成除数
@@ -133,7 +145,6 @@ long int GCD(long int num1, long int num2) {
             divisor = remainder;
         }
     } while (remainder != 0);
-
     return divisor;
 }
 ```
@@ -148,9 +159,7 @@ long int GCD(long int num1, long int num2) {
 
 下面用文字解释了一下（这张图中所有数都是**正整数**）：  
 
-![remainderLTHalfOfDividend-2022-05-02](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/remainderLTHalfOfDividend-2022-05-02.jpg)  
-
-对于有负数参与的除法运算也是可以同理推证的。  
+![remainderLTHalfOfDividend-2022-05-02](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/remainderLTHalfOfDividend-2022-05-02.jpg)    
 
 -------
 
@@ -164,9 +173,9 @@ long int GCD(long int num1, long int num2) {
 
 > (A是被除数，B是除数)  
 
-**两次**迭代**中**，A和B的值分别**减少了一半**，也就是![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20A%20%2B%20B%20\to%20\frac{A}{2}%20%2B%20\frac{B}{2}%20%20})，  
+**两次**迭代**中**，A和B的值分别**减少了一半**，也就是: ![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20A%20%2B%20B%20\to%20\frac{A}{2}%20%2B%20\frac{B}{2}%20%20})，     
 
-对于除数`B`来说，每次**减少一半**的时候经过的操作次数：`1<操作次数<2`；因此迭代次数**至多**为`2log(min{A,B})`次（这里除数是B，即`2log(B)`）。  
+对于除数`B`来说，每次**减少一半**的时候处于这个区间：`1<操作次数<2`；因此迭代次数**至多**为`2log(min{A,B})`次（这里除数是B，即`2log(B)`）。  
 
 > 之所以是`min{A,B}`(取A和B中较小的值)，是因为算法的**终止条件**是**余数为0**，也可以理解成**除数为0**，而算法最开始会选择**较小**的值作为**除数**。
 
@@ -182,7 +191,9 @@ long int GCD(long int num1, long int num2) {
 
 * **最糟糕的情况**  
 
-    一直迭代到**除数**为 `1` （1是所有整数的公因数），**余数为0**，时间复杂度级别为![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20O(\log_{}{n})%20%20%20%20})  
+    一直迭代到**除数**为 `1` （1是所有整数的公因数），**余数为0**，时间复杂度级别为
+    
+    ![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\LARGE%20O(\log_{}{n})%20%20%20%20})  
 
 
 ## 求多个整数的最大公约数  
@@ -197,28 +208,7 @@ long int GCD(long int num1, long int num2) {
 #include <stdio.h>
 #include <math.h>  
 
-long int GCD(long int num1, long int num2) {
-    // 寻找两数最大公约数(欧几里得算法)
-    // 公式 GCD(被除数,除数)=GCD(除数,余数)
-    long int dividend; // 被除数
-    long int divisor; // 除数
-    long int remainder; // 余数
-    if (labs(num1) > labs(num2)) {
-        dividend = num1;
-        divisor = num2;
-    } else {
-        dividend = num2;
-        divisor = num1;
-    }
-    do {
-        remainder = dividend % divisor;
-        dividend = divisor; // 把被除数换成除数
-        if (remainder) { // 余数不为0，就把除数换成余数
-            divisor = remainder;
-        }
-    } while (remainder != 0);
-    return divisor;
-}
+// GCD即上述的二元辗转相除函数
 
 long int ArrGCD(long int *arr, int arrLen) {
     long int temp = arr[0];
@@ -260,6 +250,12 @@ int main() {
 
 两个整数的**公倍数**有无限多个，而这些公倍数中**除0外**最小的一个便是**最小公倍数**（`Least Common Multiple`）。  
 
+> 注意：和最大公约数一样，**最小公倍数**一般规定为**正整数**。
+
+![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20lcm(a,b)%20=%20lcm(\left%20|%20a%20\right%20|,\left%20|%20b%20\right%20|%20)%20})  
+
+------
+
 ### 用最大公约数算最小公倍数
 
 在求了最大公约数后，求最小公倍数可谓是小菜一碟了~因为**最小公倍数**和**最大公约数**有一个性质：  
@@ -283,6 +279,8 @@ int main() {
 ```c
 long int LCM(long int num1, long int num2) {
     long int divisor = GCD(num1, num2); // GCD 即上面提到的求最大公约数的函数
+    num1 = labs(num1); // 一般LCM也被限定为正整数
+    num2 = labs(num2);
     return (num1 / divisor) * num2; // A/GCD * B
 }
 ```
@@ -291,7 +289,7 @@ long int LCM(long int num1, long int num2) {
 
 因为上面的写法实际上是**套用了辗转相除算法**，所以时间复杂度也是一致的：  
 
-![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\large%20O(\log_{}{n})%20%20%20%20}) 
+![](https://render.githubusercontent.com/render/math?math={\color{Gray}%20\LARGE%20O(\log_{}{n})%20%20%20%20}) 
 
 ## 求多个整数的最小公倍数  
 
@@ -319,7 +317,7 @@ long int ArrLCM(long int *arr, int arrLen) {
 
 ![ei-2022-05-02](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/ei-2022-05-02.png)  
 
-脑袋一热写了这样一篇笔记。写的过程中咱深刻体会到了我在证明公式方面能力的缺乏...要继续加油了！
+脑袋一热写了这样一篇笔记。写的过程中咱深刻体会到了咱在证明公式方面能力的缺乏...要继续加油了！
 
 另外可能我对辗转相除法时间复杂度的理解有些许问题，希望大家能予以指正。  
 
