@@ -554,9 +554,103 @@ size_t ptrSize4 = sizeof(char *); // 8 Bytes
 
 ### 函数传参与返回
 
-形参可以直接写成数组，也可以写成指针，但都会发生退化，退化为指针
+得先明确一点：C语言中不存在所谓的**数组参数**，通常让函数接受一个数组的数据需要通过**指针变量参数**传递。  
 
-（可以和sizeof结合讲一下）
+#### 传参时数组发生退化
+
+```c
+int test(int newArr[2]) {
+    printf(" %d ", sizeof(newArr)); // 8
+    return 0;
+}
+
+int main() {
+    int arr[5] = {1, 2, 3, 4, 5};
+    test(arr);
+    return 0;
+}
+```
+
+在上面这个例子中`test`函数的定义中声明了“看上去像数组的”形参`newArr`，然而`sizeof`的运算结果是`8`。  
+
+实际上这里的形参声明是等同于`int* newArr`的，因为把数组作为参数进行传递的时候，**实际上传递的是数组的首地址**（因为数组名就代表数组的首地址）。  
+
+> 这种情况下就发生了**数组**到**指针**的退化。  
+
+在编译器的眼中，`newArr`此时就**被当作了一个指针变量**，指向`arr`数组的首地址，因此声明中数组的长度怎么写都行：`int newArr[5]`，`int newArr[]`都可以。  
+
+为了让代码更加清晰，我觉得最好还是声明为`int* newArr`，这样一目了然能知道这是一个指针变量！  
+
+-------
+
+#### 函数内运算涉及到数组长度时
+
+当函数内运算涉及到数组长度时，就需要在函数定义的时候**另声明一个形参**来接受数组长度：  
+
+```c
+int test(int *arr, size_t rowLen, size_t colLen) {
+    int i;
+    size_t totalLen = rowLen * colLen;
+    for (i = 0; i < totalLen; i++) {
+        printf(" %d ", arr[i]);
+        if (i % colLen == colLen - 1) // 每个第二维数组元素打印完后换行
+            printf("\n");
+    }
+    return 0;
+}
+
+int main() {
+    int arr[3][3] = {
+            1, 2, 3,
+            4, 5, 6,
+            7, 8, 9
+    };
+    test(arr, sizeof(arr) / sizeof(arr[0]), sizeof(arr[0]) / sizeof(arr[0][0]));
+    return 0;
+}
+```  
+
+输出：  
+
+![printFuncOutput-2022-05-09](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/printFuncOutput-2022-05-09.jpg)  
+
+这个例子中`test`函数就多接受了**二维数组的**一维长度`rowLen`和二维长度`colLen`，以对二维数组元素进行遍历打印。
+
+------
+
+#### 返回“数组”  
+
+经常有应用场景需要函数返回一个“数组”，说是数组，实际上函数**并无法返回**一个局部定义的数组，哪怕是其指针（在[下面一节](#常见问题-函数返回局部变量)有写为什么）。  
+
+取而代之地，常常会返回一个**指针**指向分配好的一块连续的**堆内存**。  
+（在**算法题**中就经常能遇到要求返回指针的情况）  
+
+```c
+int *test(size_t len) {
+    int i;
+    int *arr = (int *) malloc(len * sizeof(int));
+    for (i = 0; i < len; i++)
+        arr[i] = i + 1;
+    return arr;
+}
+
+int main() {
+    int i = 0;
+    int *allocated = test(5);
+    for (; i < 5; i++)
+        printf(" %d ", allocated[i]);
+    free(allocated); // 一定要记得释放！
+    return 0;
+}
+```  
+
+这个示例中，`test`函数的**返回类型**是整型指针。当调用了`test`函数，传入要分配的连续内存长度后，其在函数内部定义了一个局部指针变量，指向分配好的内存，在内存中存放数据后将该指针返回。  
+
+在主函数中，`test`返回的整型指针被赋给了指针变量`allocated`，所以接下来可以通过一个循环打印出这块连续内存中的数据。  
+
+再次提醒，申请堆内存并使用完后，一定要记得使用`free`进行**释放**！  
+
+## 常见问题-函数返回局部变量
 
 ## 相关文章
 
