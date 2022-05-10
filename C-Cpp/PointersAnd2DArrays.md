@@ -4,7 +4,7 @@
 
 最近在写C程序使用指针的时候遇到了几个让我印象深刻的地方，这里记录一下，以便今后回顾。
 
-![embarrassed-2022-05-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/embarrassed-2022-05-06.png)  
+![embarrassed-2022-05-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/embarrassed-2022-05-06.png)  
 
 > “经一蹶者长一智，今日之失，未必不为后日之得。” - 王阳明《与薛尚谦书》  
 
@@ -16,7 +16,7 @@
 
 一个指针可以理解为一条**内存地址**。  
 
-![pointer-2022-05-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/pointer-2022-05-06.jpg)  
+![pointer-2022-05-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/pointer-2022-05-06.jpg)  
 
 > 这里先定义了一个整型变量`test`，接着用取址运算符`&`取得这个变量的内存地址并打印出来。  
 > 可以看到该变量的内存地址是`000000000061FE1C`
@@ -71,7 +71,7 @@ int main() {
 > `ptr`**变量**的类型是整型指针类型`int*`，存放的是**整性(`int`)变量**```test```的指针（内存地址），  
 > `ptr2`**变量**的类型是二级整型指针类型`int**`，存放的是**整性指针(`int*`)变量**`ptr`的内存地址。  
 
-![doublePointerGraph-2022-05-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/doublePointerGraph-2022-05-06.png)
+![doublePointerGraph-2022-05-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/doublePointerGraph-2022-05-06.png)
 
 ### 多级指针变量  
 
@@ -90,7 +90,7 @@ int main() {
 
 实际上三级指针变量指向的就是**二级指针变量的地址**。  
 
-![008-2022-05-06](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/008-2022-05-06.png)
+![008-2022-05-06](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/008-2022-05-06.png)
 
 其他更多级的指针变量可以依此类推。  
 
@@ -173,7 +173,7 @@ int main() {
 
 这里咱就直接报菜名吧!  
 
-![alloc-2022-05-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/alloc-2022-05-07.png)  
+![alloc-2022-05-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/alloc-2022-05-07.png)  
 
 这一部分的函数的原型都定义在头文件`stdlib.h`中。  
 
@@ -225,7 +225,7 @@ int main() {
 
 `free`为什么知道申请的内存块大小？  
 
-![allocatedMem-2022-05-07](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/allocatedMem-2022-05-07.png)  
+![allocatedMem-2022-05-07](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/allocatedMem-2022-05-07.png)  
 
 简单来说，就是在`malloc`进行内存分配时会把内存大小**分配地略大一点**，多余的内存部分用于储存一些头部数据（这块内存块的信息），这块头部数据内就**包括分配的内存的长度**。  
 
@@ -312,7 +312,7 @@ for (i = 0; i < len1; i++) {
 
 输出：  
 
-![continuousArr-2022-05-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/continuousArr-2022-05-08.jpg)   
+![continuousArr-2022-05-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/continuousArr-2022-05-08.jpg)   
 
 第一维有**3行**，第二维有**4列**。
 
@@ -330,7 +330,7 @@ for (i = 0; i < len1; i++) {
 
 在初始化的时候编译器通过数组**第二维**的大小对元素进行“分组”，每一组可以看作是一个一维数组，这些一维数组在内存中从低地址到高地址连续排列储存形成二维数组：
 
-![memOf2DArr-2022-05-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/memOf2DArr-2022-05-08.png)  
+![memOf2DArr-2022-05-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/memOf2DArr-2022-05-08.png)  
 
 > 在上面例子中大括号中的元素`{1,2,3,4,5,6,7,8,9,10,11,12}`被按第二维长度`4`划分成了`{1,2,3,4}`，`{5,6,7,8}`，`{9,10,11,12}`三组，这样程序也能知道第一维数组长度为`3`了。  
 
@@ -417,7 +417,7 @@ int* arr = (int*)malloc(sizeof(int) * 3);
 
 二级指针`int**`变量存放着一级指针变量的地址，那么就可以构建二级指针数组来存放二级指针数据（也就是每个元素都是**一级指针变量的地址**）。  
 
-![pointerArray1-2022-05-08](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/pointerArray1-2022-05-08.png)  
+![pointerArray1-2022-05-08](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/pointerArray1-2022-05-08.png)  
 
 具体代码实现：  
 
@@ -469,11 +469,11 @@ for (i = 0; i < rows; i++) {
 
 输出：  
 
-![pointerArrAddress-2022-05-09](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/pointerArrAddress-2022-05-09.jpg)  
+![pointerArrAddress-2022-05-09](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/pointerArrAddress-2022-05-09.jpg)  
 
 可以看到第二维度的地址是连续的，但是第二维度“数组”**之间并不是连续的**。比如元素`4`和元素`5`的地址相差了`20`个字节，并不是四个字节。
 
-![pointerArray2-2022-05-09](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/pointerArray2-2022-05-09.png)  
+![pointerArray2-2022-05-09](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/pointerArray2-2022-05-09.png)  
 
 其在内存中的存放结构大致如上，并无法保证`*(ptr+0)+3`和`*(ptr+1)`的地址相邻，也无法保证`*(ptr+1)+3`和`*(ptr+2)`的地址相邻。  
 
@@ -612,7 +612,7 @@ int main() {
 
 输出：  
 
-![printFuncOutput-2022-05-09](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/printFuncOutput-2022-05-09.jpg)  
+![printFuncOutput-2022-05-09](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/printFuncOutput-2022-05-09.jpg)  
 
 这个例子中`test`函数就多接受了**二维数组的**一维长度`rowLen`和二维长度`colLen`，以对二维数组元素进行遍历打印。
 
@@ -753,11 +753,11 @@ int main() {
 	ptr[1]=2
 ```  
 
-在`test`函数中，通过自增操作和`*`操作符给`testStruct.ptr`指向的下一个元素赋值为`2`。  
+在`test`函数中，通过自增操作和`*`运算符给`testStruct.ptr`指向的下一个元素赋值为`2`。  
 
 通过输出可以看到，`test`函数内结构体中指针变量的自增操作并没有影响到`main`函数中结构体的指针变量，这是因为**结构体作为参数传入时**实际上是被**拷贝了一份**作为局部变量以供操作。  
 
-之所以能赋值是因为```testStruct.ptr```是指针变量，存放着一个内存地址。无论怎么拷贝，**变量储存的内存地址是没有变**的，所以通过`*`操作符仍然能直接对相应数据进行赋值。  
+之所以能赋值是因为```testStruct.ptr```是指针变量，存放着一个内存地址。无论怎么拷贝，**变量储存的内存地址是没有变**的，所以通过`*`运算符仍然能直接对相应数据进行赋值。  
 
 ### 改变原结构体的指针变量指向
 
@@ -810,10 +810,10 @@ int main() {
 #include <string.h>
 #define SIZE_PER_ALLOC 10
 
-void extend(int *flexible, int arrPtr, int *arrMax) {
+void extend(int *arr, int arrPtr, int *arrMax) {
     *arrMax += SIZE_PER_ALLOC; // 新分配这么多
-    flexible = (int *) realloc(flexible, (*arrMax) * sizeof(int));
-    memset(flexible + arrPtr, 0, SIZE_PER_ALLOC * sizeof(int)); // 将新分配的部分初始化为0
+    arr = (int *) realloc(arr, (*arrMax) * sizeof(int));
+    memset(arr + arrPtr, 0, SIZE_PER_ALLOC * sizeof(int)); // 将新分配的部分初始化为0
 }
 
 int main() {
@@ -842,7 +842,7 @@ int main() {
 观察一下函数的声明和调用时的传参：  
 
 ```c
-void extend(int *flexible, int arrPtr, int *arrMax);
+void extend(int *arr, int arrPtr, int *arrMax);
 ```
 
 ```c
@@ -851,11 +851,94 @@ extend(flexible, arrPtr, &arrMax);
 
 后面的`arrPtr`整型变量参数接受`main`函数传入的`arrPtr`的值，用以确定当前“数组”的下标指向哪；而`arrMax`指针变量参数接受`main`函数传入的`arrMax`的地址，用以修改当前“数组”的大小。这两个参数没有引发任何问题。
 
-很明显了，问题肯定出现在`flexible`参数这儿！
+很明显了，问题就出现在`arr`参数这儿！
+
+实际上，当我将指针变量`flexible`作为参数传入时也只是传入了一个**地址**，而不是指针本身。因此在`extend`里调用`realloc`重分配内存后，**新的内存块**的地址会被赋给**局部**变量`arr`，此时外部的指针变量`flexible`的指向**没有任何改变**。  
+
+-------
+
+`realloc()` 在重分配内存时，会尽量在原有的内存块上进行扩展/缩减，尽量不移动数据，这种时候返回的地址**和原来一样**。  
+
+但是一旦**原有内存块及其后方相邻的空闲内存不足以提供分配**，就会找到一块足够大的新内存块，并将原内存块的数据“**移动**”过去，此时`realloc()`返回的地址**和原来的不同**，并且**原来的地址**所代表的内存**已经被回收**。
+
+-------
+
+也就是当`realloc()`移动了**数据在内存中的位置**时，外面的`flexible`指针变量还**指向着原来的地址**，原来地址代表的内存已经被回收了。  
+
+因此，`extend`函数调用结束后的`flexible`指针变量就变成了**野指针**，指向了一片无效内存，所以试图访问这片内存时，就导致了`SIGSEGV`异常。  
+
+-------
 
 ### 怎么解决
 
-说到最开始遇到这个问题的时候，我真的是找了半天都没找着，因为push元素和数组扩展我分开写在了两个源文件中，而这个部分又涉及到其他内存分配的代码。我甚至查了`realloc`是怎么导致`SIGSEGV`的，结果就...打断点调试了好多次才发现是这个问题。
+根本原因在于我传入函数的是**一个地址**而不是**指针变量本身**，所以把**指针变量的地址**传入就能解决了！  
+
+```c
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#define SIZE_PER_ALLOC 10
+
+void extend(int **arr, int arrPtr, int *arrMax) {
+    *arrMax += SIZE_PER_ALLOC; // 多分配这么多
+    *arr = (int *) realloc(*arr, (*arrMax) * sizeof(int));
+    memset(*arr + arrPtr, 0, SIZE_PER_ALLOC * sizeof(int)); // 将新分配的部分初始化为0
+}
+
+int main() {
+    int i;
+    int arrPtr = 0;
+    int arrMax = 10; // 当前最多能容纳多少元素
+    int *flexible = (int *) calloc(arrMax, sizeof(int));
+    for (i = 0; i < 95; i++) { // 模拟push 95 个元素
+        flexible[arrPtr++] = i + 1;
+        if (arrPtr >= arrMax) // 数组要容纳不下了，多分配一点
+            extend(&flexible, arrPtr, &arrMax);
+    }
+
+    for (i = 0; i < 95; i++) // 打印所有元素
+        printf("%d ", flexible[i]);
+    free(flexible);
+    return 0;
+}
+```  
+
+因为**二级指针变量**存放一级指针变量的地址，所以在声明形参`arr`的时候需要声明为二级指针：  
+
+```c
+void extend(int **arr, int arrPtr, int *arrMax);
+``` 
+
+调用函数的时候，将指针变量`flexible`的**地址**传入：  
+
+```c
+extend(&flexible, arrPtr, &arrMax);
+```
+
+接下来在函数`extend`内部通过`*`运算符访问指针变量`flexible`以做出修改即可。
+
+这样一来程序就能成功运行完成了，输出：  
+
+```
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 
+```
+
+### 教训
+
+说到最开始遇到这个问题的时候，我真的是找了半天都没找着，因为push元素和数组扩展我分开写在了两个源文件中，而这个部分又涉及到其他内存分配的代码。我甚至查了`realloc`是怎么导致`SIGSEGV`的，结果就...打断点调试了好多次才发现是这个问题。  
+
+涉及到指针变量和内存操作的时候，一定要牢记**指针变量的指向**，也一定要**步步谨慎**，不然一旦出现问题，很可能难以定位。  
+
+## 总结  
+
+C语言的内存管理很灵活，但正是因为灵活，在编写相关操作的时候要十分小心。  
+
+在接触这类和底层接壤的编程语言时对基础知识的要求真的很高...感觉咱还有超长的路要走呢。  
+
+那么就是这样，感谢你看到这里，也希望这篇笔记能对你有些帮助！再会~  
+
+![bye-2022-05-10](https://cdn.jsdelivr.net/gh/cat-note/bottleassets@latest/img/bye-2022-05-10.png)  
 
 ## 相关文章
 
