@@ -22,6 +22,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 9. [物理实验霍尔效应判断P/N型半导体笔记](Physics/HallEfxAndSemiconductor.md) 
 10. [想法子记忆Vi/Vim常用操作及指令](Linux/ViMemorizingTricks.md)  
 11. [【动画笔记】辗转相除法——求最大公约数和最小公倍数](Algo/GCDandLCM.md)  
+12. [【小记】与指针和二维数组过几招](C-Cpp/PointersAnd2DArrays.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](Python/SimplePokerDistribution/poker.py)  
