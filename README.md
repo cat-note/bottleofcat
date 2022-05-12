@@ -31,6 +31,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 3. [Python课设-SKLINE](https://github.com/SomeBottle/skline)  
 4. [操作系统处理机常用调度算法的简单实现](OS/ProcessorScheduling/code)  
 5. [算法练习](Algo/code)  
+6. [简单模拟操作系统内存分配算法](OS/DynamicPartitionStorageManagement/code)  
 
 在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
 
