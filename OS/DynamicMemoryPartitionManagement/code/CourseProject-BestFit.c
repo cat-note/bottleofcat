@@ -1,3 +1,14 @@
+/**
+ * 课程设计要求
+ * 模拟实现动态分区存储管理
+ * （1）实现动态分区存储管理的内存分配功能，要求实现最佳适应算法。
+ * （2）实现动态分区存储管理的内存回收功能：要求能够正确处理回收分区与空闲分区的四种邻接关系。
+ * （3）当大作业到达，无满足要求的大空闲分区，而所有空闲分区的总容量能满足大作业要求时，能够进行拼接紧凑。
+ *
+ * 经过Valgrind检查，本程序运行时不会产生内存泄漏，可喜可贺！
+ * 完成于2022.5.30-SomeBottle
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -55,6 +66,8 @@ short int MemAlloc(FreeNode *fList, OccupiedNode *oList, short int *identifier, 
 short int MemFree(FreeNode *fList, OccupiedNode *oList, short int *identifier, char name);
 
 void CompactMemory(FreeNode *fList, OccupiedNode *oList);
+
+void SwapCompactMemory(FreeNode *fList, OccupiedNode *oList);
 
 /**
  * 初始化用户内存区以及链表
@@ -344,7 +357,7 @@ void PrintLinearMem(FreeNode *fList, OccupiedNode *oList) {
  * @param address 待寻找邻接的内存地址
  * @param oSize 待寻找邻接的内存大小
  * @return 1/0 代表 是/否找到并处理了邻接
- * @note 注意，这个函数只会处理空闲链表，被占用链表需要MemFree额外处理哦
+ * @note 注意，address指向的节点在邻接后仍然保留，需要手动释放
  */
 short int AdjoinMem(FreeNode *fList, size_t address, size_t oSize) {
     if (fList->next != NULL) { // 空闲分区中有项
@@ -358,8 +371,9 @@ short int AdjoinMem(FreeNode *fList, size_t address, size_t oSize) {
                 if (currentNode->next->next != NULL) {
                     currentNode->next->next->prev = currentNode; // 接上后面的节点
                 }
+                FreeNode *temp = currentNode->next->next; // 暂存下下个节点
                 free(currentNode->next); // 释放移除的节点
-                currentNode->next = currentNode->next->next; // 从空闲链表上移除后面一项
+                currentNode->next = temp; // 从空闲链表上移除后面一项，接上下下个节点
                 fList->mSize--; // 空闲链表长度减短
                 printf("进行了回收区两侧内存邻接\nMemory around Recycle Area has been joined.\n");
                 break;
@@ -531,6 +545,60 @@ short int MemAlloc(FreeNode *fList, OccupiedNode *oList, short int *identifier, 
 }
 
 /**
+ * 对内存进行紧凑处理（移动节点的算法）
+ * @param fList 指向空闲内存链表地址的指针
+ * @param oList 指向被占用分区链表地址的指针
+ */
+void SwapCompactMemory(FreeNode *fList, OccupiedNode *oList) {
+    // 这个算法我是受到了选择排序的启发
+    CLEAR;
+    if (fList == NULL || oList == NULL) { // 未经初始化
+        printf("\n请先进行初始化!\n");
+        printf("You should initialize first!\n");
+        return;
+    }
+    if (fList->next != NULL && oList->next != NULL) {
+        // 只有两张链表中均有内容时才有可能进行内存紧凑
+        SortOListByAddr(oList); // 先把被占用链表按地址升序排序
+        FreeNode *fCurrent;
+        FreeNode *fCurrentNext;
+        OccupiedNode *oCurrent = oList->next; // 被占用链表首节点
+        OccupiedNode *oTemp = NULL;
+        size_t addrBak; // 地址备份
+        size_t addrDiff = 0; // 记录地址差距
+        for (fCurrent = fList->next; fCurrent != NULL; fCurrent = fCurrentNext) { // 内层遍历空闲链表
+            fCurrentNext = fCurrent->next; // 备份当前空闲节点的下一个节点(因为后面可能要free掉fCurrent)
+            if (fCurrent->address > oCurrent->address) { // 找到内存中排在当前被占用分区后面的空闲分区
+                // 找到了后进行交换，把空闲区换到低地址区
+                addrBak = fCurrent->address; // 备份一下当前空闲区的地址
+                fCurrent->address = oCurrent->address; // 交换地址
+                // 这里fCurrent的next指向完全不用改，因为所谓的交换只是地址进行了交换
+                // fCurrent在空闲链表上的节点位置是没有变的
+                // 被占用节点在交换后需要移动其中的几项的地址
+                // 比如 A B C [空闲] D E 这样四个分区，此时被占用链表节点是这样：A->B->C->D->E
+                // 在扫描交换后应该变成 [空闲] A B C D E，那么A,B,C三个被占用节点的address全都要后移
+                addrDiff = fCurrent->mSize; // 后面的被占用节点的address全都要加上addrDiff
+                // 从当前被占用节点遍历到之前空闲节点所在地址之前的节点，在上面例子中就是遍历A->B->C
+                // 之后的被占用节点不受影响
+                for (oTemp = oCurrent; oTemp != NULL && oTemp->address < addrBak; oTemp = oTemp->next)
+                    oTemp->address += addrDiff; // 这一部分被占用节点（作业）后移
+                // 移动完后oCurrent指向移动节点部分的后一个被占用节点，在上面例子中就是D
+                // 这里利用邻接函数，看看能不能把移动到前面的空闲内存节点连接成一整块
+                if (AdjoinMem(fList, fCurrent->address, fCurrent->mSize)) {
+                    DelFreeNode(fList, fCurrent); // 如果邻接成功了就释放(free)这一节点
+                }
+            }
+        }
+        printf("内存紧凑成功，获得了%zu Byte(s)的空闲分区.\n", fList->next->mSize);
+        printf("Memory compaction success! Now there's a Memory Partition of %zu Byte(s)\n", fList->next->mSize);
+    } else {
+        printf("无法进行内存紧凑！\n");
+        printf("Unable to compact available memory.\n");
+    }
+    PAUSE;
+}
+
+/**
  * 对内存进行紧凑处理
  * @param fList 指向空闲内存链表地址的指针
  * @param oList 指向被占用分区链表地址的指针
@@ -593,6 +661,8 @@ void CompactMemory(FreeNode *fList, OccupiedNode *oList) {
             currentONode = oList->next;
             while (currentONode != NULL) { // 再次遍历链表
                 currentONode->address -= addrDiff; // 每一项的地址都前移，使得被占用区紧接空闲区
+                if (currentONode->next != NULL) // 如果下一项不为空，更新addrDiff，使得后面每一个被占用节点(作业)都是邻接的
+                    addrDiff = currentONode->next->address - (currentONode->address + currentONode->mSize);
                 currentONode = currentONode->next;
             }
         }
@@ -614,24 +684,6 @@ int main() {
     short int *identifiers = (short int *) calloc(122 - 48 + 1, sizeof(short int));
     FreeNode *freeList = NULL; // 定义空闲分区链表
     OccupiedNode *occupiedList = NULL; // 定义被占用分区链表
-    // TEST CODE
-    Initialize(&freeList, &occupiedList);
-    MemAlloc(freeList, occupiedList, identifiers, 'A', 1);
-    MemAlloc(freeList, occupiedList, identifiers, 'B', 2);
-    MemAlloc(freeList, occupiedList, identifiers, 'C', 3);
-    MemAlloc(freeList, occupiedList, identifiers, 'D', 4);
-    MemAlloc(freeList, occupiedList, identifiers, 'E', 5);
-    MemAlloc(freeList, occupiedList, identifiers, 'F', 6);
-    MemAlloc(freeList, occupiedList, identifiers, 'G', 7);
-    MemAlloc(freeList, occupiedList, identifiers, 'H', 8);
-    MemAlloc(freeList, occupiedList, identifiers, 'I', 9);
-    MemAlloc(freeList, occupiedList, identifiers, 'J', 10);
-    MemFree(freeList, occupiedList, identifiers, 'B');
-    MemFree(freeList, occupiedList, identifiers, 'D');
-    MemFree(freeList, occupiedList, identifiers, 'G');
-    CompactMemory(freeList, occupiedList);
-    MemAlloc(freeList, occupiedList, identifiers, 'Y', 57);
-    // TEST CODE END
     while (cycle) {
         CLEAR;
         printf("==========MENU==========\n");
@@ -643,14 +695,21 @@ int main() {
         printf("\t5. Print the List of Occupied Memory 打印被占用分区链表\n");
         printf("\t6. Print Memory Partitions in order of Address 按地址升序打印当前内存分区情况\n");
         printf("\t7. Compact Memory Fragments 紧凑内存碎片\n");
+        printf("\t8. Swap-based Memory Compaction 基于交换的内存紧凑\n");
         printf("---------------------\n");
         printf("输入选项前对应数字以继续\n");
         printf("Type in the correspond Number before the option: ");
         fflush(stdout); // 输出输出缓冲区中的内容
         scanf(" %d", &choice);
         switch (choice) {
-            case 0:
-                cycle = 0;
+            case 0: {
+                char confirm = 0;
+                printf("输入字符 '-' 以确定退出\nEnter '-' to exit: ");
+                fflush(stdout);
+                scanf(" %c", &confirm);
+                if (confirm == '-')
+                    cycle = 0;
+            }
                 break;
             case 1:
                 Initialize(&freeList, &occupiedList);
@@ -660,13 +719,13 @@ int main() {
                 long long int allocSize;
                 while (1) {
                     CLEAR;
-                    printf("(分配大小输入 -1 以返回)(Enter -1 in alloc size to cancel)\n---------------\n");
+                    printf("(输入 - 以返回)(Enter '-' to cancel)\n---------------\n");
                     printf("请输入分配的大小和标识符\n");
                     printf("（格式如: 100 A )(Format example: 100 A )\n");
                     printf("Please type in the size to allocate and the identifier(char): ");
                     fflush(stdout);
-                    scanf(" %zu %c", &allocSize, &memName);
-                    if (allocSize == -1) {
+                    scanf(" %llu %c", &allocSize, &memName);
+                    if (allocSize == -1 || allocSize == 0 || memName == 0) {
                         break;
                     } else if (allocSize <= 0) {
                         printf("\n分配的内存大小不能<=0！\n");
@@ -714,6 +773,9 @@ int main() {
                 break;
             case 7:
                 CompactMemory(freeList, occupiedList);
+                break;
+            case 8:
+                SwapCompactMemory(freeList, occupiedList);
                 break;
             default:
                 break;
