@@ -33,6 +33,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 5. [算法练习](Algo/code)  
 6. [简单模拟操作系统内存分配算法](OS/DynamicMemoryPartitionManagement/code)  
 7. [操作系统课设-动态分区储存管理](OS/DynamicMemoryPartitionManagement/code/CourseProject-BestFit.c)  
+8. [打印杨辉三角的Shell脚本](Linux/ShellScripts/PascalTriangle.sh) 
 
 在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
 
