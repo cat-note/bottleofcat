@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 #define DATABASE_NAME "account_data"
-#define DATABASE_HOST "localhost"
+#define DATABASE_HOST "127.0.0.1"
 
 #define CLEAR_EOF while (getchar() != '\n') // 利用getchar取走多余空格
 #define FREE_RESULTS(conn) do { \

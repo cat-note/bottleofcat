@@ -619,8 +619,8 @@ int main() {
     scanf(" %30s", &mysqlPasswd); // 接受用户密码输入（最多接受长度为20）
     CLEAR_EOF;
     system("stty echo"); // 开启Shell回显
-    connection = mysql_real_connect(connection, DATABASE_HOST, mysqlUser, mysqlPasswd, DATABASE_NAME, 0, NULL, 0);
-    if (connection != NULL) { // 成功连接至数据库
+    if (mysql_real_connect(connection, DATABASE_HOST, mysqlUser, mysqlPasswd, DATABASE_NAME, 0, NULL, 0) !=
+        NULL) { // 成功连接至数据库
         printf("\nSuccessfully connect to the Database: %s \n", DATABASE_NAME);
         fflush(stdout);
         mysql_set_character_set(connection, "utf8"); // 设置字符集编码UTF8
@@ -629,7 +629,7 @@ int main() {
             Menu(connection); // 进入菜单
         }
     } else {
-        printf("\nFailed to connect to the database.\n");
+        printf("\nFailed to connect to the database: %s\n", mysql_error(connection));
     }
     mysql_close(connection);
     mysql_library_end(); // 避免发生内存泄漏，释放库使用的资源
