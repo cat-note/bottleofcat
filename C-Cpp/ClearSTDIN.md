@@ -26,3 +26,17 @@ getchar();
 printf("World \n");
 ```
 
+## C语言中常用的输入函数
+
+```c
+int fgetc( FILE *stream ); // 从给定的文件流中读一个字符 (fgetc中的 f 的意思即"function")
+int getc( FILE *stream ); // 同fgetc，但是getc的实现*可能*是基于宏的
+```
+```c
+int getchar(void); // 相当于是getc(stdin)，从标准输入流读取一个字符
+```
+
+```c
+// 从给定的文件流中读取(count-1)个字符或者读取直到遇到换行符或者EOF
+char *fgets( char *restrict str, int count, FILE *restrict stream );
+```
