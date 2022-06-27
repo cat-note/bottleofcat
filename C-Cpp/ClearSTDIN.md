@@ -68,3 +68,27 @@ int sscanf( const char *restrict buffer, const char *restrict format, ... );
 
 // 返回一个整型数值，代表成功根据格式赋值的变量数（arguments）
 ```
+
+## 最常到的输入问题
+
+先来个不会出问题的示例：
+
+```c
+#include <stdio.h>
+int main()
+{
+	char test1[200];
+	char test2[200];
+	char testChar;
+	printf("Input a Character: \n");
+	testChar = getchar();
+	fprintf(stdout, "Input String1: \n");
+	scanf("%s", test1);
+	fprintf(stdout, "Input String2: \n");
+	scanf("%s", test2);
+	printf("Got String1: [ %s ]\n", test1);
+	printf("Got String2: [ %s ]\n", test2);
+	printf("Got Char: [ %c ]\n", testChar);
+	return 0;
+}
+```
