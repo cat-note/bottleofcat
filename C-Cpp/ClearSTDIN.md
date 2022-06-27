@@ -28,15 +28,43 @@ printf("World \n");
 
 ## C语言中常用的输入函数
 
+### 基于字符
+
 ```c
-int fgetc( FILE *stream ); // 从给定的文件流中读一个字符 (fgetc中的 f 的意思即"function")
-int getc( FILE *stream ); // 同fgetc，但是getc的实现*可能*是基于宏的
+// 从给定的文件流中读一个字符 (fgetc中的 f 的意思即"function")
+int fgetc( FILE *stream ); 
+
+// 同fgetc，但是getc的实现*可能*是基于宏的
+int getc( FILE *stream ); 
+
+// 相当于是getc(stdin)，从标准输入流读取一个字符
+int getchar(void);
+
+// 返回获取的字符的ASCII码值，如果到达文件末尾就返回EOF（即返回-1）
 ```
-```c
-int getchar(void); // 相当于是getc(stdin)，从标准输入流读取一个字符
-```
+
+### 基于行
 
 ```c
 // 从给定的文件流中读取(count-1)个字符或者读取直到遇到换行符或者EOF
 char *fgets( char *restrict str, int count, FILE *restrict stream );
+
+// 返回指向字符串的指针或者空指针NULL
+```
+
+### 格式化输入
+
+```c
+// 按照format的格式从标准输入流stdin中读取所需的数据并储存在相应的变量中
+// scanf中的f代表“format”
+int scanf( const char *restrict format, ... );
+
+// 按照format的格式从文件流stream中读取所需的数据并储存在相应的变量中
+// fscanf中前一个f代表“file(stream)”，后一个f代表“format”
+int fscanf( FILE *restrict stream, const char *restrict format, ... );
+
+// 按照format的格式从字符串buffer中截取所需的数据并储存在相应的变量中
+int sscanf( const char *restrict buffer, const char *restrict format, ... );
+
+// 返回一个整型数值，代表成功根据格式赋值的变量数（arguments）
 ```
