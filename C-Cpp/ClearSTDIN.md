@@ -1,10 +1,14 @@
 # 简记清空C语言输入缓冲区
 
-实际上，清空缓冲区已经是老生常谈的问题了。为了在命令行程序中实现和用户的交互，我们往往需要编写程序对输入/输出缓冲区进行多次读写。
+为了在命令行程序中实现和用户的交互，我们编写的程序的运行过程中往往涉及到对输入/输出缓冲区的多次读写。
 
-然而，在C语言中接受用户输入这一块，总有着围绕着输入缓冲区的一个问题：“怎么样及时清空输入缓冲区？” 这也是这篇小笔记的主题内容。
+在C语言中接受用户输入这一块，有着一个老生常谈的问题：“怎么样及时清空输入缓冲区？”
+ 
+这也是这篇小笔记的主题内容。
 
-通常来说，缓冲区类型有三种：
+![idling-2022-06-28](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/idling-2022-06-28.png)  
+
+缓冲区是**内存中**划分出来的一部分。通常来说，缓冲区类型有三种：
 
 * 全缓冲
 * 行缓冲
@@ -12,19 +16,45 @@
 
 ## 行缓冲
 
-在C语言中缓冲区这个概念的存在感还是挺强的，比较常用到的缓冲区类型则是**行缓冲**了，如标准输入流 `stdin` 和标准输出流 `stdout`。  
+在C语言中缓冲区这个概念的存在感还是挺强的，比较常用到的缓冲区类型则是**行缓冲**了，如标准输入流 `stdin` 和标准输出流 `stdout`一般（终端环境下）就是在行缓冲模式下的。  
 
-行缓冲，顾名思义，就是针对该缓冲区的**I/O操作**是**基于行**的。在遇到**换行符**前，用户的所有**输入/输出**都会被暂存到该缓冲区中；而在遇到**换行符**后，程序则会进行I/O操作，从缓冲区中读取**所需的数据**。 
+行缓冲，顾名思义，就是针对该缓冲区的**I/O操作**是**基于行**的。  
+* 在遇到**换行符**前，程序的**输入**和**输出**都会先被**暂存**到**流对应**的缓冲区中  
 
-就**标准输入**`stdin`而言，每当用户按下回车键输入一个**换行符**，程序才会进行I/O操作，从缓冲区将暂存的数据读走。
+* 而在遇到**换行符**后（或者缓冲区满了），程序才会进行真正的**I/O操作**，将该缓冲区中的数据写到对应的**流** (stream) 中**以供后续读取**。  
 
-而对**标准输出**`stdout`来说，每当输出内容遇到**换行符**时，程序才会将缓冲区中的内容打印到屏幕上。  
-这也是为什么用格式化打印函数`printf`时**可能**不会立即输出到屏幕上：
+就**标准输入**`stdin`而言，用户的输入首先会被存到**相应的输入缓冲区**中，每当用户按下回车键输入一个**换行符**，程序才会进行I/O操作，将缓冲区暂存的数据写入到`stdin`中，以供**输入函数**使用。
+
+而对**标准输出**`stdout`来说，输出内容也首先会被暂存到**相应的输出缓冲区**中，每当输出数据遇到**换行符**时，程序才会将缓冲区中的数据写入`stdout`，继而打印到屏幕上。  
+
+这也是为什么有缓冲的时候，输出的内容不会立即打印到屏幕上：
 ```c
-printf("Hello ");
-getchar();
-printf("World \n");
+#include <stdio.h>
+int main()
+{
+	// 设置缓冲模式为行缓冲，缓冲区大小为10字节
+	setvbuf(stdout, NULL, _IOLBF, 10);
+	fprintf(stdout, "1234567"); // 这里先向stdout对应的缓冲区中写入了7字节
+	getchar(); // 这里等待用户输入
+	printf("89"); // 再向stdout对应的缓冲区中写入了2字节
+	getchar(); // 接着等待用户输入
+	printf("Print!"); // 再向stdout对应的缓冲区中写入了6字节
+	getchar(); // 最后再等待一次用户输入
+	return 0;
+}
 ```
+
+运行效果：
+
+![outputBuffer_remake-2022-06-28](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/outputBuffer_remake-2022-06-28.gif)
+
+可以看到，在第二个`getchar()`前，屏幕上没有新的输出。  
+
+而在执行了`printf("Print!")`之后，缓冲区**被填满**了，才输出`123456789P`这`10`个字节。
+
+缓冲区内容被读走后，剩余的字符串`rint!`接着被写入缓冲区。程序运行结束后，输出缓冲区中的内容会被全部打印到屏幕上，所以会在最后看到`rint!`。
+
+
 
 ## C语言中常用的输入函数
 
@@ -92,3 +122,58 @@ int main()
 	return 0;
 }
 ```
+
+运行效果：  
+
+![correctExample-2022-06-28](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/correctExample-2022-06-28.png)  
+
+------
+出问题的示例：
+
+```c
+#include <stdio.h>
+int main()
+{
+	char test[200];
+	char testChar1, testChar2, testChar3;
+	fprintf(stdout, "Input String: \n");
+	scanf("%3s", test);
+	printf("[1]Input a Character: \n");
+	testChar1 = getchar();
+	printf("[2]Input a Character: \n");
+	testChar2 = fgetc(stdin);
+	printf("[3]Input a Character: \n");
+	testChar3 = getchar();
+	printf("Got String: [ %s ]\n", test);
+	printf("Got Char1: [ %c ]\n", testChar1);
+	printf("Got Char2: [ %c ]\n", testChar2);
+	printf("Got Char3: [ %c ]\n", testChar3);
+	return 0;
+}
+```
+
+运行效果：  
+
+![incorrectExample-2022-06-28](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/incorrectExample-2022-06-28.png)  
+
+因为我将格式设置为了`%3s`，所以`scanf`**最多**接收包含三个字符的字符串。
+
+在这个示例中，我按要求输入了一条字符串`Hello`，并按下**回车**输入一个换行符，缓冲区数据`Hello\n`被写入到了`stdin`中。而`scanf`只从标准流`stdin`中读走了`Hel`这一部分字符串。  
+
+此时，标准流`stdin`中实际上还剩3个字符：
+
+1. `l`
+2. `o`
+3. `\n` (回车输入的换行符)
+
+于是接下来三次**针对字符的**输入函数只会分别**从`stdin`中**取走这三个字符，而**不会等待用户输入**，这就没有达到我想要的效果。
+
+在基本的命令行程序中很容易遇到这类问题，这也是为什么需要及时**清空输入缓冲区**。  
+
+## 清空缓冲区
+
+以下内容假设`stdout`和`stdin`两个文件流都是在**行缓冲**模式下的。
+
+### 标准输出流stdout  
+
+虽然标题写着输入缓冲区，这里我还是掠过一下`stdout`。在有行缓冲的情况下，
