@@ -23,11 +23,13 @@
 行缓冲，顾名思义，就是针对该缓冲区的**I/O操作**是**基于行**的。  
 * 在遇到**换行符**前，程序的**输入**和**输出**都会先被**暂存**到**流对应**的缓冲区中  
 
-* 而在遇到**换行符**后（或者缓冲区满了），程序才会进行真正的**I/O操作**，将该缓冲区中的数据写到对应的**流** (stream) 中**以供后续读取**。  
+* 而在遇到**换行符**后（或者**缓冲区满了**），程序才会进行真正的**I/O操作**，将该缓冲区中的数据写到对应的**流** (stream) 中**以供后续读取**。  
 
 就**标准输入**`stdin`而言，用户的输入首先会被存到**相应的输入缓冲区**中，每当用户按下回车键输入一个**换行符**，程序才会进行I/O操作，将缓冲区暂存的数据写入到`stdin`中，以供**输入函数**使用。
 
 而对**标准输出**`stdout`来说，输出内容也首先会被暂存到**相应的输出缓冲区**中，每当输出数据遇到**换行符**时，程序才会将缓冲区中的数据写入`stdout`，继而打印到屏幕上。  
+
+<a id="nonImmediatelyPrint"></a>
 
 这也是为什么在缓冲模式下，输出的内容不会立即打印到屏幕上：
 ```c
@@ -81,6 +83,7 @@ int getchar(void);
 
 ```c
 // 从给定的文件流中读取(count-1)个字符或者读取直到遇到换行符或者EOF
+// fgets中的f代表“file”，而s代表“string”
 char *fgets( char *restrict str, int count, FILE *restrict stream );
 
 // 返回指向字符串的指针或者空指针NULL
@@ -98,6 +101,7 @@ int scanf( const char *restrict format, ... );
 int fscanf( FILE *restrict stream, const char *restrict format, ... );
 
 // 按照format的格式从字符串buffer中截取所需的数据并储存在相应的变量中
+// sscanf中的第一个s代表“string”，字符串
 int sscanf( const char *restrict buffer, const char *restrict format, ... );
 
 // 返回一个整型数值，代表成功根据格式赋值的变量数（arguments）
@@ -180,4 +184,52 @@ int main()
 
 ### 标准输出流stdout  
 
-虽然本文主要是写输入流，但这里我还是掠过一下标准输出流`stdout`。在有行缓冲的情况下，
+虽然本文主要是写输入流，但这里我还是掠过一下标准输出流`stdout`。C语言标准库中提供了一个**用于刷新输出流**的函数：
+
+```c
+int fflush( FILE *stream );
+// 如果成功了，返回0，否则返回EOF(-1)
+```
+
+要清空标准输出流对应的缓冲区，只需要使用`fflush(stdout)`即可。上面的[这个例子](#nonImmediatelyPrint)可以修改成这样：
+
+```c
+#include <stdio.h>
+int main()
+{
+	// 设置缓冲模式为行缓冲，缓冲区大小为10字节
+	setvbuf(stdout, NULL, _IOLBF, 10);
+	fprintf(stdout, "1234567"); // 这里先向stdout对应的缓冲区中写入了7字节
+	fflush(stdout); // 刷新缓冲区，将缓冲区中的数据写入到标准输出流中
+	getchar(); // 这里等待用户输入
+	printf("89"); // 再向stdout对应的缓冲区中写入了2字节
+	fflush(stdout); 
+	getchar(); // 接着等待用户输入
+	printf("Print!"); // 再向stdout对应的缓冲区中写入了6字节
+	getchar(); // 最后再等待一次用户输入
+	return 0;
+}
+```
+
+运行效果：
+
+![outputBuffer_fflush-2022-06-29](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/outputBuffer_fflush-2022-06-29.gif)  
+
+可以看到，加入`fflush(stdout)`后，**输出缓冲区**的内容会被**及时**写入`stdout`中，继而打印到屏幕上。
+
+------
+值得注意的是，`fflush(stdin)`的行为是**未定义**（不确定）的：
+
+> For input streams (and for update streams on which the last operation was input), the behavior is undefined.  
+
+不同平台的编译器对此有不同的解释。  
+
+* 比如在Windows平台上，无论是`VC6.0`这种目前一些学校教学还在使用的古董编译器，还是`gcc 8.x.x`，大体还是支持通过这种操作清空输入流的。
+
+* 但是在Linux平台上的`gcc`编译器就不买账了，是不支持`fflush(stdin)`这种操作的。  
+
+因此，尽量避免`fflush(stdin)`这种写法，这**十分不利于代码的可移植性**。
+
+## 参考文献
+
+* [File input/output - cppreference.com](https://en.cppreference.com/w/c/io)  
