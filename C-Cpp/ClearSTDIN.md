@@ -1,4 +1,4 @@
-# 简记清空C语言输入流
+# 简记清空C语言输入残留内容
 
 为了在命令行程序中实现和用户的交互，我们编写的程序的运行过程中往往涉及到对标准输入/输出流的多次读写。
 
@@ -25,7 +25,9 @@
 
 * 而在遇到**换行符**后（或者**缓冲区满了**），程序才会进行真正的**I/O操作**，将该缓冲区中的数据写到对应的**流** (stream) 中**以供后续读取**。  
 
-就**标准输入**`stdin`而言，用户的输入首先会被存到**相应的输入缓冲区**中，每当用户按下回车键输入一个**换行符**，程序才会进行I/O操作，将缓冲区暂存的数据写入到`stdin`中，以供**输入函数**使用。
+就**标准输入**`stdin`而言，用户的输入首先会被存到**相应的输入缓冲区**中，每当用户按下回车键输入一个**换行符**，程序才会进行I/O操作，将缓冲区暂存的数据写入到`stdin`中，以供[**输入函数**](#c语言中常用的输入函数)使用。  
+
+![stdinBuffer-2022-07-12](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/stdinBuffer-2022-07-12.gif)  
 
 而对**标准输出**`stdout`来说，输出内容也首先会被暂存到**相应的输出缓冲区**中，每当输出数据遇到**换行符**时，程序才会将缓冲区中的数据写入`stdout`，继而打印到屏幕上。  
 
@@ -178,13 +180,13 @@ int main()
 
 在基本的命令行程序中很容易遇到这类问题，这也是为什么需要及时**清空输入流`stdin`中的数据**。  
 
-## 清空标准流
+## 清空残余内容
 
 以下内容假设`stdout`和`stdin`两个标准流都是在**行缓冲**模式下的。
 
 ### 标准输出流stdout  
 
-虽然本文主要是写输入流，但这里我还是掠过一下标准输出流`stdout`。C语言标准库中提供了一个**用于刷新输出流**的函数：
+虽然本文主要是写输入流，但这里我还是掠过一下标准输出流`stdout`。C语言标准库中提供了一个**用于刷新输出流缓冲区**的函数：
 
 ```c
 int fflush( FILE *stream );
@@ -230,6 +232,36 @@ int main()
 
 因此，尽量避免`fflush(stdin)`这种写法，这**十分不利于代码的可移植性**。
 
+### 标准输入流stdin
+
+上面提到因为可移植性要避免`fflush(stdin)`这种写法，接下来记录一下可移植性高的写法。
+
+#### 接受格式化输入时去除多余空白符
+
+这一种其实用的比较少，但我觉得还是得记一下。
+
+> whitespace characters: any single whitespace character in the format string consumes all available consecutive whitespace characters from the input. Note that there is no difference between "\n", " ", "\t\t", or other whitespace in the format string.  
+
+上面这段解释来自于[cppreference](https://en.cppreference.com/w/c/io/fscanf)，也就是说，格式化字符串中的**空白符**（如`"\n"`, `" "`, `"\t\t"`）会吸收输入字符串中的**一段连续的空白符**。
+
+1.空格format(清除之前多余的空格)  
+2.%*[^\n]  
+3.getchar
+
+（什么时候能getchar得到EOF）
+
+
+## 总结
+
+之前浏览了很多相关文章，标题和内容大多都写着“清空输入缓冲区”。现在想一下，这样写可能是不对的，因为实际我清空的是**标准输入流**`stdin`中的残留内容。在**用户输入完成**（输入换行符）的那一刻，输入缓冲区实际上就**已经被清空**了。
+
+也就是说，**标准流**和对应的**缓冲区**要辨别清楚，二者不是同一个概念（一个`stream`一个`buffer`），千万不能混淆了。
+
+最后，感谢你看到这里~  
+本笔记可能还是有错误出现，也请各位多指教！
+
 ## 参考文献
 
 * [File input/output - cppreference.com](https://en.cppreference.com/w/c/io)  
+
+* [Clarify the difference between input/output stream and input/output buffer - StackOverflow](https://stackoverflow.com/questions/51458342/clarify-the-difference-between-input-output-stream-and-input-output-buffer)  
