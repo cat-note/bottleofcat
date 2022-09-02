@@ -1,4 +1,4 @@
-# 【题解】PTA基础6-7：统计某类完全平方
+# 【题解笔记】PTA基础6-7：统计某类完全平方
 
 题目地址：https://pintia.cn/problem-sets/14/problems/739  
 
