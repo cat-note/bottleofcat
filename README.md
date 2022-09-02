@@ -37,6 +37,12 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 8. [打印杨辉三角的Shell脚本](Linux/ShellScripts/PascalTriangle.sh) 
 9. [Linux课程设计(略赶工)](Linux/CourseProject)  
 
-在拆那就要说拆那话啊喂！ヽ(ｏ\`皿′ｏ)ﾉ   
+## 我的OJ错题本
 
-![](https://ae01.alicdn.com/kf/U74e1f2db572e49fb829c11596f3a6233T.jpg)  
+有些题过一段时间再写仍然会犯错，得时不时回顾一下。
+
+[OnlineJudge-Bookmarks](OnlineJudgeBookmarks.md)  
+
+🐟- - - - - - - - - - - - - - - -
+
+![SAKANA-2022-09-02](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/SAKANA-2022-09-02.gif)
