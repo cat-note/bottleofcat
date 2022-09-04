@@ -24,6 +24,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 11. [【动画笔记】辗转相除法——求最大公约数和最小公倍数](Algo/GCDandLCM.md)  
 12. [【小记】与指针和二维数组过几招](C-Cpp/PointersAnd2DArrays.md)  
 13. [【题解笔记】PTA基础6-7：统计某类完全平方](Algo/PerfectSquareWith2SameNumbers.md)  
+14. [【题解笔记】PTA基础6-10：阶乘计算升级版](Algo/BigNumberFactorial.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](Python/SimplePokerDistribution/poker.py)  
