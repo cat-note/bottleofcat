@@ -44,6 +44,8 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 
 [OnlineJudge-Bookmarks](OnlineJudgeBookmarks.md)  
 
-🐟- - - - - - - - - - - - - - - -
+🐟👋 - - - - - - - - - - - - - - - -
 
-![SAKANA-2022-09-02](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/SAKANA-2022-09-02.gif)
+![打瞌睡的凉-2022-10-13](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/%E6%89%93%E7%9E%8C%E7%9D%A1%E7%9A%84%E5%87%89-2022-10-13.gif)  
+
+
