@@ -49,7 +49,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 
 ### 咱的题解
 
-菜鸟级水平，仅供参考，爱来自些瓶❤。
+菜鸟级水平，仅供参考，爱来自一些瓶子❤。
 
 * [用C/C++写的](./Algo/code/C-Cpp/)  
 
