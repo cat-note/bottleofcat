@@ -39,11 +39,19 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 8. [打印杨辉三角的Shell脚本](Linux/ShellScripts/PascalTriangle.sh) 
 9. [Linux课程设计(略赶工)](Linux/CourseProject)  
 
-## 我的OJ错题本
+## OnlineJudge
+
+### 错题本
 
 有些题过一段时间再写仍然会犯错，得时不时回顾一下。
 
 [OnlineJudge-Bookmarks](OnlineJudgeBookmarks.md)  
+
+### 咱的题解
+
+菜鸟级水平，仅供参考，爱来自些瓶❤。
+
+* [C/C++写的](./Algo/code/C-Cpp/)  
 
 🐟👋 - - - - - - - - - - - - - - - -
 
