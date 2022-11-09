@@ -14,4 +14,5 @@
 |BASIC-3|[字母图形](http://lx.lanqiao.cn/problem.page?gpid=T7)|[BASIC-3.cpp](./BASIC-3.cpp)|√|利用字符ASCII码和一个偏移量解决|
 |BASIC-2|[01字串](http://lx.lanqiao.cn/problem.page?gpid=T6)|[BASIC-2.cpp](./BASIC-2.cpp)|√|模拟二进制数的递增，也可以直接for循环枚举|
 |BASIC-1|[闰年判断](http://lx.lanqiao.cn/problem.page?gpid=T5)|[BASIC-1.cpp](./BASIC-1.cpp)| |闰年：被100整除时必须要被400整除，其余情况被4整除的年份|
+|BASIC-04|[Fibonacci数列](http://lx.lanqiao.cn/problem.page?gpid=T4)|[BASIC-04.cpp](./BASIC-04.cpp)| √ |写的是斐波那契数列，实际上考察的是对取模的理解|
 
