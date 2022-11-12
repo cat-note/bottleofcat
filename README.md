@@ -41,11 +41,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 
 ## OnlineJudge
 
-### 错题本
-
-有些题过一段时间再写仍然会犯错，得时不时回顾一下。
-
-[OnlineJudge-Bookmarks](OnlineJudgeBookmarks.md)  
+做题虽好，但也不要忘记时常回顾一下哦~  
 
 ### 咱的题解
 
