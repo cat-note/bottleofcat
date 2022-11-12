@@ -17,4 +17,5 @@
 |BASIC-04|[Fibonacci数列](http://lx.lanqiao.cn/problem.page?gpid=T4)|[BASIC-04.cpp](./BASIC-04.cpp)| √ |写的是斐波那契数列，实际上考察的是对取模的理解|
 |BASIC-03|[圆的面积](http://lx.lanqiao.cn/problem.page?gpid=T3)|[BASIC-03.cpp](./BASIC-03.cpp)|  |一种圆周率的算法:`π≈arctan(1)*4`|  
 |BASIC-02|[序列求和](http://lx.lanqiao.cn/problem.page?gpid=T2)|[BASIC-02.cpp](./BASIC-02.cpp)|  |求和公式（等差数列）来处理大规模数值序列|  
+|BASIC-30|[阶乘计算](https://www.dotcpp.com/oj/problem1474.html)|[BASIC-30.cpp](./BASIC-30.cpp)|√|用数组存放大规模的结果，手动实现乘法和进位操作|
 

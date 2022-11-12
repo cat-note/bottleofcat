@@ -215,7 +215,7 @@ void Print_Factorial(const int N) {
 
 </details>
 
-### Accepted
+### Accepted的代码
 
 ```c
 void Print_Factorial(const int N) {
@@ -262,6 +262,56 @@ void Print_Factorial(const int N) {
     for (i = arrLen - 1; i >= 0; i--) {
         printf("%d", arr[i]);
     }
+}
+```
+
+### C++代码实现
+
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;                                   // 注意题目中说n为正整数，不用考虑0!的情况了
+    vector<short> result{1};                    // 用一个vector容器按**从低位到高位**的顺序储存结果每一位数字
+    int digitsNum = 1;                          // 储存位数，而不是老是用vector的size方法
+    for (int factor = 2; factor <= n; factor++) // 从2开始乘
+    {
+        int carry = 0;     // 进位数
+        int currDigit = 0; // 当前处理到的位数
+        do
+        {
+            int mulDigit = 0;
+            if (currDigit < digitsNum) // 不需要新增数位
+            {
+                mulDigit = result[currDigit] * factor; // 算出当前位乘上因子的结果
+            }
+            else
+            { // 新增一位（在进位的时候会发生这种情况）
+                result.push_back(0);
+                digitsNum++;
+            }
+            int newDigit = mulDigit % 10 + carry % 10; // 将carry的最低位加上上面结果(mulDigit)的最低位，得到当前位的新值
+            carry = carry / 10 + mulDigit / 10;        // 更新carry，除去最低位，并加上(multDigit)除最低位外的数
+            if (newDigit > 9)
+            {
+                // 进位后，新的一位又>9了，需要再进到高位
+                carry += newDigit / 10;
+                newDigit = newDigit % 10;
+            }
+            result[currDigit] = (short)newDigit;       // 更新当前位
+            currDigit++;                               // 处理下一位
+        } while (currDigit < digitsNum || carry != 0); // 位数没处理完，或者还有进位，循环就要继续
+    }
+    for (int i = digitsNum - 1; i >= 0; i--)
+    {
+        cout << result[i];
+    }
+    return 0;
 }
 ```
 
