@@ -19,4 +19,5 @@
 |BASIC-02|[序列求和](http://lx.lanqiao.cn/problem.page?gpid=T2)|[BASIC-02.cpp](./BASIC-02.cpp)|  |求和公式（等差数列）来处理大规模数值序列|  
 |BASIC-30|[阶乘计算](https://www.dotcpp.com/oj/problem1474.html)|[BASIC-30.cpp](./BASIC-30.cpp)|√|用数组存放大规模的结果，手动实现乘法和进位操作|
 |BASIC-29|[高精度加法](https://www.dotcpp.com/oj/problem1475.html)|[BASIC-29.cpp](./BASIC-29.cpp)| |类似`BASIC-30`，用数组存放结果，手动实现进位操作，比较有趣的是接受a,b数输入的方法|
+|BASIC-28|[Huffuman树](https://www.dotcpp.com/oj/problem1462.html)|[BASIC-28.cpp](./BASIC-28.cpp)|√|选择出数列中最小两个数的方法值得品味一下|
 
