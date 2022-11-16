@@ -66,7 +66,7 @@ int main()
     whiteColStatus.resize(n, false);        // 每一列目前没有棋，全是0
     blackColStatus.resize(n, false);
     blackDiagonalLBRT.resize(2 * n - 1, false); // 初始化斜线状态储存数组
-    blackDiagonalLTRB.resize(2 * n - 1, false); // 下面放置皇后的时候能发现下标最多到2n-2，因此数组要有2n-1这么大
+    blackDiagonalLTRB.resize(2 * n - 1, false); // 下面放置皇后的时候能发现下标最多到2n-2，因此数组要有2n-2+1 = 2n-1这么大
     whiteDiagonalLBRT.resize(2 * n - 1, false);
     whiteDiagonalLTRB.resize(2 * n - 1, false);
     for (int row = 0; row < n; row++)
