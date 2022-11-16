@@ -76,10 +76,10 @@ int placeBlackQueen(int currentRow)
             blackDiagonalLTRB[LTRBIndex] = true;          // 标记这根左上到右下的斜线放过了黑皇后
             solutions += placeBlackQueen(currentRow + 1); // 在当前状态下，下移一行(增加深度)，再继续遍历
             // 因为当前列下的遍历已经结束，接下来要向下推移一列继续遍历，需要回复到【遍历当前列之前的状态】
-            chessBoard[currentRow][col] = 1;     // 回溯：这一格没有放过黑皇后，可以放别的皇后
-            blackColStatus[col] = true;          // 回溯：标记这一列没有放过黑皇后
-            blackDiagonalLBRT[LBRTIndex] = true; // 回溯：标记这根左下到右上的斜线没有放过黑皇后
-            blackDiagonalLTRB[LTRBIndex] = true; // 回溯：标记这根左上到右下的斜线没有放过黑皇后
+            chessBoard[currentRow][col] = 1;      // 回溯：这一格没有放过黑皇后，可以放别的皇后
+            blackColStatus[col] = false;          // 回溯：标记这一列没有放过黑皇后
+            blackDiagonalLBRT[LBRTIndex] = false; // 回溯：标记这根左下到右上的斜线没有放过黑皇后
+            blackDiagonalLTRB[LTRBIndex] = false; // 回溯：标记这根左上到右下的斜线没有放过黑皇后
         }
     }
     return solutions;
@@ -108,14 +108,14 @@ int placeWhiteQueen(int currentRow)
         int LTRBIndex = currentRow - col + n - 1;
         if (chessBoard[currentRow][col] == 1 && !whiteColStatus[col] && !whiteDiagonalLBRT[LBRTIndex] && !whiteDiagonalLTRB[LTRBIndex])
         {
-            whiteColStatus[col] = true;                   // 标记这一列放过了黑皇后
-            whiteDiagonalLBRT[LBRTIndex] = true;          // 标记这根左下到右上的斜线放过了黑皇后
-            whiteDiagonalLTRB[LTRBIndex] = true;          // 标记这根左上到右下的斜线放过了黑皇后
+            whiteColStatus[col] = true;                   // 标记这一列放过了白皇后
+            whiteDiagonalLBRT[LBRTIndex] = true;          // 标记这根左下到右上的斜线放过了白皇后
+            whiteDiagonalLTRB[LTRBIndex] = true;          // 标记这根左上到右下的斜线放过了白皇后
             solutions += placeWhiteQueen(currentRow + 1); // 在当前状态下，下移一行(增加深度)，再继续遍历
             // 因为当前列下的遍历已经结束，接下来要向下推移一列继续遍历，需要回复到【遍历当前列之前的状态】
-            whiteColStatus[col] = true;          // 回溯：标记这一列没有放过黑皇后
-            whiteDiagonalLBRT[LBRTIndex] = true; // 回溯：标记这根左下到右上的斜线没有放过黑皇后
-            whiteDiagonalLTRB[LTRBIndex] = true; // 回溯：标记这根左上到右下的斜线没有放过黑皇后
+            whiteColStatus[col] = false;          // 回溯：标记这一列没有放过白皇后
+            whiteDiagonalLBRT[LBRTIndex] = false; // 回溯：标记这根左下到右上的斜线没有放过白皇后
+            whiteDiagonalLTRB[LTRBIndex] = false; // 回溯：标记这根左上到右下的斜线没有放过白皇后
         }
     }
     return solutions;
