@@ -47,7 +47,7 @@
 using namespace std;
 short n; // 棋盘有n×n个格子(n<=8)，用short完全没问题
 // 注意在C++11前，如果两个尖括号写在一起(>>)可能会被认为是移位运算而编译失败
-vector<vector<short>> chessBoard; // 象棋棋盘
+vector< vector<short> > chessBoard; // 象棋棋盘
 vector<bool> blackColStatus;      // 记录每一列是否已经放过黑皇后
 vector<bool> blackDiagonalLBRT;   // 记录从左下(LeftBottom)到右上(RightTop)的斜线是否放过黑皇后
 vector<bool> blackDiagonalLTRB;   // 记录从左上(LeftTop)到右下(RightBottom)的斜线是否放过黑皇后
