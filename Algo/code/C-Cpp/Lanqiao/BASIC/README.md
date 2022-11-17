@@ -22,5 +22,6 @@
 |BASIC-28|[Huffuman树](https://www.dotcpp.com/oj/problem1462.html)|[BASIC-28.cpp](./BASIC-28.cpp)|√|选择出数列中最小两个数的方法值得品味一下|
 |BASIC-27|[2n皇后问题](https://www.dotcpp.com/oj/problem1460.html)|[BASIC-27.cpp](./BASIC-27.cpp)|√√|采用`DFS`的思想枚举所有可行情况, 另外对斜线方向上的冲突判断值得玩味 |
 |BASIC-26|[报时助手](https://www.dotcpp.com/oj/problem1468.html)|[BASIC-26.cpp](./BASIC-26.cpp)| | 基本的转换和条件判断 |  
+|BASIC-25|[回形取数](https://www.dotcpp.com/oj/problem1465.html)|[BASIC-25.cpp](./BASIC-25.cpp)| | 从外环向内环，除最内环外，每环上的遍历要经过四个方向(四个`for`循环) |  
 
 
