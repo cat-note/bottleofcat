@@ -23,5 +23,6 @@
 |BASIC-27|[2n皇后问题](https://www.dotcpp.com/oj/problem1460.html)|[BASIC-27.cpp](./BASIC-27.cpp)|√√|采用`DFS`的思想枚举所有可行情况, 另外对斜线方向上的冲突判断值得玩味 |
 |BASIC-26|[报时助手](https://www.dotcpp.com/oj/problem1468.html)|[BASIC-26.cpp](./BASIC-26.cpp)| | 基本的转换和条件判断 |  
 |BASIC-25|[回形取数](https://www.dotcpp.com/oj/problem1465.html)|[BASIC-25.cpp](./BASIC-25.cpp)| | 从外环向内环，除最内环外，每环上的遍历要经过四个方向(四个`for`循环) |  
+|BASIC-24|[龟兔赛跑预测](https://www.dotcpp.com/oj/problem1476.html)|[BASIC-24.cpp](./BASIC-24.cpp)| | 数值规模不大，直接用一个循环模拟整个比赛过程即可 |  
 
 
