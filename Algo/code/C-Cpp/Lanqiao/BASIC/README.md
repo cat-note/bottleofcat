@@ -26,5 +26,6 @@
 |BASIC-24|[龟兔赛跑预测](https://www.dotcpp.com/oj/problem1476.html)|[BASIC-24.cpp](./BASIC-24.cpp)| | 数值规模不大，直接用一个循环模拟整个比赛过程即可 |  
 |BASIC-23|[芯片测试](https://www.dotcpp.com/oj/problem1473.html)|[BASIC-23.cpp](./BASIC-23.cpp)| | 抓住题目关键条件，利用数组统计结果 |   
 |BASIC-22|[FJ的字符串](https://www.dotcpp.com/oj/problem1461.html)|[BASIC-22.cpp](./BASIC-22.cpp)| | 观察规律，拼接字符串 |  
+|BASIC-21|[Sine之舞](https://www.dotcpp.com/oj/problem1463.html)|[BASIC-21.cpp](./BASIC-21.cpp)| | 观察规律，拼接字符串，同`BASIC-22`一样可以用非递归写法 |  
 
 
