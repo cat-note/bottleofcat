@@ -42,7 +42,7 @@ int main()
         scanf(" %c", &temp);
         myStr[i] = temp;
     }
-    // 纪录交换次数
+    // 记录交换次数
     int swapCount = 0;
     // 字符串中间的下标
     int middleInd = (strLen - 1) / 2;
@@ -50,18 +50,18 @@ int main()
     bool isOdd = strLen & 1;
     // 是否已经存在【落单】的字符，在回文串【长度为奇数】时，【有且只能】有一个落单字符
     bool hasAlone = false;
-    // symmetry指向【结果中】与【former指向的字符】对称的字符下标
+    // symmetry代表与【former指向的位置】对称的位置下标
     int symmetry = strLen - 1;
     // former指向一个字符，从0扫描到字符串【中间】
     for (int former = 0; former <= middleInd; former++)
     {
-        // latter指向另一个字符，从symmetry扫描到former指向的字符
+        // latter从symmetry扫描到former指向的字符，寻找【与former指向的字符相同的字符】
         for (int latter = symmetry; latter >= former; latter--)
         {
             if (latter == former)
             { // 注：只有当字符串为【奇数长度】时可能出现这种情况
                 // 如果latter和former指向的是同一个字符，说明这个字符【落单】了
-                if (isOdd && !hasAlone)
+                if (isOdd && !hasAlone) // 条件1：字符串为奇数串；条件2：这个字符是目前【首个出现】的落单字符
                 {
                     // 不用刻意移动这个字符，只需要把落单字符【移动到正中间的交换次数】加上即可
                     // 结果只需要一个数字罢了
@@ -69,13 +69,14 @@ int main()
                 }
                 else
                 {
+                    // 奇数长的字符串中出现了超过一个落单字符，或偶数长的字符串中出现了落单字符串，不可能形成回文串
                     printf("Impossible");
                     return 0;
                 }
             }
-            else if (myStr[latter] == myStr[former]) // 如果找到了相同的字符
+            else if (myStr[latter] == myStr[former]) // latter找到了和former相同的字符
             {
-                // latter和former不是同一个字符，就把latter指向的字符移动到和former对称的symmetry处
+                // 把latter指向的字符交换到和former对称的symmetry处
                 for (; latter < symmetry; latter++)
                 {
                     char temp = myStr[latter + 1];
@@ -83,7 +84,7 @@ int main()
                     myStr[latter] = temp;
                     swapCount++;
                 }
-                symmetry--; // 这个时候才前移与former对称的下标，这样可以【暂且忽视落单的字符】
+                symmetry--; // 这个时候才前移与former对称的下标，这样可以巧妙避免【落单的字符】的影响
                 break;
             }
         }
@@ -196,7 +197,6 @@ int main()
         围绕这三点，算法怎么写就显而易见了~
             - SomeBottle 2022.11.23
 */
-
 
 /*
     这题我自己想的几个测试用例：
