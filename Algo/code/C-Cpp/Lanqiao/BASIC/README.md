@@ -28,6 +28,6 @@
 |BASIC-22|[FJ的字符串](https://www.dotcpp.com/oj/problem1461.html)|[BASIC-22.cpp](./BASIC-22.cpp)| | 观察规律，拼接字符串 |  
 |BASIC-21|[Sine之舞](https://www.dotcpp.com/oj/problem1463.html)|[BASIC-21.cpp](./BASIC-21.cpp)| | 观察规律，拼接字符串，同`BASIC-22`一样可以用非递归写法 |  
 |BASIC-20|[数的读法](https://www.dotcpp.com/oj/problem1469.html)|[BASIC-20.cpp](./BASIC-20.cpp)| √ | 以字符的方式处理数字。用拼音读出数字的逻辑判断值得玩味，顺带能复习一下小学数学 |  
-|BASIC-19|[数的读法](https://www.dotcpp.com/oj/problem1467.html)|[BASIC-19.cpp](./BASIC-19.cpp)| √√ | 贪心策略解题，采用双指针“夹击式”扫描**成对**的字符 |  
+|BASIC-19|[完美的代价](https://www.dotcpp.com/oj/problem1467.html)|[BASIC-19.cpp](./BASIC-19.cpp)| √√ | 贪心策略解题，采用双指针“夹击式”扫描**成对**的字符 |  
 
 
