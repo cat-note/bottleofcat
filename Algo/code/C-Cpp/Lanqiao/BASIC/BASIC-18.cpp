@@ -38,11 +38,11 @@ int main()
     }
     else
     {
-        double middleLeft = xLeft1 > xLeft2 ? xLeft1 : xLeft2;
-        double middleRight = xRight1 < xRight2 ? xRight1 : xRight2;
-        double middleTop = yTop1 < yTop2 ? yTop1 : yTop2;
-        double middleBottom = yBottom1 > yBottom2 ? yBottom1 : yBottom2;
-        double area = (middleRight - middleLeft) * (middleTop - middleBottom);
+        double midLeft = xLeft1 > xLeft2 ? xLeft1 : xLeft2;           // 相交部分左边界的x坐标
+        double midRight = xRight1 < xRight2 ? xRight1 : xRight2;      // 相交部分右边界的x坐标
+        double midTop = yTop1 < yTop2 ? yTop1 : yTop2;                // 相交部分上边界的y坐标
+        double midBottom = yBottom1 > yBottom2 ? yBottom1 : yBottom2; // 相交部分下边界的y坐标
+        double area = (midRight - midLeft) * (midTop - midBottom);    // 算出相交部分的面积
         printf("%.2lf", area);
     }
     return 0;
@@ -71,11 +71,43 @@ void swapper(double &x1, double &x2)
         - 可以发现，xLeft可以代表【矩形的左边】，xRight代表【矩形的右边】，而yTop和yBottom则分别代表矩形的【上边和下边】
     在【矩形相交】的前提下，主要情况可以归纳成如下两种：
 
-         ┌──────────┐ 
-         │      ↓   │
-         │    → ┏━━━╅────────────────┐
-         └──────╄━━━┛ ← middleBottom │
-                │   ↑                │
-                │ middleRight        │
-                └────────────────────┘
+        1. 部分相交
+         ┌────────────────┐
+         │       midLeft  │
+         │          ↓     │
+         │  midTop →┏━━━━━╅─────────────┐
+         └──────────╄━━━━━┛← midBottom  │
+                    │     ↑             │
+                    │ midRight          │
+                    └───────────────────┘
+        2. 包含
+          ┌──────────────────────────────────────┐
+          │           midLeft                    │
+          │              ↓                       │
+          │              ┏━━━━━━━━━━┓← midTop    │
+          │              ┃          ┃            │
+          │              ┃          ┃            │
+          │   midBottom →┗━━━━━━━━━━┛            │
+          │                         ↑            │
+          │                     midRight         │
+          │                                      │
+          └──────────────────────────────────────┘
+    可以发现，无论是部分相交，还是一个矩形包含另一个，相交形成的矩形区域中我们关心的只是：
+        - 左边界的x坐标midLeft
+        - 右边界的x坐标midRight
+        - 上边界的y坐标midTop
+        - 下边界的y坐标midBottom
+    其中：
+        - midLeft可以从两个矩形的左边界中【选一个最大的】
+        - midRight可以从两个矩形的右边界中【选一个最小的】
+            * 因为对每个矩形来说恒有xLeft<xRight(左边界x坐标<右边界的)，所以可以保证midLeft < midRight
+        - midTop则可以从两个矩形的上边界中【选一个最小的】
+        - midBottom则可以从两个矩形的下边界中【选一个最大的】
+            * 因为对每个矩形来说恒有yBottom<yTop(下边界y坐标<上边界的)，所以可以保证midBottom < midTop
+
+    最后，midRight-midLeft得到相交部分的【长度】，而midTop-midBottom得到相交部分的【高度】，长度×高度则得出面积
+
+    吐槽：这道题在DotCpp上标注为了入门题，但我前几次的题解都没AC。看了一眼DotCpp上的统计，通过率只有30%。这波啊，是入门劝退题！
+
+            - SomeBottle2022.11.25
 */

@@ -46,7 +46,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 ### 咱的题解
 
 菜鸟级水平，仅供参考，爱来自一些瓶子❤。  
-为了日后复习，注释我尽量写详细了~
+为了日后复习，代码注释我尽量写详细了~
 
 * [用C/C++写的](./Algo/code/C-Cpp/)  
 
