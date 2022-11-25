@@ -30,5 +30,6 @@
 |BASIC-20|[数的读法](https://www.dotcpp.com/oj/problem1469.html)|[BASIC-20.cpp](./BASIC-20.cpp)| √ | 以字符的方式处理数字。用拼音读出数字的逻辑判断值得玩味，顺带能复习一下小学数学 |  
 |BASIC-19|[完美的代价](https://www.dotcpp.com/oj/problem1467.html)|[BASIC-19.cpp](./BASIC-19.cpp)| √√ | 贪心策略解题，采用双指针“夹击式”扫描**成对**的字符 |  
 |BASIC-18|[矩形面积交](https://www.dotcpp.com/oj/problem1471.html)|[BASIC-18.cpp](./BASIC-18.cpp)| √ | 观察**大小关系**，巧妙地通过几次比较来解题。 |  
+|BASIC-17|[矩阵乘法](https://www.dotcpp.com/oj/problem1472.html)|[BASIC-17.cpp](./BASIC-17.cpp)| 0.5√ | 主要考察对**矩阵乘法**和**矩阵0次幂**的掌握，用循环和二维数组解决。循环写起来可能有点令人眼花缭乱，矩阵的乘法值得复习 |  
 
 
