@@ -34,7 +34,7 @@ int main()
     short order; // 矩阵阶数
     short power; // 要求矩阵的多少次幂
     cin >> order >> power;
-    vector<vector<short>> initMatrix(order, vector<short>(order)); // 最初的N*N矩阵，vector存储列向量
+    vector< vector<short> > initMatrix(order, vector<short>(order)); // 最初的N*N矩阵，vector存储列向量
     vector<long *> resultMatrix(order);                            // 最终要输出的结果矩阵，vector存储行向量
     for (short i = 0; i < order; i++)
     {
