@@ -25,7 +25,13 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 12. [【小记】与指针和二维数组过几招](C-Cpp/PointersAnd2DArrays.md)  
 13. [【题解笔记】PTA基础6-7：统计某类完全平方](Algo/PerfectSquareWith2SameNumbers.md)  
 14. [【题解笔记】PTA基础6-10：阶乘计算升级版](Algo/BigNumberFactorial.md)  
-15. [【小记】二八十十六，进制团团转](Algo/ConversionOfNumberSystems.md)    
+15. [【小记】二八十十六，进制团团转](Algo/ConversionOfNumberSystems.md)   
+
+## Doodle
+
+这一部分是随意笔记，随缘更新~  
+
+0. [【记忆用】算法常用数学公式/方法 ](./Doodle/commonMathFormulasWithAlgo.md)  
 
 ## Experimental  
 0. [Python简单多方法实现扑克牌随机分发](Python/SimplePokerDistribution/poker.py)  
