@@ -32,6 +32,6 @@
 |BASIC-18|[矩形面积交](https://www.dotcpp.com/oj/problem1471.html)|[BASIC-18.cpp](./BASIC-18.cpp)| √ | 观察**大小关系**，巧妙地通过几次比较来解题。 |  
 |BASIC-17|[矩阵乘法](https://www.dotcpp.com/oj/problem1472.html)|[BASIC-17.cpp](./BASIC-17.cpp)| 0.5√ | 主要考察对**矩阵乘法**和**矩阵0次幂**的掌握，用循环和二维数组解决。循环写起来可能有点令人眼花缭乱，但矩阵的乘法值得复习 |  
 |BASIC-16|[分解质因数](https://www.dotcpp.com/oj/problem1464.html)|[BASIC-16.cpp](./BASIC-16.cpp)|   | 主要考察对**质数**(素数)的判断。将一个数分解为**多个质数相乘**的形式。 |  
-|BASIC-15|[字符串对比](https://www.dotcpp.com/oj/problem1466.html)|[BASIC-15.cpp](./BASIC-15.cpp)|   | 简单的字符串比较逻辑 |  
+|BASIC-15|[字符串对比](https://www.dotcpp.com/oj/problem1466.html)|[BASIC-15.cpp](./BASIC-15.cpp)|   | 简单的字符串比较逻辑。`ASCII`码中**同一**字母的不同大小写的**十进制**码值相差`32`，比如`'a'-32='A'` |  
 
 
