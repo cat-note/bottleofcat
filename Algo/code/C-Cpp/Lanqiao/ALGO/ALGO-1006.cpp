@@ -69,7 +69,7 @@ int main()
     数组元素的含义
         coinMap[row][col] 代表【从最左上角(0,0)】走到(row,col)这一格，【一共能积攒coinMap[row][col]个金币】。
 
-    元素之间的关系
+    元素之间的关系(建立状态转移方程)
         1. 对于首行元素有 coinMap[0][col]=coinMap[0][col]+coinMap[0][col-1]
             ( 因为在首行只能向右走，在(0,col)处已经积攒的金币数=(0,col)处的初始值+(0,col-1)的金币数 )
             (注意，col>0时此式才有效)
