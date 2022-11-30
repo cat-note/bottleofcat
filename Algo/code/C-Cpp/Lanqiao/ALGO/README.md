@@ -3,4 +3,6 @@
 | 题目编号 | 题目 | 我的题解 | 值得玩味 |备注|
 |:---:|:---:|:---:|:---:|:---:|
 |ALGO-1007|[印章](https://lx.lanqiao.cn/problem.page?gpid=T3002)|[ALGO-1007.cpp](./ALGO-1007.cpp)| √ | DP(动态规划)入门题，咱也是第一次接触。这题我用了递归写法 |  
-|ALGO-1006|[拿金币](https://lx.lanqiao.cn/problem.page?gpid=T3000)|[ALGO-1006.cpp](./ALGO-1006.cpp)|  | DP(动态规划)入门题，这题适合非递归写法 |  
+|ALGO-1006|[拿金币](https://lx.lanqiao.cn/problem.page?gpid=T3000)|[ALGO-1006.cpp](./ALGO-1006.cpp)| √ | DP(动态规划)入门题，这题适合非递归写法 |  
+|ALGO-123|[A+B problem](https://www.dotcpp.com/oj/problem1586.html)|[ALGO-123.cpp](./ALGO-123.cpp)|  | 经典入门题。 |
+|ALGO-107|[链表数据求和操作](https://www.dotcpp.com/oj/problem1585.html)|[ALGO-107.cpp](./ALGO-107.cpp)|  | 链表简单操作。另外复习复数的加减。 |
