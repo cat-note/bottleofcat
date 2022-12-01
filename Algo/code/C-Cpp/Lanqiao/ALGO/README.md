@@ -7,3 +7,4 @@
 |ALGO-123|[A+B problem](https://www.dotcpp.com/oj/problem1586.html)|[ALGO-123.cpp](./ALGO-123.cpp)|  | 经典入门题。 |
 |ALGO-107|[链表数据求和操作](https://www.dotcpp.com/oj/problem1585.html)|[ALGO-107.cpp](./ALGO-107.cpp)|  | 链表简单操作。另外复习复数的加减。 |
 |ALGO-106|[判定字符位置](https://www.dotcpp.com/oj/problem1584.html)|[ALGO-106.cpp](./ALGO-106.cpp)|  | 简单的字符查找。空间换时间也挺不错的 |
+|ALGO-140|[提货单](https://www.dotcpp.com/oj/problem1597.html)|[ALGO-140.cpp](./ALGO-140.cpp)|  | 简单求和 |
