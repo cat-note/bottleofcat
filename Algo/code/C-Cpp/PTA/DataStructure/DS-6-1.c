@@ -1,3 +1,20 @@
+/*
+本题要求实现一个函数，将给定的单链表逆转。
+List Reverse( List L );
+
+输入样例
+    5
+    1 3 4 5 2
+输出样例
+    1
+    2 5 4 3 1
+代码长度限制
+    16 KB
+时间限制
+    400 ms
+内存限制
+    64 MB
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
