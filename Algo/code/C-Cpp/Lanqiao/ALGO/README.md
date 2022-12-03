@@ -9,3 +9,4 @@
 |ALGO-106|[判定字符位置](https://www.dotcpp.com/oj/problem1584.html)|[ALGO-106.cpp](./ALGO-106.cpp)|  | 简单的字符查找。空间换时间也挺不错的 |
 |ALGO-140|[提货单](https://www.dotcpp.com/oj/problem1597.html)|[ALGO-140.cpp](./ALGO-140.cpp)|  | 简单求和 |
 |ALGO-141|[学生成绩](https://www.dotcpp.com/oj/problem1598.html)|[ALGO-141.cpp](./ALGO-141.cpp)| 0.5√ | 复习基础算法**冒泡排序**。不停地交换相邻元素以达到排序目的。 |
+|ALGO-139|[s01串](https://www.dotcpp.com/oj/problem1600.html)|[ALGO-139.cpp](./ALGO-139.cpp)|  | 简单的字符串处理 |
