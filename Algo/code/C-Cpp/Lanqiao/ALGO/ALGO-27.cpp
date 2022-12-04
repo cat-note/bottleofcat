@@ -55,7 +55,7 @@ int main()
     root->right = NULL;
     root->type = typeOf(zeroOne); // 得到字串的类型
     treeGrow(root, zeroOne);      // 树生长
-    traverse(root);               // 后序(postOrder)1000遍历树
+    traverse(root);               // 后序(Post Order)遍历树
     return 0;
 }
 /**
