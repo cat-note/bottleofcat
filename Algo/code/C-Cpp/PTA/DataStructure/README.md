@@ -8,4 +8,5 @@
 |6-2|[顺序表操作集](https://pintia.cn/problem-sets/15/exam/problems/725)|[DS-6-2.c](./DS-6-2.c)| 数据结构顺序表的基本四类操作 | 进行删除和插入操作时注意**操作位置P**是否合法。在进行删除、插入操作后不要忘了改变指向最后元素下标的变量Last |
 |6-3|[求链式表的表长](https://pintia.cn/problem-sets/15/exam/problems/726)|[DS-6-3.c](./DS-6-3.c)| 遍历链表进行计数 | 无 |
 |6-4|[链式表的按序号查找](https://pintia.cn/problem-sets/15/exam/problems/727)|[DS-6-4.c](./DS-6-4.c)| 遍历链表找到对应序号的元素 | 无 |
-|6-5|[链式表操作集](https://pintia.cn/problem-sets/15/exam/problems/728)|[DS-6-5.c](./DS-6-5.c)| 针对链表的增删查操作 | 注意**表头**的变动，也不要忘了操作位置的前一个节点 |
+|6-5|[链式表操作集](https://pintia.cn/problem-sets/15/exam/problems/728)|[DS-6-5.c](./DS-6-5.c)| 针对链表的增删查操作 | 注意**表头指针**的变动，也不要忘了操作位置的前一个节点 |
+|6-6|[带头结点的链式表操作集](https://pintia.cn/problem-sets/15/exam/problems/729)|[DS-6-6.c](./DS-6-6.c)| 针对链表的增删查操作(带头节点) | 注意循环终止条件的写法。 |
