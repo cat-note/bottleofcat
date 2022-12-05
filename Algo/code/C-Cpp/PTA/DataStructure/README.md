@@ -9,3 +9,4 @@
 |6-5|[链式表操作集](https://pintia.cn/problem-sets/15/exam/problems/728)|[DS-6-5.c](./DS-6-5.c)| 针对链表的增删查操作 | 注意**表头指针**的变动，也不要忘了操作位置的前一个节点 |
 |6-6|[带头结点的链式表操作集](https://pintia.cn/problem-sets/15/exam/problems/729)|[DS-6-6.c](./DS-6-6.c)| 针对链表的增删查操作(带头节点) | 注意循环终止条件的写法。 |
 |6-7|[在一个数组中实现两个堆栈](https://pintia.cn/problem-sets/15/exam/problems/730)|[DS-6-7.c](./DS-6-7.c)| 两个栈的栈顶下标移动方向相反 | PTA的裁判程序要求**栈顶下标**必须是对应**栈顶元素**的。 |
+|6-8|[求二叉树高度](https://pintia.cn/problem-sets/15/exam/problems/731)|[DS-6-8.c](./DS-6-8.c)| 递归遍历二叉树，采用贪心策略，每次都找**最高的子树**的高度进行累积。 | 无 |
