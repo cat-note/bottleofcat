@@ -12,3 +12,4 @@
 |6-8|[求二叉树高度](https://pintia.cn/problem-sets/15/exam/problems/731)|[DS-6-8.c](./DS-6-8.c)| 递归遍历二叉树，采用贪心策略，每次都找**最高的子树**的高度进行累积。 | 无 |
 |6-9|[二叉树的遍历](https://pintia.cn/problem-sets/15/exam/problems/732)|[DS-6-9.c](./DS-6-9.c)| 二叉树的几种基本遍历方法，前中后序遍历是**DFS**，而层序遍历是**BFS** | 无 |
 |6-10|[二分查找](https://pintia.cn/problem-sets/15/exam/problems/923)|[DS-6-10.c](./DS-6-10.c)| 二分查找顺序表(数组) | 注意本题元素是从下标1开始储存的 |
+|6-11|[先序输出叶结点](https://pintia.cn/problem-sets/15/exam/problems/925)|[DS-6-11.c](./DS-6-11.c)| 先序遍历二叉树，输出所有叶节点 | 无 |
