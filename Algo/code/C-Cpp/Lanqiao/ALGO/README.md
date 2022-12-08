@@ -11,3 +11,4 @@
 |ALGO-141|[学生成绩](https://www.dotcpp.com/oj/problem1598.html)|[ALGO-141.cpp](./ALGO-141.cpp)| 0.5√ | 复习基础算法**冒泡排序**。不停地交换相邻元素以达到排序目的。 |
 |ALGO-139|[s01串](https://www.dotcpp.com/oj/problem1600.html)|[ALGO-139.cpp](./ALGO-139.cpp)|  | 简单的字符串处理 |
 |ALGO-27|[FBI树](https://www.dotcpp.com/oj/problem1592.html)|[ALGO-27.cpp](./ALGO-27.cpp)|  | **满二叉树**的生成与**后序遍历** |
+|ALGO-83|[阶乘](https://www.dotcpp.com/oj/problem1604.html)|[ALGO-83.cpp](./ALGO-83.cpp)| √ | 找阶乘结果低位的首个非零数，不妨**让阶乘过程中低位始终不出现0**。实现方法是剥去**每个乘数**中的**因数2**和**因数5**（因为10的质因数是2和5）。当然，最后还需要**还原**阶乘结果。 |

@@ -1,19 +1,106 @@
+/*
+蓝桥杯算法训练VIP-阶乘
+时间限制: 1s 内存限制: 128MB
+
+一个整数n的阶乘可以写成n!，它表示从1到n这n个整数的乘积。阶乘的增长速度非常快，例如，13!就已经比较大了，已经无法存放在一个整型变量  中；而35!就更大了，它已经无法存放在一个浮点型变量中。因此，当n比较大时，去计算n!是非常困难的。幸运的是，在本题中，我们的任务不是去计算  n!，而是去计算n!最右边的那个非0的数字是多少。例如，5! = 1*2*3*4*5 = 120，因此5!最右边的那个非0的数字是2。再如：7! = 5040，因此7!最右边的那个非0的数字是4。请编写一个程序，输入一个整数n(n< =100)，然后输出n!  最右边的那个非0的数字是多少。
+
+输入格式
+    输入只有一个整数n。
+输出格式
+    输出只有一个整数，即n!最右边的那个非0的数字。
+样例输入
+    6
+样例输出
+    2
+*/
 #include <iostream>
 
 using namespace std;
+
+void power(int &firstNonZero, int radix, int exp);
 
 int main()
 {
     int N;
     cin >> N;
-    int firstNonZero = N;            // 目前的【右边的第一个非零位】
-    for (int i = N - 1; i >= 1; i--) // 阶乘过程
+    int firstNonZero = 1; // 目前的【右边的第一个非零位】的数
+    int factor2Num = 0;   // 记录【10的因数】2和5出现的次数
+    int factor5Num = 0;
+    for (int i = 2; i <= N; i++) // 阶乘过程
     {
-        int result = firstNonZero * i;
-        while (result % 10 == 0)
-            result /= 10;
-        firstNonZero = result % 100;
+        int factor = i;
+        while (factor % 2 == 0) // 当前乘的因子可以拆解出【10的因数2】
+        {
+            factor /= 2; // 移除因数2的成分
+            factor2Num++;
+        }
+        while (factor % 5 == 0) // 当前乘的因子可以拆解出【10的因数5】
+        {
+            factor /= 5; // 移除因数5的成分
+            factor5Num++;
+        }
+        // 在移除了2和5这两个因数的成分后，乘出来的最低位必不可能为0
+        firstNonZero *= factor;
+        firstNonZero %= 10; // 只保留最低位
     }
-    cout << firstNonZero % 10;
+    // 最后处理因数2和5
+    // 如果因数2的数量factor2Num>因数5的数量factor5Num，多出来的(factor2Num - factor5Num)个因数2要【乘回去】
+    // 如果因数5的数量factor5Num>因数2的数量factor2Num，多出来的(factor5Num - factor2Num)个因数5要【乘回去】
+    // 为什么要这样？比如有 n+1 个 2 和 n 个 5，得出的结果是(10的n次方)*2，而我们要忽略尾部的0(也就是10)，因此这里只需要乘1个2即可
+    // 这一步是为了还原阶乘结果
+    if (factor2Num > factor5Num)
+        power(firstNonZero, 2, factor2Num - factor5Num);
+    else
+        power(firstNonZero, 5, factor5Num - factor2Num);
+    cout << firstNonZero;
     return 0;
 }
+
+/**
+ * @brief 计算将firstNonZero乘上 radix^exp的值，firstNonZero始终只有一位
+ *
+ * @param firstNonZero 阶乘结果中右边的第一个非零位的数
+ * @param radix 底数
+ * @param exp 指数
+ */
+void power(int &firstNonZero, int radix, int exp)
+{
+    for (int i = 0; i < exp; i++)
+    {
+        firstNonZero *= radix;
+        if (firstNonZero > 9) // 保持firstNonZero只有一位
+            firstNonZero %= 10;
+    }
+}
+
+/*
+    这题的重中之重是: 为什么阶乘过程中会在低位出现0？
+
+    可以确定的是，阶乘结果中末尾有n个0，就代表10的n次方，也就是n个10相乘
+
+    没错，把结果除以这10的n次方后，剩余数值的个位就是我们想要的结果。
+        比如:
+            10! = 3628800
+            3628800 / 1e+2 = 36288
+            此时的个位8就是我们想要的结果。
+
+    然而阶乘的数值增长是非常快的，很快便无法用C++中任何一种数据类型进行储存，因此我们需要【在过程中解决这个问题】。
+
+    ---------------------
+    💡 解决方法: 只要让阶乘过程中【不可能乘出来10的倍数】即可。
+
+    10除了1和其本身外只有两个因数2和5，也就是说:
+        1. 只要【没有2和5的倍数】，就【不可能形成10的倍数】，不可能形成10也就是说阶乘结果低位【不可能有0】。
+
+            - 要实现这一点，只需要在阶乘过程中让【当前乘数】没有因数2和5即可（具体实现看上面代码）
+            - 因为【当前乘数】没有因数2和5，因此结果怎么算都【不可能在低位出现0】，因此【运算结果只用保留最低位(个位)】。
+
+        2. 在上面这一步从阶乘的每个乘数中移除了因数2和5，这一步需要【还原阶乘】结果。
+            - 虽然是还原，但并不是把所有的因数2和5都乘回去，因为相同数量的因数2和相同数量因数5相乘能得到10的相同数量次方，这是我们需要舍去掉的。
+                比如：
+                    a. 有n+3个因数2，有n个因数5，只需要在结果上乘以3个因数2即可还原。
+                    b. 有n个因数2，有n+3个因数5，只需要在结果上乘以3个因数5即可还原
+                (这个过程中运算结果只需要保留最低位(个位)，因为结果低位不可能有0出现)
+
+        - SomeBottle 2022.12.8
+*/
