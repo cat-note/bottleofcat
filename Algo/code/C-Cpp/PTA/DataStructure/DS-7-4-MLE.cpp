@@ -1,4 +1,4 @@
-// 这种写法内存超限(MLE)
+// 这种写法可以正确判断，但内存超限(MLE)
 #include <iostream>
 
 using namespace std;
