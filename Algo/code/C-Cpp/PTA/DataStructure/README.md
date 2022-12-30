@@ -28,4 +28,5 @@
 |7-2|[一元多项式的乘法与加法运算](https://pintia.cn/problem-sets/15/exam/problems/710)|[DS-7-2.cpp](./DS-7-2.cpp)| 多项式乘法的结果中的项要按指数降序排列。加法得益于输入项是按指数降序排列的，可以用两个指针来寻找同类项。 | 0.5√ |
 |7-3|[树的同构](https://pintia.cn/problem-sets/15/exam/problems/711)|[DS-7-3.cpp](./DS-7-3.cpp)| 采用**DFS**思想，同时遍历两棵树，比对每个子树根节点下的左孩子和右孩子，必要时**交换**后再比对 |  |
 |7-4|[是否同一棵二叉搜索树](https://pintia.cn/problem-sets/15/exam/problems/712)|AC: [DS-7-4.cpp](./DS-7-4.cpp) <br> MLE: [DS-7-4-MLE.cpp](./DS-7-4-MLE.cpp)| 树的每个结点中**新增一个标记位**，通过标记位实现两棵树的比较。在每次比较过后，所有标记位要**归位**为0 | √ |
+|7-5|[堆中的路径](https://pintia.cn/problem-sets/15/exam/problems/713)|AC: [DS-7-5.cpp](./DS-7-5.cpp) <br> 自下而上建堆: [DS-7-5-SiftDown.cpp](./DS-7-5-SiftDown.cpp)| 要AC的话得采用**自顶向下**建堆法，具体实现是对每个**插入尾部**的节点进行**上滤**操作 |  |
 
