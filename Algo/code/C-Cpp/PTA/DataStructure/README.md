@@ -30,4 +30,5 @@
 |7-4|[是否同一棵二叉搜索树](https://pintia.cn/problem-sets/15/exam/problems/712)|AC: [DS-7-4.cpp](./DS-7-4.cpp) <br> MLE: [DS-7-4-MLE.cpp](./DS-7-4-MLE.cpp)| 树的每个结点中**新增一个标记位**，通过标记位实现两棵树的比较。在每次比较过后，所有标记位要**归位**为0 | √ |
 |7-5|[堆中的路径](https://pintia.cn/problem-sets/15/exam/problems/713)|AC: [DS-7-5.cpp](./DS-7-5.cpp) <br> 自下而上建堆: [DS-7-5-SiftDown.cpp](./DS-7-5-SiftDown.cpp)| 要AC的话得采用**自顶向下**建堆法，具体实现是对每个**插入尾部**的节点进行**上滤**操作 |  |
 |7-6|[列出连通集](https://pintia.cn/problem-sets/15/exam/problems/714)| [DS-7-6.cpp](./DS-7-6.cpp)| 考察**无向图的储存**，以及图的**DFS**,**BFS**遍历 |  |
+|7-7|[六度空间](https://pintia.cn/problem-sets/15/exam/problems/715)| [DS-7-7.cpp](./DS-7-7.cpp)| 采用**无向图**的**BFS**遍历，值得玩味的地方在于**记录每个顶点所在层数** | 0.5√ |
 
