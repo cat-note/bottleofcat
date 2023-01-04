@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-// 100个顶点的完全图也只有4950条边，设置INF为1e+5
+// 设置无穷INF为1e+5
 #define INF 1e+5
 // 因为本题中路径权重全为非负，这里定义未知UNK为-1
 using namespace std;

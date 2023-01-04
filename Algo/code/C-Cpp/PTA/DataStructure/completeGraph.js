@@ -7,7 +7,7 @@
 
 	SomeBottle 2023.1.4
 */
-const { appendFileSync, rmSync } = require('fs');
+const { appendFileSync, rmSync, existsSync } = require('fs');
 const FILE_NAME = "./testdata.txt";
 const args = process.argv.slice(2);
 const vertexNum = parseInt(args[0]);
@@ -15,7 +15,8 @@ if (isNaN(vertexNum)) {
 	console.log("Invalid vertex num");
 	process.exit(1);
 }
-rmSync(FILE_NAME);
+if (existsSync(FILE_NAME))
+	rmSync(FILE_NAME);
 let generate = () => {
 	let result = '';
 	let cnt = 0;
