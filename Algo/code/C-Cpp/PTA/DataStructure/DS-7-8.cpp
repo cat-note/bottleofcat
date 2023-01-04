@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <queue>
+
 // 100个顶点的完全图也只有4950条边，设置INF为1e+5
 #define INF 1e+5
-#define UNK -1
 // 因为本题中路径权重全为非负，这里定义未知UNK为-1
 using namespace std;
 
@@ -11,13 +10,11 @@ typedef vector<vector<int>> Graph;
 // 储存顶点及到这个顶点的最短路径的结构体
 struct CostOfV
 {
-    int index;    // 顶点下标(从0开始)
     int cost;     // 路径长度
     bool success; // 是否能变成所有动物(图是否连通)
 };
 typedef struct CostOfV *VCost;
 // 初始化图，本题用到的是无向图，因为魔咒正反念可以让动物互相转换
-// 对角线G[i][i]用于标记顶点i是否被访问过
 Graph G;
 int animalNum, magicNum; // 动物总数, 魔咒总数
 
@@ -32,7 +29,7 @@ int main()
     // 初始化图
     G.resize(animalNum);
     for (int i = 0; i < animalNum; i++)
-        G[i].resize(animalNum, 0); // 0代表无边连接
+        G[i].resize(animalNum, INF); // INF代表无边连接
     // 往图中加入边
     for (int i = 0; i < magicNum; i++)
     {
@@ -46,12 +43,12 @@ int main()
           - 找到一个顶点Vd，它距离顶点V的路径长度是【所有最短路径】中最长的
           - 设从这个【顶点V】出发到【顶点Vd】的
                 * 也就是单次遍历中的最长路径
-          - 从图中找到这个顶点V，使得V和Vd的路径最短
+          - 从图中找到这个顶点V，使得V和Vd的路径最短 -> Dijkstra算法
        只带1只动物不可能完成所有变形要求的情况是：
           - 图是【非连通图】
     */
-    int optimalV = UNK;    // 结果顶点
-    int optimalCost = UNK; // 结果路径长
+    int optimalV = -1;     // 结果顶点
+    int optimalCost = INF; // 结果路径长
     // 对每个顶点进行Dijkstra算法
     for (int i = 0; i < animalNum; i++)
     {
@@ -63,11 +60,10 @@ int main()
             cout << "0"; // 输出0
             return 0;
         }
-        // printf("READ VERTEX:%d MIN-COST:%d\n", result->index + 1, result->cost);
         //  如果【图中最长魔咒】可以更短，就更新
-        if (optimalCost == UNK || result->cost < optimalCost)
+        if (result->cost < optimalCost)
         {
-            optimalV = result->index;
+            optimalV = i; // 记录顶点下标
             optimalCost = result->cost;
         }
         delete result; // 释放内存
@@ -87,74 +83,133 @@ void AddEdge(int v1, int v2, int magicLen)
     G[v2 - 1][v1 - 1] = magicLen;
 }
 
-// 从v0顶点(下标从0开始)执行迪杰斯特拉算法
+// 从v0顶点(下标从0开始)执行迪杰斯特拉算法(简化暴力版，没有路径path, 只求距离distance)
 // 返回所有距v0最短路径中最长的一条路径及其对应的顶点
 VCost Dijkstra(int v0)
 {
-    // printf("-------------------\n");
     VCost result = new CostOfV(); // 返回值
-    result->index = UNK;          // 尚无顶点
+    result->cost = -1;            // 尚无最长距离
     result->success = true;       // 默认图连通
-    // Dijkstra是基于BFS的，一样需要队列
-    queue<int> vQueue;
-    // 这里我用邻接矩阵对角线G[i][i]来标记i顶点是否被访问
-    // 根据顶点数建立距离数组，初始到达每个顶点的路径长度皆未知
-    vector<int> distances(animalNum, UNK);
-    vQueue.push(v0);   // 将起始顶点加入队列
-    G[v0][v0] = 1;     // 标记顶点v0已被访问
-    distances[v0] = 0; // v0顶点自身到自身距离为0
-    while (!vQueue.empty())
+    // 根据顶点数建立距离数组，初始到达每个顶点的路径长度皆为“无穷”
+    vector<int> distances(animalNum, INF);
+    // 顶点是否被访问
+    vector<bool> visits(animalNum, false);
+    // 初始化工作
+    // 初始化距离数组，将v0的邻接点的权重加入
+    for (int i = 0; i < animalNum; i++)
+        distances[i] = G[v0][i];
+    visits[v0] = true; // 标记顶点v0已被访问
+
+    // 遍历所有顶点，更新所有顶点距离v0的距离
+    for (int V = 0; V < animalNum; V++)
     {
-        int currV = vQueue.front(); // 队头是当前顶点
-        vQueue.pop();               // 弹出队头
-        int currMinCost = UNK;      // 直到currV顶点为止的最小路径
-        // 找到当前顶点currV的所有邻接点
+        // 每次迭代的【第1步】:
+        // 找距离数组distances中距离最小的顶点
+        int minV = -1;         // 最小顶点的下标(这里写v0是为了防止找不到minV的情况)
+        int minDistance = INF; // 最小顶点距v0顶点的距离
         for (int i = 0; i < animalNum; i++)
         {
-            // 1.非对角线元素G[i][i] 2.有这条边G[currV][i]
-            if (i != currV && G[currV][i])
+            // 顶点未被访问且该顶点距离v0顶点的距离能更小
+            if (!visits[i] && distances[i] < minDistance)
             {
-                // 如果距离数组里有这个顶点，说明【到这个顶点的距离已知】
-                if (distances[i] != UNK)
-                {
-                    // printf("JUDGE: %d->%d\n", i + 1, currV + 1);
-                    //  算出【经过】顶点i到达顶点currV的最短路径
-                    int distance = distances[i] + G[currV][i];
-                    // 更新到达当前顶点currV的最短路径currMinCost
-                    // 1.还没有currMinCost值时直接更新 2.新的距离小于currMinCost时更新
-                    if (currMinCost == UNK || distance < currMinCost)
-                        currMinCost = distance;
-                }
-                if (!G[i][i]) // 顶点i未被访问就加入队列
-                {
-                    G[i][i] = 1;                                   // 标记顶点i被访问
-                    distances[i] = distances[currV] + G[currV][i]; // 初始化到顶点i的距离
-                    vQueue.push(i);                                // 加入队列
-                }
+                minV = i;
+                minDistance = distances[i];
             }
         }
-        // 只有首个顶点会有这种情况：没有已知最短距离
-        // 首个顶点距离首个顶点的最短距离置为0
-        if (currMinCost == UNK)
-            currMinCost = 0;
-        // 更新从v0到currV的最短距离到距离数组
-        distances[currV] = currMinCost;
-        // printf("OUTPUT VERTEX:%d COST:%d\n", currV + 1, currMinCost);
-        //  同时比对，循环结束时找出所有最短路径中路径最长的顶点
-        //  如果有更长的“最短路径”出现，就更新
-        if (result->index == UNK || currMinCost > result->cost)
+        if (minV == -1) // 找不到未被访问的最小顶点了，循环终止
+            break;
+        visits[minV] = true; // 标记顶点minV已经被访问
+        // 每次迭代的【第2步】:
+        // 找这个距离最小顶点minV的邻接点j，对其每个邻接点j进行更新
+        for (int j = 0; j < animalNum; j++)
         {
-            result->index = v0;         // 顶点下标
-            result->cost = currMinCost; // 直到currV的最短路径开销
+            // 算出j顶点距离v0顶点的距离: minV离v0的距离 + minV距离j的距离
+            int distance = distances[minV] + G[minV][j];
+            // 如果顶点j未被访问，且顶点j距离v0的距离可以更新地更小
+            if (!visits[j] && distance < distances[j])
+            {
+                distances[j] = distance;
+            }
         }
     }
-    // BFS进行结束，标志位归零
+    // 扫描一遍visits数组，看看有没有顶点未被访问
+    for (int i = 0; i < animalNum; i++)
+        if (!visits[i])
+            result->success = false; // 如果有顶点未被访问就是非连通图
+
+    // distances距离数组计算完毕，找出其中的最长距离
     for (int i = 0; i < animalNum; i++)
     {
-        if (G[i][i])
-            G[i][i] = 0;
-        else
-            result->success = false; // 有顶点未被访问到，这说明图不连通！
+        if (distances[i] != INF && distances[i] > result->cost)
+        {
+            result->cost = distances[i];
+        }
     }
     return result;
 }
+
+/*
+    写这题最开始我完全图测试点过不去，于是我用JavaScript写了个简单的随机完全图测试点生成器，和此代码放在同一个目录下: completeGraph.js
+    使用方法：
+        - 在命令行中输入 node completeGraph.js [vertexNum]
+        - vertexNum为图的顶点数
+
+    这个题目还是有点绕的。
+    题目中给出的提示:
+        1. 魔咒可以正向读也可以反向读，借此【来回】转变动物种类
+            - 可以知道这题用的是【无向图】
+
+        2. 哈利波特带去一只动物，要把这只动物变成【最难变的】那一种动物，实际上就是要找【所需咒语最长的】(咒语尽量短)。
+            - 把带去的动物看作【初始顶点】，实际上要求的是【初始顶点到其他所有顶点的最短路径】中的【最长的一条路径的距离】。
+
+        3. 要找到【变成最难变的动物时所需魔咒最短】的情况，就需要【枚举带每一种动物的情况】
+            - 遍历所有顶点，在【所有顶点对应的最长路径】中找出【最短的一条】
+
+        4. 无论用什么咒语都没法变成的动物，在图中其实就是一个【不连通的顶点】。
+            - 只要图是【非连通的】，那么带一只动物无法转变成所有其他动物。
+
+    综上，本题的核心要点其实是求【无向图中单源的最短路径】，比较容易想到的有Floyd和Dijkstra算法，我这里就采用Dijkstra算法了。
+
+    -----------------------
+    Dijkstra算法有暴力实现法和优先队列实现法，这里我采用了暴力实现，且作了一定的简化。
+        * Dijkstra算法一般会用到 distances(距离) paths(路径) visits(是否访问) 三个数组，这里因为【我只需要知道最短的距离】，所以没有用到paths。
+
+    在我看来，Dijkstra算法的步骤主要是三步，其中后两步是迭代过程:
+
+        前提:
+            - distances数组每个元素默认值是INF(数值无穷大)
+            - 图G中每两个不相连的顶点，边的权值默认为INF(无穷大)
+            - visits数组每个元素默认为false(未被访问)
+
+        1. 初始化
+            - 设从【顶点v0】开始Dijkstra算法
+            - 扫描v0的【邻接点边的权值】，将v0邻接点边权更新到distances距离数组
+                * 注: 这里的边权其实就是顶点【距离v0顶点的距离】。
+            - 标记visits[v0]=true, 也就是顶点v0已被访问
+
+        2. 寻找distances数组中目前【未被访问】的【最小距离】
+            - 扫描distances数组，找到距离最小顶点的下标minV和其最小距离minDistance
+            - 标记visits[minV]=true (这个顶点已被访问)
+
+        3. 再次扫描distances数组
+            - 扫描到的顶点为j，其距离为distances[j]
+
+            - 假设这个顶点j是【顶点minV的邻接点】，计算这个【顶点j距离起始顶点v0的距离】:
+                * 距离distance = 顶点j和顶点minV间的距离G[minV][j] + 顶点minV距离v0顶点的距离distances[minV]
+
+            - 如果这个顶点j【未被访问过】且【其距离起始点v0的距离可以更新】
+                * 更新distances[j]=distance
+                (还记得distances元素默认为无穷大INF吗？distances[j]为INF时，distance是肯定大于distances[j]的，不会更新)
+                (也就是说，这里的更新是针对【已知距离的邻接点而言】的)
+
+        其中2, 3是不断的迭代过程，直到【找不到最小距离顶点minV】或者【扫描完所有顶点】为止，Dijkstra单次算法结束。
+
+    最后，从Dijkstra求出的distances数组中找出【最长的一条最短路径】即可。
+
+    对每个顶点都进行一次Dijkstra算法，将求出的路径长进行对比，【找到最短的一条】对应的顶点，即为题目所求的动物。
+
+    这题是我第一次写Dijkstra，非常值得反复回味。
+
+        - SomeBottle 2023.1.4
+
+*/
