@@ -12,7 +12,7 @@ struct QNode
     int distance; // 顶点距离【起始顶点】的距离
 };
 
-// 优先队列(小根堆)
+// 优先队列(小根堆实现)
 class Queue
 {
 public:
@@ -49,7 +49,7 @@ private:
     int currSize = 0;     // 当前数组大小为0
 
     // 比较vQueue中node1下标对应的距离是否小于下标node2的
-    bool compare(int node1, int node2)
+    bool lessThan(int node1, int node2)
     {
         if (node1 < currSize)
         {
@@ -73,7 +73,7 @@ private:
         {
             int parentInd = (i - 1) / 2; // 父节点下标
             // 如果父节点的距离大于子节点，就交换
-            if (compare(i, parentInd))
+            if (lessThan(i, parentInd))
                 swap(vQueue[parentInd], vQueue[i]);
             else // 否则上滤结束
                 break;
@@ -89,13 +89,13 @@ private:
         {
             int leftInd = 2 * i + 1;    // 左子
             int rightInd = leftInd + 1; // 右子
-            if (compare(leftInd, i) && compare(leftInd, rightInd))
+            if (lessThan(leftInd, i) && lessThan(leftInd, rightInd))
             {
                 // 左子比父节点小且左子比右子小，交换左子和父节点
                 swap(vQueue[leftInd], vQueue[i]);
                 i = leftInd;
             }
-            else if (compare(rightInd, i) && compare(rightInd, leftInd))
+            else if (lessThan(rightInd, i) && lessThan(rightInd, leftInd))
             {
                 // 右子比父节点小且右子比左子小，交换右子和父节点
                 swap(vQueue[rightInd], vQueue[i]);
