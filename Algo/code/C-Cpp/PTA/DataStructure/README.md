@@ -33,4 +33,5 @@
 |7-7|[六度空间](https://pintia.cn/problem-sets/15/exam/problems/715)| [DS-7-7.cpp](./DS-7-7.cpp)| 采用**无向图**的**BFS**遍历，值得玩味的地方在于**记录每个顶点所在层数** | 0.5√ |
 |7-8|[哈利·波特的考试](https://pintia.cn/problem-sets/15/exam/problems/716)| [DS-7-8.cpp](./DS-7-8.cpp) <br> 完全图生成工具: [completeGraph.js](./completeGraph.js) | 求**无向图**的**单源最短路径**，**Dijkstra算法**的写法很值得回味(本题我采用的是暴力Dijkstra写法) | √ |
 |7-9|[旅游规划](https://pintia.cn/problem-sets/15/exam/problems/717)| [DS-7-9.cpp](./DS-7-9.cpp) | 求**无向图**的**两点间最短路径**，采用**优先队列辅助的Dijkstra算法**(本题我**手写实现了基于小根堆的优先队列**) | √ |
+|7-10|[公路村村通](https://pintia.cn/problem-sets/15/exam/problems/718)| Prim(**AC**): [DS-7-10.cpp](./DS-7-10.cpp) <br> Kruskal(**TLE**): [DS-7-10-Kruskal.cpp](./DS-7-10-Kruskal.cpp) <br> Dijkstra(错误思路): [DS-7-10-WA-Dijkstra.cpp](./DS-7-10-WA-Dijkstra.cpp) | 求**无向图**的**最小生成树**的**权**，有Prim和Kruskal实现 | √ |
 
