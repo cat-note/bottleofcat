@@ -198,7 +198,7 @@ Way *Dijkstra(int startV, int endV)
         QNode minNode = queue.top();
         int minV = minNode.vertex;          // 当前总路径最短的顶点
         int minDistance = minNode.distance; // 其路径长度
-        queue.pop();                        // 弹出队头(这一步释放了minNode的内存)
+        queue.pop();                        // 弹出队头
         if (visits[minV])                   // 如果顶点已被访问就不继续下去
             continue;
         visits[minV] = true; // 标记顶点被访问
