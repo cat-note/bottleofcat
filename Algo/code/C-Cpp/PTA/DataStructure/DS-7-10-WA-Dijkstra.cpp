@@ -99,6 +99,9 @@ int Dijkstra(int startV)
     {
         int minV = pQueue.top().vertex; // 获得成本最小顶点的下标
         pQueue.pop();                   // 弹出栈顶
+        // 如果已经访问过，就跳到下一迭代
+        if (visits[minV])
+            continue;
         // 标记已经访问到minV顶点
         visits[minV] = true;
         for (int i = 0; i < townNum; i++)
@@ -108,7 +111,7 @@ int Dijkstra(int startV)
             int newCost = costs[minV] + G[minV][i];
             // 如果新算出来的成本比已有的i顶点成本更低就更新
             // 前提: i顶点未被访问
-            if (!visits[i] && newCost < costs[i])
+            if (newCost < costs[i])
             {
                 costs[i] = newCost;
                 // 将顶点下标和新的成本加入到队列中

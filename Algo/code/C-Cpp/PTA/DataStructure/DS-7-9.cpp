@@ -199,6 +199,10 @@ Way *Dijkstra(int startV, int endV)
         int minV = minNode.vertex;          // 当前总路径最短的顶点
         int minDistance = minNode.distance; // 其路径长度
         queue.pop();                        // 弹出队头
+        // 如果已经访问过minV顶点，就跳到下一迭代
+        // 这个判断得写在这里，如果写在下面入队的地方(第220行左右)，队中会有大量被访问过的元素，因而导致不必要的时间开销
+        if (visits[minV])
+            continue;
         visits[minV] = true; // 标记顶点被访问
         if (minV == endV)    // 如果已经确定到达目标顶点的最短路径，就不用继续了
             break;
@@ -211,12 +215,9 @@ Way *Dijkstra(int startV, int endV)
             int newDist = minDistance + iMinVLen;
             // 从起点到i顶点的路径所需的价格同理
             int newPrice = distances[minV].price + iMinVPrice;
-            // 前提: i顶点尚未被访问
             // 情况1: 如果新算出来的距离小于i顶点原本的距离，就更新
             // 情况2: 如果新算出来的距离等于i顶点原本的距离，就是出现了【多条最短路径】，此时【比较两条路径的总价格】，如果新路径更便宜就更新
-            if (
-                !visits[i] &&
-                ((newDist < distances[i].len) || (newDist == distances[i].len && newPrice < distances[i].price)))
+            if ((newDist < distances[i].len) || (newDist == distances[i].len && newPrice < distances[i].price))
             {
                 distances[i].len = newDist;
                 distances[i].price = newPrice;
