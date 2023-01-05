@@ -26,8 +26,8 @@ public:
         vQueue[currSize++] = node; // 加入元素到堆尾部
         siftUp(currSize - 1);      // 将新增元素上滤
     }
-    // 返回堆顶元素
-    QNode top()
+    // 返回堆顶元素(引用类型，免除拷贝带来的开销)
+    QNode &top()
     {
         return vQueue[0];
     }
@@ -195,12 +195,10 @@ Way *Dijkstra(int startV, int endV)
     while (!queue.empty())
     {
         // 队列顶部就是distances数组内路径最短的顶点
-        QNode minNode = queue.top();
+        QNode &minNode = queue.top();
         int minV = minNode.vertex;          // 当前总路径最短的顶点
         int minDistance = minNode.distance; // 其路径长度
         queue.pop();                        // 弹出队头
-        if (visits[minV])                   // 如果顶点已被访问就不继续下去
-            continue;
         visits[minV] = true; // 标记顶点被访问
         if (minV == endV)    // 如果已经确定到达目标顶点的最短路径，就不用继续了
             break;
