@@ -74,6 +74,7 @@ public:
         AdjList node = new AdjNode();
         // 把新节点加到头节点后面
         node->vertex = to;
+        node->cost = cost;
         node->next = lists[from]->next;
         lists[from]->next = node;
         lists[to]->vertex++; // to顶点的入度增加
@@ -135,12 +136,13 @@ public:
         for (int i = 0; i < vertexNum; i++)
         {
             // 取出拓扑排序中第i个顶点的邻接表
-            AdjList curr = lists[topoSeq[i]]->next;
+            short currVertex = topoSeq[i];
+            AdjList curr = lists[currVertex]->next;
             // 找到当前顶点的所有出边
             while (curr != NULL)
             {
                 // 如果(当前顶点的最早发生时间) + (邻接边的时间) > (邻接点的最早发生时间)，就更新邻接点的最早发生时间
-                int eTime = earliest[i] + curr->cost;
+                int eTime = earliest[currVertex] + curr->cost;
                 if (eTime > earliest[curr->vertex])
                 {
                     earliest[curr->vertex] = eTime;
@@ -154,7 +156,8 @@ public:
         for (int i = vertexNum - 2; i >= 0; i--)
         {
             // 取出这个顶点的邻接表
-            AdjList curr = lists[topoSeq[i]]->next;
+            short currVertex = topoSeq[i]; // 当前取出的拓扑排序顶点
+            AdjList curr = lists[currVertex]->next;
             // 因为是倒推，这个顶点的后继的最迟发生时间肯定已经知道了
             // curr是当前顶点的一个后继顶点
             while (curr != NULL)
@@ -162,9 +165,9 @@ public:
                 // 如果(当前顶点的后继顶点的最迟发生时间) - (邻接边的时间) < (当前顶点的最迟发生时间)，就更新当前顶点的最迟发生时间
                 int lTime = latest[curr->vertex] - curr->cost;
                 // -1是默认值，代表无穷
-                if (latest[i] == -1 || lTime < latest[i])
+                if (latest[currVertex] == -1 || lTime < latest[currVertex])
                 {
-                    latest[i] = lTime;
+                    latest[currVertex] = lTime;
                 }
                 curr = curr->next;
             }
@@ -222,6 +225,26 @@ int main()
 }
 
 /*
+
+    本题难就难在要把情况考虑周全: 
+
+        1. AOE图中有几个【起点(源点)】和【几个终点(汇点)】? 如果AOE图的源点/汇点不止一个，就需要【人工加入】顶点来【让图中的源点/汇点只有一个】。
+
+            * 比如有多个起点，我添加一个顶点让其【指向所有的起点，边权为0】，然后把这个顶点作为源点即可。
+            * 多个终点的话，就让【所有终点】指向人工加入的顶点，把这个顶点作为汇点即可。
+
+        2. 关键路径有几条？这个题目中给出的样例的关键路径只有一条，但是实际上可能出现【多条关键路径】的情况
+
+            * 这种情况往往是图中有几个 活动持续时间(边权) 是相同的。
+
+            * 比如我把这题给的样例中的 1->3 这条边的权重改成6，就会出现【两条关键路径】:
+
+                1->2->4->6->7 
+                1->3->4->6->7
+
+                (可以在草稿纸上推算一下，确实如此)
+
+    ----------------------------------------
     AOE图中，指向【同一个顶点】的两条边代表【某个事件发生前要完成的两项活动】
 
     也就是说，一个顶点要等其【所有入边】代表的活动都完成【才能到达】
@@ -242,11 +265,15 @@ int main()
 
                 如果这个顶点(事件)的发生时间迟于最短发生时间，后面必有顶点(事件)不能及时发生，也就是事情做不完了。
 
-        - AOE图一般只有一个源点(起点)与一个汇点(终点)
+        - AOE图主要按只有 一个源点(起点)与一个汇点(终点) 的情况进行处理
 
             * 源点的最早发生时间=0
             * 汇点的最迟发生时间=其最早发生时间
 
     整个推算过程可借【拓扑排序】实现。
+
+    关于AOE网有一篇很好的入门文章: https://zhuanlan.zhihu.com/p/170603727
+    ----------------------------------------------
+
 
 */
