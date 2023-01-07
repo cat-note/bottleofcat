@@ -69,6 +69,12 @@ public:
                 curr = next;
             }
         }
+        clearCache();
+        delete criticalA;
+    }
+    // 清除关键活动占用的内存空间
+    void clearCache()
+    {
         EdgeList curr = criticalA->next;
         while (curr)
         {
@@ -76,7 +82,8 @@ public:
             delete curr;
             curr = next;
         }
-        delete criticalA;
+        criticalCost = 0;
+        criticalA->next = NULL;
     }
     // 加入一条from顶点指向to顶点的有向边
     void add(short from, short to, int cost)
@@ -186,6 +193,7 @@ public:
     // 找到关键路径点和关键活动
     void findCritical()
     {
+        clearCache();
         vector<int> earliest(vertexNum, 0); // 储存顶点最早发生时间的数组
         vector<int> latest(vertexNum, -1);  // 储存顶点最晚发生时间的数组，默认值用-1代表无穷
         // 依据拓扑排序来推算顶点
