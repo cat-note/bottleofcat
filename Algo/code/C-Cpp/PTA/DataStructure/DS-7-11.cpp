@@ -23,11 +23,6 @@ struct Edge
     short vFrom; // 起始顶点
     short vTo;   // 指向顶点
     EdgeList next;
-    // 运算符重载，用于堆排序进行升序排序
-    bool operator>=(const Edge &activity) const
-    {
-        return vFrom >= activity.vFrom;
-    }
 };
 
 // 因为是无环有向图，本题比较适合用邻接表
@@ -83,7 +78,7 @@ public:
         }
         delete criticalA;
     }
-    // 加入一条from顶点指向to顶点的有向边, 活动损耗为cost
+    // 加入一条from顶点指向to顶点的有向边
     void add(short from, short to, int cost)
     {
         AdjList node = new AdjNode();
@@ -179,7 +174,8 @@ public:
         EdgeList curr = criticalA;
         while (curr->next)
         {
-            if (*node >= *(curr->next))
+            // 寻找活动的插入地点
+            if (node->vFrom >= curr->next->vFrom)
                 curr = curr->next;
             else
                 break;
@@ -246,11 +242,15 @@ public:
                 AdjList curr = lists[i]->next; // 取出关键顶点的邻接表
                 while (curr)
                 {
-                    bool isManualVertex = lists[curr->vertex]->cost; // 头节点的cost用于标记这个顶点是不是人工汇点
-                    // 如果这个邻接点【不是人工汇点】，但是关键顶点，就把这两点形成的边加入到有序链表
-                    if (!isManualVertex && earliest[curr->vertex] == latest[curr->vertex])
+                    int activityEarliest = earliest[i];                     // 这个活动的最早开始时间
+                    int activityLatest = latest[curr->vertex] - curr->cost; // 这个活动的最迟开始时间
+                    bool isManualVertex = lists[curr->vertex]->cost;        // 头节点的cost用于标记这个顶点是不是人工汇点
+                    // 1. 这个邻接点【不是人工汇点】
+                    // 2. 这个邻接点是关键顶点
+                    // 3. 连接这两点的活动是【关键活动】，关键活动的最早开始时间=最迟开始时间
+                    if (!isManualVertex && earliest[curr->vertex] == latest[curr->vertex] && activityEarliest == activityLatest)
                     {
-                        pushActivity(i, curr->vertex);
+                        pushActivity(i, curr->vertex); // 把这两点形成的边加入到有序链表
                     }
                     curr = curr->next;
                 }
@@ -310,19 +310,37 @@ int main()
 
                 (可以在草稿纸上推算一下，确实如此)
 
-    对于第1点，写程序时要注意以下几点:
+
+    💡 对于第1点，写程序时要注意以下几点:
 
         - 计算最早发生时间前，要扫描拓扑序列，找到【所有入度为0】的顶点，这些顶点【都是起点】，把它们的最早发生时间全标为0
 
             * 对于起点，程序中我们并不需要加入人工起点，只需要找到所有起点即可（得益于拓扑排序）
 
-        - 计算最迟发生时间时，也要扫描拓扑序列，找到【所有出度为0】的顶点，这些顶点【都是终点】，它们的最迟发生时间【就是最早发生时间】
+        - 计算最迟发生时间时，也要扫描拓扑序列，找到【所有出度为0】的顶点，对于有多个终点的情况，需要人工添加一个汇点，让【多个终点指向同一个汇点，边权为0】，最终输出关键活动时不输出这个人工添加的点即可。
 
         - 关键活动的耗时决定了【整个工程的工期】，【汇点】的最早/最迟发生时间就是整个工程完成的时间
 
-            * 对于有多个终点的情况，需要人工添加一个汇点，让【多个终点指向同一个汇点，边权为0】，最终输出关键活动时不输出这个人工添加的点即可。
+    💡 对于第2点，本题只要求输出【关键活动】，因此并不算很难:
+
+        1. 先计算每个顶点(事件)的【最早发生时间】和【最迟发生时间】。
+
+        2. (最早发生时间=最迟发生时间)的顶点就是关键路径中的点，这里我就暂且叫它们【关键顶点】
+
+        3. 找出关键活动:
+
+            - 扫描每个关键顶点 Vc 的【所有邻接点】，对于每个邻接点 Va:
+
+                a. 计算(Vc和Va间活动的最早发生时间) = (Vc的最早发生时间)
+                b. 计算(Vc和Va间活动的最迟发生时间) = (Va的最迟发生时间) - (Va和Vc之间活动的耗时)
+
+            - 只要 (Vc和Va间活动的最早发生时间) = (Vc和Va间活动的最迟发生时间)，那么Vc和Va间的活动就是【关键活动】，加入到输出队列中。
 
     ----------------------------------------
+    以下是AOE图的一些基本知识。
+
+        * 关于AOE网有一篇很好的入门文章: https://zhuanlan.zhihu.com/p/170603727
+
     AOE图中，指向【同一个顶点】的两条边代表【某个事件发生前要完成的两项活动】
 
     也就是说，一个顶点要等其【所有入边】代表的活动都完成【才能到达】
@@ -350,27 +368,7 @@ int main()
 
     整个推算过程可借【拓扑排序】实现。
 
-    关于AOE网有一篇很好的入门文章: https://zhuanlan.zhihu.com/p/170603727
     ----------------------------------------------
 
-
-*/
-/*
-咱自己想了个用于测试多起点多终点，以及对多终点输出的样例:
-14 15
-1 2 3
-1 3 3
-2 4 5
-3 4 3
-4 5 1
-4 6 6
-5 7 5
-6 7 2
-8 10 3
-8 9 4
-10 11 2
-9 11 5
-11 12 6
-11 13 3
-13 14 2
+        - SomeBottle 2023.1.7
 */
