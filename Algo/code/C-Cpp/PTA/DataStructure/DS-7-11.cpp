@@ -127,7 +127,7 @@ public:
             vertexNum--;
         }
     }
-    // 进行拓扑排序Topological Order，顺便判断有向图终是否没有环路
+    // 进行拓扑排序Topological Order，顺便判断有向图中是否没有环路
     bool topoOrder()
     {
         vector<short> degrees(vertexNum); // 初始化一个临时储存顶点入度的数组
