@@ -35,4 +35,5 @@
 |7-9|[旅游规划](https://pintia.cn/problem-sets/15/exam/problems/717)| [DS-7-9.cpp](./DS-7-9.cpp) | 求**无向图**的**两点间最短路径**，采用**优先队列辅助的Dijkstra算法**(本题我**手写实现了基于小根堆的优先队列**) | √ |
 |7-10|[公路村村通](https://pintia.cn/problem-sets/15/exam/problems/718)| Prim(**AC**): [DS-7-10.cpp](./DS-7-10.cpp) <br> Kruskal(**TLE**): [DS-7-10-Kruskal.cpp](./DS-7-10-Kruskal.cpp) <br> Dijkstra(错误思路): [DS-7-10-WA-Dijkstra.cpp](./DS-7-10-WA-Dijkstra.cpp) | 求**无向图**的**最小生成树**的**权**，有Prim和Kruskal实现 | √ |
 |7-11|[关键活动](https://pintia.cn/problem-sets/15/exam/problems/719)| [DS-7-11.cpp](./DS-7-11.cpp) <br> 随机AOE网生成工具: [randomAOE.js](./randomAOE.js) | 通过**拓扑排序**序列求**AOE**网(无环有向图)的**关键活动**。本题考察的点非常全面，涵盖到了关键路径这一块的所有内容。个人感觉出的很好，很适合查漏补缺。 | √√ |
+|7-13|[统计工龄](https://pintia.cn/problem-sets/15/exam/problems/721)| [DS-7-13.cpp](./DS-7-13.cpp) | 简单题，利用**直接定址**哈希表对相应工龄的员工数进行统计  |  |
 
