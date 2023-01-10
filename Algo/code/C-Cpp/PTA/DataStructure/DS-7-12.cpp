@@ -5,6 +5,7 @@ using namespace std;
 
 typedef vector<long> Sequence; // 长整型数字序列
 
+void Swap(long &elem1, long &elem2);
 void BubbleSort(Sequence &seq);    // 冒泡排序
 void SelectionSort(Sequence &seq); // 选择排序
 void InsertionSort(Sequence &seq); // 插入排序
