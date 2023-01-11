@@ -37,4 +37,5 @@
 |7-11|[关键活动](https://pintia.cn/problem-sets/15/exam/problems/719)| [DS-7-11.cpp](./DS-7-11.cpp) <br> 随机AOE网生成工具: [randomAOE.js](./randomAOE.js) | 通过**拓扑排序**序列求**AOE**网(无环有向图)的**关键活动**。本题考察的点非常全面，涵盖到了关键路径这一块的所有内容。个人感觉出的很好，很适合查漏补缺。 | √√ |
 |7-13|[统计工龄](https://pintia.cn/problem-sets/15/exam/problems/721)| [DS-7-13.cpp](./DS-7-13.cpp) | 简单题，利用**直接定址**哈希表对相应工龄的员工数进行统计  |  |
 |7-14|[电话聊天狂人](https://pintia.cn/problem-sets/15/exam/problems/722)| [DS-7-14.cpp](./DS-7-14.cpp) | 利用**哈希表**对大规模数据进行统计工作，采用**位与取余法**，并利用**链地址法**处理哈希碰撞。位与取余 `被除数 & (除数-1)`的公式值得记忆，不过这里的**除数必须是2的N次方**  |  |
+|7-15|[QQ帐户的申请与登陆](https://pintia.cn/problem-sets/15/exam/problems/723)| [DS-7-15.cpp](./DS-7-15.cpp) | 利用**哈希表**存取账号信息，哈希表实现几乎和题**7-14**一致。  |  |
 
