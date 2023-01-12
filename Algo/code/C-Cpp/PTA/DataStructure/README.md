@@ -39,4 +39,5 @@
 |7-14|[电话聊天狂人](https://pintia.cn/problem-sets/15/exam/problems/722)| [DS-7-14.cpp](./DS-7-14.cpp) | 利用**哈希表**对大规模数据进行统计工作，采用**位与取余法**，并利用**链地址法**处理哈希碰撞。位与取余 `被除数 & (除数-1)`的公式值得记忆，不过这里的**除数必须是2的N次方**  |  |
 |7-15|[QQ帐户的申请与登陆](https://pintia.cn/problem-sets/15/exam/problems/723)| [DS-7-15.cpp](./DS-7-15.cpp) | 利用**哈希表**存取账号信息，哈希表实现几乎和题**7-14**一致。  |  |
 |7-16|[一元多项式求导](https://pintia.cn/problem-sets/15/exam/problems/820)| [DS-7-16.cpp](./DS-7-16.cpp) | 入门题，边输入边处理边输出，无需任何其他辅助空间  |  |
+|7-17|[汉诺塔的非递归实现](https://pintia.cn/problem-sets/15/exam/problems/821)| [DS-7-17.cpp](./DS-7-17.cpp) <br> 递归实现: [DS-7-17-recursive.cpp](./DS-7-17-recursive.cpp) | 经典递归问题-汉诺塔问题的**非递归实现**。借助栈和循环进行实现。适合用于回味递归思想。 | √ |
 
