@@ -44,7 +44,7 @@ body {
 .plate {
     position: absolute;
     transform: translateX(-50%);
-    transition: .1s ease;
+    transition: .5s ease;
     text-align: center;
     border-radius: .3em;
 }

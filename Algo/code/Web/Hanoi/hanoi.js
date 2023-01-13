@@ -6,31 +6,25 @@ const PLATE_MAX_WIDTH = 20; // 盘子最大宽度(百分比)
 const PLATE_COLORS = [
     ['#FF0000', '#FFF'],
     ['#FF7F00', '#FFF'],
-    ['#FFFF00', '#000'],
+    ['#FFFF00', 'rgb(107 107 107)'],
     ['#00FF00', '#FFF'],
     ['#0000FF', '#FFF'],
     ['#4B0082', '#FFF'],
     ['#9400D3', '#FFF']
 ]; // 盘子颜色
 const MOVE_END_EVENT = new CustomEvent('moveend'); // 盘子移动结束事件
+const PAUSE_PLAY_EVENT = new CustomEvent('pauseplay'); // 暂停播放事件
 const plateElems = []; // 所有盘子的元素
 const poleElems = [[], [], []]; // 记录每根柱子上的盘子元素
 const selectId = (query) => {
     return document.querySelector(`#${query}`);
 }
 
-const NEXT_BTN = selectId('nextBtn'); // 开始播放/下一步按钮
+const PLAY_BTN = selectId('playBtn'); // 开始播放按钮
+const PREV_BTN = selectId('prevBtn'); // 上一步按钮
+const NEXT_BTN = selectId('nextBtn'); // 下一步按钮
 const RESET_BTN = selectId('resetBtn'); // 重置按钮
-const AUTO_CHECK = selectId('autoCheck'); // 是否自动播放勾选框
 
-AUTO_CHECK.addEventListener('change', () => {
-    console.log('hello');
-    if (AUTO_CHECK.checked) {
-        NEXT_BTN.value = '开始播放';
-    } else {
-        NEXT_BTN.value = '播放下一步';
-    }
-});
 
 // 一摞盘子
 class PlatePile {
@@ -67,7 +61,12 @@ function solveHanoi(plateNum) {
  * @param {Number} to 目标柱下标
  */
 function movePlate(plateElem, to) {
-    let step = 1;
+    const eventRemover = () => {
+        plateElem.removeEventListener('transitionend', moveSteps);
+        plateElem.removeEventListener('interruptmove', interrupt);
+        document.body.dispatchEvent(MOVE_END_EVENT);
+    };
+    let step = Number(plateElem.getAttribute('movestate')); // 获取盘子的移动状态
     let sixth = 100 / 6;
     let startFrom = Number(plateElem.getAttribute('pole')); // 起始柱下标
     let plateId = Number(plateElem.getAttribute('plateId')); // 盘子编号
@@ -78,18 +77,26 @@ function movePlate(plateElem, to) {
         }
     }));
     if (startFrom === to) return; // 起始柱和目标柱相同，不移动
-    plateElem.setAttribute('pole', to); // 更新盘子所在柱
     let polePlateNum = poleElems[to].length; // 目标柱上已有盘子的数量
     const moveSteps = () => {
-        if (step === 1) {
-            plateElem.style.left = `${sixth * to * 2 + sixth}%`;
-        } else if (step === 2) {
-            plateElem.style.bottom = `${PLATE_MIN_HEIGHT + (PLATE_HEIGHT + 1) * polePlateNum}px`;
-        } else {
-            plateElem.removeEventListener('transitionend', moveSteps);
-            plateElem.removeEventListener('interruptmove', interrupt);
-            document.body.dispatchEvent(MOVE_END_EVENT);
-            return;
+        switch (step) {
+            case 0:
+                plateElem.style.bottom = "70%";
+                plateElem.setAttribute('movestate', 1);
+                break;
+            case 1:
+                plateElem.style.bottom = "70%";
+                plateElem.style.left = `${sixth * to * 2 + sixth}%`;
+                plateElem.setAttribute('movestate', 2);
+                break;
+            case 2:
+                plateElem.style.left = `${sixth * to * 2 + sixth}%`;
+                plateElem.style.bottom = `${PLATE_MIN_HEIGHT + (PLATE_HEIGHT + 1) * polePlateNum}px`;
+                plateElem.setAttribute('movestate', 0);
+                break;
+            default:
+                eventRemover();
+                return;
         }
         step++;
     };
@@ -97,15 +104,14 @@ function movePlate(plateElem, to) {
     const interrupt = (event) => {
         if (plateId === event.detail.plateId) {
             console.log('interrupted');
-            plateElem.removeEventListener('transitionend', moveSteps);
-            plateElem.removeEventListener('interruptmove', interrupt);
-            document.body.dispatchEvent(MOVE_END_EVENT);
+            eventRemover();
             return;
         }
     };
-    plateElem.style.bottom = "70%";
+    moveSteps();
     plateElem.addEventListener('transitionend', moveSteps);
     plateElem.addEventListener('interruptmove', interrupt);
+    plateElem.setAttribute('pole', to); // 更新盘子所在柱
     poleElems[startFrom].pop();
     poleElems[to].push(plateElem);
 }
@@ -123,8 +129,9 @@ function initialize(plateNum) {
     for (let i = 0; i < plateNum; i++) {
         let plateElem = document.createElement('div');
         plateElem.className = 'plate';
-        plateElem.setAttribute('plateId', i + 1); // 盘子编号
+        plateElem.setAttribute('plateid', i + 1); // 盘子编号
         plateElem.setAttribute('pole', 0); // 位于0号柱
+        plateElem.setAttribute('movestate', 0); // 0代表静止，1代表提起来，2代表平移
         plateElem.style.left = `${100 / 6}%`;
         plateElem.style.bottom = `${plateHeight}px`;
         plateElem.style.width = `${plateWidth}%`;
@@ -142,26 +149,96 @@ function initialize(plateNum) {
     solveHanoi(plateNum); // 计算移动步骤
 }
 
+let playState = false; // 播放状态
+let currentPlayStep = 0; // 当前播放到第几步
+const playPrev = () => { // 播放上一步
+    let prevStep = currentPlayStep - 1;
+    if (prevStep >= 0) {
+        let [from, to] = hanoiSteps[prevStep]; // 取出上一次的移动步骤
+        let topPlateInd = poleElems[to].length - 1; // 
+        let topPlate = poleElems[to][topPlateInd]; // 取出上次移动的盘子
+        movePlate(topPlate, from); // 把盘子移动回去
+        currentPlayStep--;
+    }
+};
+const playStep = () => {
+    let lastStep = hanoiSteps.length - 1;
+    if (currentPlayStep <= lastStep) {
+        let [from, to] = hanoiSteps[currentPlayStep]; // 取出当前的移动步骤
+        let topPlateInd = poleElems[from].length - 1;
+        let topPlate = poleElems[from][topPlateInd]; // 取出起始柱顶上的盘子
+        movePlate(topPlate, to); // 移动盘子
+        currentPlayStep++;
+    } else {
+        document.body.removeEventListener('moveend', playStep);
+        document.body.removeEventListener('pauseplay', pausePlay);
+        alert('播放结束');
+        console.log('Play end.');
+    }
+};
+const pausePlay = () => {
+    document.body.removeEventListener('pauseplay', pausePlay);
+    document.body.removeEventListener('moveend', playStep);
+    console.log('Play paused.');
+};
+
 /**
  * 自动播放汉诺塔整个过程
  */
 function autoPlay() {
-    let lastStep = hanoiSteps.length - 1;
-    let currentStep = 0;
-    const playStep = () => {
-        if (currentStep <= lastStep) {
-            let [from, to] = hanoiSteps[currentStep]; // 取出当前的移动步骤
-            let topPlateInd = poleElems[from].length - 1;
-            let topPlate = poleElems[from][topPlateInd]; // 取出起始柱顶上的盘子
-            movePlate(topPlate, to); // 移动盘子
-            currentStep++;
-        } else {
-            document.body.removeEventListener('moveend', playStep);
-            console.log('Play end.');
-        }
-    };
     document.body.addEventListener('moveend', playStep);
+    document.body.addEventListener('pauseplay', pausePlay);
     playStep();
 }
 
-initialize(8);
+PLAY_BTN.addEventListener('click', () => {
+    playState = !playState;
+    if (playState) {
+        PLAY_BTN.value = '暂停';
+        autoPlay();
+    } else {
+        PLAY_BTN.value = '播放';
+        document.body.dispatchEvent(PAUSE_PLAY_EVENT);
+    }
+});
+
+NEXT_BTN.addEventListener('click', () => {
+    if (playState) {
+        document.body.dispatchEvent(PAUSE_PLAY_EVENT); // 停止播放
+        playState = !playState;
+        PLAY_BTN.value = '播放';
+    }
+    playStep();
+});
+
+PREV_BTN.addEventListener('click', () => {
+    if (playState) {
+        document.body.dispatchEvent(PAUSE_PLAY_EVENT); // 停止播放
+        playState = !playState;
+        PLAY_BTN.value = '播放';
+    }
+    playPrev();
+});
+
+
+RESET_BTN.addEventListener('click', () => {
+    if (playState) {
+        document.body.dispatchEvent(PAUSE_PLAY_EVENT); // 停止播放
+        playState = !playState;
+        PLAY_BTN.value = '播放';
+    }
+    currentPlayStep = 0;
+    let plates = document.querySelectorAll('.plate');
+    plates.forEach(plate => {
+        plate.remove();
+    });
+    poleElems.forEach(pole => {
+        pole.length = 0;
+    });
+    plateElems.length = 0;
+    hanoiSteps.length = 0;
+    initialize(6);
+});
+
+
+initialize(6);
