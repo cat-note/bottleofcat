@@ -1,0 +1,57 @@
+body {
+    margin: 10px;
+}
+
+.showcase {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: .2em dashed #AAA;
+    padding-bottom: 10px;
+    width: 600px;
+    max-width: 100%;
+    height: 500px;
+    max-height: 100%;
+}
+
+.tower {
+    position: relative;
+    flex: 1;
+}
+
+.pole {
+    position: absolute;
+    width: 8px;
+    height: 60%;
+    background-color: rgb(32, 32, 32);
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: .3em;
+}
+
+.base {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70%;
+    height: 8px;
+    background-color: rgb(32, 32, 32);
+    border-radius: .3em;
+}
+
+.plate {
+    position: absolute;
+    transform: translateX(-50%);
+    text-align: center;
+    border-radius: .3em;
+}
+
+.panel {
+    margin-top: 10px;
+}
+
+.panel input {
+    margin: 0 .5em .5em 0;
+}

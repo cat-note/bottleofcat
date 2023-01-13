@@ -1,0 +1,30 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./hanoi.css" rel="stylesheet" />
+    <title>汉诺塔演示 - By SomeBottle</title>
+</head>
+
+<body>
+    <div class="showcase" id="showcase">
+        <div class="tower">
+            <div class="pole"></div>
+            <div class="base"></div>
+        </div>
+        <div class="tower">
+            <div class="pole"></div>
+            <div class="base"></div>
+        </div>
+        <div class="tower">
+            <div class="pole"></div>
+            <div class="base"></div>
+        </div>
+    </div>
+    <div class="panel">
+        <input type="button" id="nextBtn" value="播放下一步" />
+        <input type="button" id="resetBtn" value="重置" />
+        <input type="checkbox" id="autoCheck"/><label for="autoCheck">自动播放</label>
+    </div>
+    <script src="./hanoi.js"></script>
+</body>
