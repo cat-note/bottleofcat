@@ -41,4 +41,5 @@
 |7-16|[一元多项式求导](https://pintia.cn/problem-sets/15/exam/problems/820)| [DS-7-16.cpp](./DS-7-16.cpp) | 入门题，边输入边处理边输出，无需任何其他辅助空间  |  |
 |7-17|[汉诺塔的非递归实现](https://pintia.cn/problem-sets/15/exam/problems/821)| [DS-7-17.cpp](./DS-7-17.cpp) <br> 递归实现: [DS-7-17-recursive.cpp](./DS-7-17-recursive.cpp) | 经典递归问题-汉诺塔问题的**非递归实现**。借助栈和循环进行实现。适合用于回味递归思想。 | √ |
 |7-18|[银行业务队列简单模拟](https://pintia.cn/problem-sets/15/exam/problems/825)| [DS-7-18.cpp](./DS-7-18.cpp) | 利用个**队列**结构模拟两个窗口的处理过程 |  |
+|7-19|[求链式线性表的倒数第K项](https://pintia.cn/problem-sets/15/exam/problems/826)| [DS-7-19.cpp](./DS-7-19.cpp) | 采用**队列**储存数字序列的**倒数K个数字**，只需要**取队头数字**即可找到倒数第K项 |  |
 
