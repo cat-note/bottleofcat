@@ -12,6 +12,17 @@ body {
     max-width: 100%;
     height: 500px;
     max-height: 100%;
+    overflow: hidden;
+}
+
+.notice {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    font-size: 3em;
+    color: #8f8f8f;
+    word-break: keep-all;
 }
 
 .tower {
@@ -44,7 +55,6 @@ body {
 .plate {
     position: absolute;
     transform: translateX(-50%);
-    transition: .5s ease;
     text-align: center;
     border-radius: .3em;
 }
@@ -55,4 +65,17 @@ body {
 
 .panel input {
     margin: 0 .5em .5em 0;
+}
+
+footer{
+    margin-top: 10px;
+    font-size: .2em;
+    color: #8f8f8f;
+}
+
+/*
+这个放在最后，指定盘子移动速度
+*/
+.speed {
+    transition: .5s ease;
 }

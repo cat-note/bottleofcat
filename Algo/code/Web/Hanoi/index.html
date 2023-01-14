@@ -8,6 +8,7 @@
 
 <body>
     <div class="showcase" id="showcase">
+        <span class="notice" id="notice"></span>
         <div class="tower">
             <div class="pole"></div>
             <div class="base"></div>
@@ -25,7 +26,17 @@
         <input type="button" id="playBtn" value="播放" />
         <input type="button" id="prevBtn" value="上一步" />
         <input type="button" id="nextBtn" value="下一步" />
-        <input type="button" id="resetBtn" value="重置" />
+        <input type="button" id="resetBtn" value="重置" /><br>
+        <label for="plateNum">盘数：</label><input type="number" id="plateNum" value="4" min="1" max="10" /><br>
+        <label for="speed">速度：</label>
+        <select id="speed">
+            <option value="1.0">0.5x</option>
+            <option value="0.5" selected>1.0x</option>
+            <option value="0.33">1.5x</option>
+            <option value="0.25">2.0x</option>
+            <option value="0.1">5.0x</option>
+        </select>
     </div>
+    <footer>@SomeBottle</footer>
     <script src="./hanoi.js"></script>
 </body>
