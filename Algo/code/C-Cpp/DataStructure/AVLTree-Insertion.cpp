@@ -57,6 +57,16 @@ public:
         updateHeight(nodeLeft); // 更新有变动的结点的高度，先更新子树再更新根
         updateHeight(node);
     }
+    // 失衡节点左旋操作，node是失衡节点
+    void rotateLeft(Tree node)
+    {
+        Tree nodeLeft = node->left;          // 失衡节点左子树
+        Tree nodeRight = node->right;        // 失衡节点右子树
+        Tree rChildLeft = nodeRight->left;   // 失衡节点的右孩子的左子树
+        Tree rChildRight = nodeRight->right; // 失衡节点的右孩子的右子树
+        // 这里【没有指向父节点】的指针，我们直接修改结点的值来模拟移动结点
+        
+    }
     // 插入操作
     void insert(int value)
     {

@@ -32,6 +32,8 @@ AVL树的插入操作在二叉搜索(排序)树的操作的基础上新增了如
 
 ## 定义树节点
 
+这里的树节点**没有**指向父节点的指针。
+
 ```cpp
 typedef struct TreeNode *Tree;
 
@@ -125,7 +127,28 @@ LL型字面展开来看就是**Left** - **Left**。意思是**新插入节点**�
 
 ### 程序实现
 
-
+```cpp
+// 失衡节点右旋操作，node是失衡结点
+void rotateRight(Tree node)
+{
+    Tree nodeLeft = node->left;         // 失衡节点左子树
+    Tree nodeRight = node->right;       // 失衡节点右子树
+    Tree lChildLeft = nodeLeft->left;   // 失衡节点的左孩子的左子树
+    Tree lChildRight = nodeLeft->right; // 失衡节点左孩子的右子树
+    // 这里【没有指向父节点】的指针，我们直接修改结点的值来模拟移动结点即可
+    int nodeVal = node->val;   // 失衡节点的值
+    node->val = nodeLeft->val; // 交换失衡节点和左孩子的值
+    nodeLeft->val = nodeVal;
+    // 这里已经不是左孩子了，而是“旋转”下来的失衡节点
+    nodeLeft->left = lChildRight; // 修改结点的左右子树
+    nodeLeft->right = node->right;
+    node->left = lChildLeft; // 和子树的根结点接上
+    node->right = nodeLeft;
+    // 此时node是子树根结点，lChildLeft是左子树，nodeLeft是右子树
+    updateHeight(nodeLeft); // 更新有变动的结点的高度，先更新子树再更新根
+    updateHeight(node);
+}
+```
 
 ## 判断失衡类型
 
