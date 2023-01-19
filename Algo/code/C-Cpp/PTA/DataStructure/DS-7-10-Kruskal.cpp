@@ -1,142 +1,106 @@
-/*
-克鲁斯卡尔算法实现寻找最小生成树
-其中判断无环的部分采用了时间复杂度较大的DFS，因此在测试最多顶点数(1000)的图时会TLE（超时）
-并查集咱还没玩清楚，采用并查集说不定能满足题目要求。
-*/
-#include <iostream>
+#include <cstdio>
 #include <vector>
 #include <queue>
 
 using namespace std;
 
-// 优先队列中的节点
-struct QNode
+// 并查集
+class UnionFind
 {
-    short v0; // 顶点1
-    short v1; // 顶点2
-    int cost; // 连接这两个顶点的边权
-    bool operator>(const QNode &node) const
+private:
+    int size;
+    vector<int> parents; // 储存各节点的父节点
+    vector<int> counts;  // 记录集合中的元素数
+public:
+    UnionFind(int size)
     {
-        return cost > node.cost;
-    };
+        this->size = size;
+        parents.resize(size);
+        counts.resize(size, 1); // 初始每个元素自己就是集合，集合中都只有1个元素
+        for (int i = 0; i < size; i++)
+            parents[i] = i; // 初始各节点的父节点就是自己，每个节点是一个独立的集合
+    }
+    // 查找操作，找到树根
+    int find(int index)
+    {
+        // 如果父节点就是自己，说明这个树根就是自己
+        // 否则进入递归，顺便做路径压缩
+        return parents[index] == index ? index : parents[index] = find(parents[index]);
+    }
+    // 合并操作
+    void merge(int a, int b)
+    {
+        int aRoot = find(a);
+        int bRoot = find(b);
+        if (aRoot == bRoot) // 属于同一个集合就不予操作
+            return;
+        // 为了一定程度上维持复杂度，往往将元素少的集合并入元素多的集合
+        if (counts[aRoot] > counts[bRoot])
+        {
+            parents[bRoot] = aRoot;
+            counts[aRoot] += counts[bRoot];
+        }
+        else
+        {
+            parents[aRoot] = bRoot;
+            counts[bRoot] += counts[aRoot];
+        }
+    }
 };
 
-class Graph
+// 一条道路
+struct Road
 {
-public:
-    // 根据顶点数初始化图
-    Graph(int vertexNum)
+    int start; // 开始地点
+    int end;   // 结束地点
+    int cost;  // 成本
+    bool operator>(const Road &obj) const
     {
-        G.resize(vertexNum);
-        visited.resize(vertexNum);
-        for (int i = 0; i < vertexNum; i++)
-            G[i].resize(i, false);
-    }
-
-    // 标记两点间是否有边
-    void set(short v0, short v1, bool hasEdge)
-    {
-        if (v0 == v1) // 防止非法操作
-            return;
-        if (v1 > v0)
-            G[v1][v0] = hasEdge;
-        else
-            G[v0][v1] = hasEdge;
-    }
-
-    // 从startV顶点开始进行DFS
-    bool noCycle(short startV)
-    {
-        // 重置访问数组
-        for (int i = 0, len = visited.size(); i < len; i++)
-            visited[i] = false;
-        return DFS(startV);
-    }
-
-private:
-    vector<vector<bool>> G; // 储存无向图的邻接矩阵
-    vector<bool> visited;   // 用于DFS的访问数组
-
-    // DFS判断是否无环 (当前遍历到的顶点)
-    bool DFS(short v0, short previous = 0)
-    {
-        // 如果访问了被访问过的顶点，就是有环路了
-        if (visited[v0])
-            return true;
-        visited[v0] = true; // 标记已访问
-        // DFS进入v0的邻接点
-        // 下三角的遍历要分为两道
-        for (int i = 0; i < v0; i++)
-            if (G[v0][i])
-            { // 有v0到邻接的i顶点的边
-                // v0的邻接点中有已经访问过的点，且这个点不是上一次访问的，这就出现了环
-                if (visited[i] && i != previous)
-                    return false;
-                if (!DFS(i, v0)) // 只要出现了环就返回false
-                    return false;
-            }
-        for (int i = v0 + 1, len = G.size(); i < len; i++)
-            if (G[i][v0])
-            { // 有v0到邻接的i顶点的边
-                if (visited[i] && i != previous)
-                    return false;
-                if (!DFS(i, v0)) // 只要出现了环就返回false
-                    return false;
-            }
-        return true;
+        return cost > obj.cost;
     }
 };
 
 int main()
 {
-    // 优先队列(小根堆实现)，用来实现堆排序
-    priority_queue<QNode, vector<QNode>, greater<QNode>> pQueue;
-    int townNum, wayNum; // 城镇数量，道路数量
-    cin >> townNum >> wayNum;
-    // 访问数组，标记每个顶点是否被访问
-    vector<bool> visits(townNum, false);
-    // 接下来读入边
-    for (int i = 0; i < wayNum; i++)
+    priority_queue<Road, vector<Road>, greater<Road>> pq; // 优先队列
+    int townNum, roadNum;                                 // 城镇数和道路数目
+    scanf("%d %d", &townNum, &roadNum);
+    for (int i = 0; i < roadNum; i++)
     {
-        short v1, v2; // 顶点<=1000，short类型足够
-        int cost;
-        cin >> v1 >> v2 >> cost;
-        // 加入到优先队列中，这其实就是堆排序过程
-        // 这里的顶点编号从0开始，因此要减1
-        v1--;
-        v2--;
-        pQueue.push(QNode{v1, v2, cost});
+        Road road;
+        // 读入边和边权
+        scanf("%d %d %d", &road.start, &road.end, &road.cost);
+        road.start--; // 题目中编号是1~N，但我这里处理是0~N-1
+        road.end--;
+        pq.push(road); // 加入优先队列
     }
-    // 初始化图
-    Graph G(townNum);
-    // 总成本
-    int totalCost = 0;
-    // 记录最后加入的边数
-    int totalEdge = 0;
-    // 不停弹出优先队列队首(堆顶)元素，这些元素是按边权升序弹出的
-    while (!pQueue.empty())
+    // 接下来就是Kruskal算法
+    UnionFind uf(townNum); // 并查集
+    int totalCost = 0;     // 总成本
+    while (!pq.empty())
     {
-        short v0 = pQueue.top().v0;
-        short v1 = pQueue.top().v1;
-        int cost = pQueue.top().cost;
-        pQueue.pop(); // 弹出队首
-        // 先把v0到v1的边加入到图中
-        G.set(v0, v1, true);
-        // 如果加入v0到v1的边后出现了环路(从v0开始进行DFS以判断)
-        if (!G.noCycle(v0))
+        const Road &curr = pq.top(); // 取出栈顶，这是当前成本最低的边
+        // 如果在没加入这条边时，两个城镇已经在同一个集合中了
+        // 说明加入了这条边就会形成环
+        if (uf.find(curr.start) != uf.find(curr.end))
         {
-            // 撤销v0到v1的边，我们就当无事发生
-            G.set(v0, v1, false);
+            // 不会形成环就加入这条边，把两个点放到同一个集合中(合并)
+            uf.merge(curr.start, curr.end);
+            totalCost += curr.cost; // 计入总成本
         }
-        else
-        {
-            totalCost += cost; // 没有出现环路，就把v0到v1顶点的成本加入总成本
-            totalEdge++;       // 记录边数
-        }
+        pq.pop(); // 弹出栈顶
     }
-    // n个顶点的最小生成树必有n-1条边，没有的话就是非连通
-    if (totalEdge != townNum - 1)
-        totalCost = -1;
-    cout << totalCost;
+    // 如果图是连通的，最后所有顶点应该都和0号顶点在同一个集合中
+    for (int i = 1; i < townNum; i++)
+        if (uf.find(0) != uf.find(i)) // 但凡有顶点不在集合中就说明未连通
+        {
+            printf("-1"); // 有未被访问的就说明无法连通
+            return 0;
+        }
+    printf("%d", totalCost);
     return 0;
 }
+
+/*
+    
+*/
