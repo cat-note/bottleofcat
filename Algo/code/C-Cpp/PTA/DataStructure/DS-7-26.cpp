@@ -13,7 +13,6 @@ struct Message
     string text;  // 消息内容
     bool operator<(const Message &obj) const
     {
-        // 观察样例可以发现，当孩子节点小于或等于父亲节点时要交换
         return priority < obj.priority;
     }
 };
