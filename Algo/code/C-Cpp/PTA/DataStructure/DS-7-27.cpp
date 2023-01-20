@@ -18,26 +18,17 @@ using namespace std;
 typedef pair<int, int> IndPair;
 typedef vector<int> Childs;
 
-// 家庭成员
-struct Member
-{
-    int parent;    // 父节点下标
-    Childs childs; // 这个成员的所有孩子的下标，用于判断兄弟
-};
-
-bool contains(Childs &vec, int val); // 查看vector中有没有符合要求的元素
-
 int main()
 {
     int serial = 0;            // 名字编号
     map<string, int> nameInds; // 将名字映射到一个整数
-    vector<Member> members;    // 记录每个家庭成员的父节点和后代
+    vector<int> parents;       // 记录每个家庭成员的父节点和后代
     int nameNum, sentenceNum;  // 名字数量和陈述句数量
     // 注意这里顺带取走了行末的换行符
     scanf("%d %d%*[\n]", &nameNum, &sentenceNum);
     // 初始化父子关系数组
-    members.resize(nameNum);
-    // 读入家谱
+    parents.resize(nameNum);
+    // ---------------------------------------------------------------------------读入家谱
     stack<IndPair> parentNodes;      // 储存父节点
     parentNodes.push(IndPair{0, 0}); // 最早祖先的下标为0，缩进为0
     int prevIndent = 0;              // 之前的缩进
@@ -69,22 +60,14 @@ int main()
             while (parentNodes.top().second > 0 && parentNodes.top().second >= indent)
                 parentNodes.pop();
         }
-        members[serial].parent = parentNodes.top().first;          // 指定当前节点的父节点下标
-        members[parentNodes.top().first].childs.push_back(serial); // 在父节点上记录孩子结点
+        if (serial == 0)
+            parents[serial] = -1; // 💡 !!!!!!!!!!!最早祖先的父节点是-1，避免后面判断兄弟时出错!!!!!!!!!!!!!
+        else
+            parents[serial] = parentNodes.top().first; // 指定当前节点的父节点下标
         serial++;
         prevIndent = indent;
     }
-    /*
-    for (int i = 0; i < nameNum; i++)
-    {
-        printf("parent-%d child-%d child->childs:", parents[i].parent, i);
-        for (int j = 0, len = parents[i].childs.size(); j < len; j++)
-        {
-            printf("%d ", parents[i].childs[j]);
-        }
-        printf("\n");
-    }*/
-    // 接下来读入陈述句
+    // ---------------------------------------------------------------------------接下来读入陈述句
     string nameFront;  // 句子中首个名字
     string nameBack;   // 句子中最后一个名字
     char relation[11]; // 表示关系的名词
@@ -100,31 +83,29 @@ int main()
         nameBack.assign(temp);
         int nameFrontInd = nameInds[nameFront]; // 获得名字的编号(下标)
         int nameBackInd = nameInds[nameBack];
-        bool found = false;     // 是否符合家谱
-        if (relation[0] == 'c') // childs
+        bool found = false; // 是否符合家谱
+        switch (relation[0])
         {
+        case 'c': // childs
             // X is a child of Y, X的父节点是Y
-            found = members[nameFrontInd].parent == nameBackInd;
-        }
-        else if (relation[0] == 'p') // parents
-        {
+            found = parents[nameFrontInd] == nameBackInd;
+            break;
+        case 'p': // parents
             // X is the parent of Y, Y的父节点是X
-            found = members[nameBackInd].parent == nameFrontInd;
-        }
-        else if (relation[0] == 's') // siblings
-        {
+            found = parents[nameBackInd] == nameFrontInd;
+            break;
+        case 's': // siblings
             // X is a sibling of Y, X和Y的父节点的孩子中有X和Y
-            // 根据Y找到父节点
-            int parentInd = members[nameBackInd].parent;
-            found = contains(members[parentInd].childs, nameFrontInd); // 如果X也是父节点的孩子就符合家谱
-        }
-        else if (relation[0] == 'd') // descendants
+            // 如果X的父节点也是Y的父节点，二者就互为兄弟姐妹
+            found = parents[nameBackInd] == parents[nameFrontInd];
+            break;
+        case 'd': // descendants
         {
             // X is a descendant of Y, 从X往上找父节点，有父节点Y
             int parentInd = nameFrontInd;
-            while (parentInd != 0)
+            while (parentInd != -1) // 下标为-1就遇到最早祖先了
             {
-                parentInd = members[parentInd].parent; // 向上找父节点
+                parentInd = parents[parentInd]; // 向上找父节点
                 // 这样写不会漏掉父亲是0号节点的情况
                 if (parentInd == nameBackInd)
                 {
@@ -133,13 +114,15 @@ int main()
                 }
             }
         }
-        else if (relation[0] == 'a') // ancestors
+        break;
+        case 'a': // ancestors
         {
+
             // X is an ancestor of Y, 从Y向上找父节点，有父节点X
             int parentInd = nameBackInd;
-            while (parentInd != 0)
+            while (parentInd != -1) // 下标为-1就遇到最早祖先了
             {
-                parentInd = members[parentInd].parent; // 同样是向上找父节点
+                parentInd = parents[parentInd]; // 同样是向上找父节点
                 // 这样写不会漏掉父亲是0号节点的情况
                 if (parentInd == nameFrontInd)
                 {
@@ -147,6 +130,8 @@ int main()
                     break;
                 }
             }
+        }
+        break;
         }
         if (found)
             printf("True\n");
@@ -156,13 +141,25 @@ int main()
     return 0;
 }
 
-// 查看vec中有没有元素val
-bool contains(Childs &vec, int val)
-{
-    for (Childs::iterator i = vec.begin(); i != vec.end(); i++)
-    {
-        if (*i == val)
-            return true;
-    }
-    return false;
-}
+/*
+    这题我是真的非常佩服出题老师的挖坑能力，这个坑就坑在【测试点3】- 最大N和M，随机
+
+    乍一看好像没什么特别的，但我刚开始死活过不了这个测试点。后来写了个家谱数据生成器加上bash脚本才找到了问题所在——
+
+        最开始我是按并查集的parents数组去初始化本题中的parents数组的，也就是初始值parents[i]=i，这样一来，树根(最早祖先)的父节点就是【它自己】。
+
+        然而后面我在判断【两节点是否为兄弟】时，判断条件写的是 parents[节点1]==parents[节点2] 。
+
+        假如我有这样一组数据:
+
+            3 1
+            Simon      
+              Steve
+              Alex
+            Simon is a sibling of Steve
+
+        那么程序就会判断 parents[Simon]==parents[Steve] 是否成立。很明显，这里parents[Simon]=Simon，而parents[Steve]=Simon，所以导致了判断失误，💡 这也是【测试点3】故意卡的一个地方。
+
+        解决方法很简单，在初始化时将【最早祖先】(树根)的【父节点设为其他值】。
+    -------------------------------------------
+*/
