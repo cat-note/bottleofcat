@@ -67,23 +67,23 @@ int main()
         prevIndent = indent;                           // 用作下一次迭代判断缩进量是否改变
     }
     // ---------------------------------------------------------------------------接下来读入陈述句
-    string nameFront;  // 句子中首个名字
-    string nameBack;   // 句子中最后一个名字
-    char relation[11]; // 表示关系的名词
-    char temp[11];     // 临时字符数组
+    string nameFront;   // 句子中首个名字
+    string nameBack;    // 句子中最后一个名字
+    char seniority[11]; // 表示辈分的名词
+    char temp[11];      // 临时字符数组
     for (int i = 0; i < sentenceNum; i++)
     {
         scanf("%s", temp); // 读入句子中首个名字
         nameFront.assign(temp);
         scanf("%*s%*s"); // 吸收掉系动词和冠词
-        scanf("%s", relation);
+        scanf("%s", seniority);
         scanf("%*s");      // 吸收掉介词of
         scanf("%s", temp); // 读入句子中最后一个名字
         nameBack.assign(temp);
         int nameFrontInd = nameInds[nameFront]; // 获得名字的编号(下标)
         int nameBackInd = nameInds[nameBack];
         bool found = false; // 是否符合家谱
-        switch (relation[0])
+        switch (seniority[0])
         {
         case 'c': // childs
             // X is a child of Y, X的父节点是Y
