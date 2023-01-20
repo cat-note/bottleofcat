@@ -36,13 +36,12 @@ int main()
                 // 注意，读入的数字都是反的，需要进行逆转
                 reverseStr(tempStr, tempLen); // 逆转临时字符串，得到正常的数字，比如411-逆转后就是-114
                 float num;
-                char buf[20]; // 临时字符串
-                int scanNum;  // 匹配的数量
+                int scanNum; // 匹配的数量
                 // 将数字读入为浮点数
                 // 1. 如果sscanf返回0说明浮点数解析失败，数字非法
                 // 2. 如果sscanf匹配的数量>1，说明数字后面还有非法字符
                 // 3. 如果数字前有多余的符号，比如--110，sscanf是无法识别出浮点数的，数字非法
-                if (!(scanNum = sscanf(tempStr, "%f%[^\n]", &num, buf)) || scanNum > 1)
+                if (!(scanNum = sscanf(tempStr, "%f%*[^\n]", &num)) || scanNum > 1)
                 {
                     errorFlag = true;
                     break;
