@@ -141,6 +141,7 @@ void printPostorder(Tree bst, bool mirrored)
             traversal.push(curr->right);
             traversal.push(curr->left);
         }
+        delete curr; // 顺带释放掉内存, 不写的话能快1ms左右
     }
     // 输出栈中序列
     bool putSpace = false; // 是否在前面填充空格，防止多余空格输出
