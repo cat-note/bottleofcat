@@ -74,7 +74,7 @@ struct Node
 
 int main()
 {
-    Node test[10] = {{1}, {4}, {2}, {5}, {9}, {7}, {3}, {6}, {8}, {10} };
+    Node test[10] = { {1}, {4}, {2}, {5}, {9}, {7}, {3}, {6}, {8}, {10} };
     sort(test, test + 10);
     for (int i = 0; i < 10; i++)
         cout << test[i].data << " ";
@@ -184,7 +184,7 @@ struct MyGreater
 
 int main()
 {
-    Node test[10] = {{4}, {1}, {3}, {7}, {5}, {8}, {2}, {9}, {6}, {10} };
+    Node test[10] = { {4}, {1}, {3}, {7}, {5}, {8}, {2}, {9}, {6}, {10} };
     sort(test, test + 10, MyGreater());
     for (int i = 0; i < 10; i++)
         cout << test[i].data << " ";
@@ -253,7 +253,7 @@ struct Node
 
 int main()
 {
-    Node test[10] = {{4}, {1}, {3}, {7}, {5}, {8}, {2}, {9}, {6}, {10} };
+    Node test[10] = { {4}, {1}, {3}, {7}, {5}, {8}, {2}, {9}, {6}, {10} };
     sort(test, test + 10);
     for (int i = 0; i < 10; i++)
         cout << test[i].data << " ";
