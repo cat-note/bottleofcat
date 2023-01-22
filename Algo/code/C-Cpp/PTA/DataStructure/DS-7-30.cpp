@@ -14,11 +14,14 @@ typedef struct DirNode
 } *Dir;
 
 Dir seekDir(Dir currDir, const string &dirName); // 在某一级目录中寻找dirName目录，不存在就创建
-void printPreorder(Dir root,int depth=0); // 打印先序遍历目录的序列
+bool compareDir(Dir prev, Dir next);             // 自定义比较函数
+void indent(int num);                            // 输出缩进
+void printPreorder(Dir root, int depth = 0);     // 打印先序遍历目录的序列
 
 int main()
 {
     Dir root = new DirNode();    // 目录树根
+    root->name = "root";         // 树根名为root
     int pathNum;                 // 路径数量
     scanf("%d%*[\n]", &pathNum); // 这里顺带把行末的换行符给收了，因为底下要靠\n来判断一行结束
     // 读入路径
@@ -47,7 +50,7 @@ int main()
         }
     }
     // 输出目录和文件
-    
+    printPreorder(root);
     return 0;
 }
 
@@ -69,15 +72,44 @@ Dir seekDir(Dir currDir, const string &dirName)
     return target;
 }
 
-// 先序遍历目录
-void printPreorder(Dir root,int depth){
-    for(int i=0;i<depth;i++) // 输出缩进填充空格
+// 对目录进行比较
+bool compareDir(Dir prev, Dir next)
+{
+    // 字符串字典序比较
+    return (prev->name.compare(next->name) < 0);
+}
+
+void indent(int num)
+{
+    for (int i = 0; i < num; i++) // 输出缩进填充空格
         printf("  ");
-    printf("%s",root->name.c_str()); // 打印这个目录的名字
+}
+
+// 先序遍历目录
+void printPreorder(Dir root, int depth)
+{
+    int childsNum = root->childs.size(); // 子目录数量
+    int fileNum = root->files.size();    // 文件数量
+    indent(depth);
+    printf("%s\n", root->name.c_str()); // 打印这个目录的名字
     // 先找所有的子目录
-    
+    if (childsNum > 0) // 这个分支有子目录时就先输出子目录
+    {
+        // 对所有子目录进行字典排序
+        sort(root->childs.begin(), root->childs.end(), compareDir);
+        for (int i = 0; i < childsNum; i++)
+            printPreorder(root->childs[i], depth + 1); // DFS遍历目录
+    }
+    // 接着输出本目录下的文件
+    sort(root->files.begin(), root->files.end()); // 先按字典序排序
+    for (int i = 0; i < fileNum; i++)
+    {
+        indent(depth + 1);                      // 文件是目录下的，因此要多一个缩进
+        printf("%s\n", root->files[i].c_str()); // 输出文件名
+    }
+    delete root; // 释放内存
 }
 
 /*
-    本题考察多叉树的构建
+    本题考察多叉树的构建和遍历。
 */
