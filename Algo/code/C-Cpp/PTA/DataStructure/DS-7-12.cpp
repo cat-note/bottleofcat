@@ -6,10 +6,12 @@ using namespace std;
 typedef vector<long> Sequence; // 长整型数字序列
 
 void Swap(long &elem1, long &elem2);
-void BubbleSort(Sequence &seq);    // 冒泡排序
-void SelectionSort(Sequence &seq); // 选择排序
-void InsertionSort(Sequence &seq); // 插入排序
-void ShellSort(Sequence &seq);     // 希尔排序
+void BubbleSort(Sequence &seq);                                           // 冒泡排序
+void SelectionSort(Sequence &seq);                                        // 选择排序
+void InsertionSort(Sequence &seq);                                        // 插入排序
+void ShellSort(Sequence &seq);                                            // 希尔排序
+void MergeSort(Sequence &seq);                                            // 归并排序
+void recursiveMerge(int start, int end, Sequence &origin, Sequence &buf); // 归并排序的递归体
 
 int main()
 {
@@ -23,7 +25,8 @@ int main()
     // BubbleSort(seq);
     // SelectionSort(seq);
     // InsertionSort(seq);
-    ShellSort(seq);
+    // ShellSort(seq);
+    MergeSort(seq);
     // 输出序列
     for (int i = 0; i < N; i++)
     {
@@ -229,3 +232,56 @@ void ShellSort(Sequence &seq)
 
 -----------------------------
 */
+
+void MergeSort(Sequence &seq)
+{
+    int len = seq.size();
+    // 临时数组，用于子序列完毕后的【合并】
+    // 如果写在recursiveMerge中，在递归过程中每一层都要存放一个容器，开销很大
+    Sequence buf(len);
+    // 开始递归
+    recursiveMerge(0, len - 1, seq, buf);
+}
+
+// 处理从start到end下标的序列，origin是排序序列，buf是一个临时数组
+void recursiveMerge(int start, int end, Sequence &origin, Sequence &buf)
+{
+    if (start >= end) // 已经划分成最小的序列(只有一个元素)，就回溯
+        return;
+    int mid = start + (end - start) / 2; // 防溢出写法
+    // 将[start,end]的序列二分为[start,mid]和[mid+1,end]这两个序列分别进行排序
+    recursiveMerge(start, mid, origin, buf);   // 对左半边进行排序，操作原数组的[start,mid]序列
+    recursiveMerge(mid + 1, end, origin, buf); // 对右半边进行排序，操作原数组的[mid+1,end]序列
+    // 到这里，[start,mid]和[mid+1,end]这两个序列已经【各自被排序好了】，要将这两个合并
+    // 合并方式是将两个序列的元素【按顺序】放入buf数组
+    int bufSize = 0;       // 记录用到的临时数组大小
+    int lSeqPos = start;   // 左半边序列元素指针
+    int rSeqPos = mid + 1; // 右半边序列元素指针
+    for (int i = start; i <= end; i++)
+    {
+        if (lSeqPos > mid)
+        {
+            // 左半边序列已经扫描完毕，此时右半边序列肯定还剩
+            buf[bufSize++] = origin[rSeqPos++];
+        }
+        else if (rSeqPos > end)
+        {
+            // 右半边序列已经扫描完毕, 左半边序列肯定还有
+            buf[bufSize++] = origin[lSeqPos++];
+        }
+        else if (origin[lSeqPos] < origin[rSeqPos])
+        {
+            // 两半序列都还有元素，如果左序列此时的元素比右序列此时的元素小，就把左序列元素加入buf
+            // 这样做，最后输出的是升序排序序列
+            buf[bufSize++] = origin[lSeqPos++];
+        }
+        else
+        {
+            // 右序列元素加入buf
+            buf[bufSize++] = origin[rSeqPos++];
+        }
+    }
+    // 将buf临时数组的结果更新到【原数组】的[start,end]这段序列中
+    for (int i = start, j = 0; i <= end; i++)
+        origin[i] = buf[j++];
+}
