@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+    这玩意咱写成屎山了...不过能用就行！
+*/
+
 const PLATE_HEIGHT = 20; // 盘子高度(像素)
 const PLATE_MIN_HEIGHT = 10 + 8; // 盘子最小高度(像素)
 const PLATE_MAX_WIDTH = 20; // 盘子最大宽度(百分比)
