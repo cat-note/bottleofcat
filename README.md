@@ -57,9 +57,9 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 为了日后复习，代码注释我尽量写详细了~
 
 * [用C/C++写的](./Algo/code/C-Cpp/)  
-    - [蓝桥杯OJ](./Algo/code/C-Cpp/Lanqiao/)
-    - [PTA (Pintia) 数据结构(中文)习题集](./Algo/code/C-Cpp/PTA/DataStructure/)
-    - [其他地方做的数据结构题](./Algo/code/C-Cpp/DataStructure)  
+    - [蓝桥杯OJ](./Algo/code/C-Cpp/Lanqiao#readme)
+    - [PTA (Pintia) 数据结构(中文)习题集](./Algo/code/C-Cpp/PTA/DataStructure#readme)
+    - [其他地方做的数据结构题](./Algo/code/C-Cpp/DataStructure#readme)  
 
 🐟👋 - - - - - - - - - - - - - - - -
 

@@ -10,5 +10,5 @@
 
 ## 题目分类
 
-- [基础练习(BASIC)](./BASIC)  
-- [算法训练(ALGO)](./ALGO/)  
+- [基础练习(BASIC)](./BASIC#readme)  
+- [算法训练(ALGO)](./ALGO#readme)  
