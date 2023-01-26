@@ -20,8 +20,7 @@ typedef vector<VecInt> Graph;
 struct VNode
 {
     int vertex;
-    int cost;  // 路径总开销
-    int power; // 路径总人力
+    int cost; // 路径总开销
     bool operator>(const VNode &node) const
     {
         return cost > node.cost;
@@ -61,20 +60,22 @@ int main()
     // Dijkstra
     // 实际上路径数组储存的是每个顶点的【前驱顶点】
     VecInt paths(vertexNum, -1);                             // 路径数组
-    VecInt pathNum(vertexNum, 1);                            // 记录各顶点为止的路径条数
+    VecInt pathNum(vertexNum, 0);                            // 记录各顶点为止的路径条数
     vector<DNode> distance(vertexNum, DNode{INF, 0});        // 距离数组
     vector<bool> visited(vertexNum, false);                  // 是否被访问
     priority_queue<VNode, vector<VNode>, greater<VNode>> pq; // 辅助用的优先队列
-    pq.push(VNode{startV, 0, manpower[startV]});             // 把起始顶点先加入
+    pq.push(VNode{startV, 0});                               // 把起始顶点先加入
     distance[startV].cost = 0;                               // 起始顶点总路径开销为0
+    distance[startV].power = manpower[startV];               // 起始顶点的人力
     pathNum[startV] = 1;                                     // 起始顶点的路径条数有1条
     while (!pq.empty())
     {
         int currV = pq.top().vertex; // 当前distance数组中总路径最短的点
         int currCost = pq.top().cost;
-        int currPower = pq.top().power; // 总人力
         pq.pop();
         // 如果此顶点已被访问就不再继续
+        if (visited[currV])
+            continue;
         visited[currV] = true; // 标记已被访问，此时确定了currV顶点的最短路径
         // 如果到终点的最短路径已被确定就无需继续
         if (currV == endV)
@@ -85,27 +86,24 @@ int main()
             // 顶点被访问过或者一条边不存在就跳过本次迭代
             if (visited[i] || G[currV][i] == INF)
                 continue;
-            int newCost = currCost + G[currV][i];   // 经过currV到i所需的开销
-            int newPower = currPower + manpower[i]; // 所需人力
+            int newCost = currCost + G[currV][i];               // 经过currV到i所需的开销
+            int newPower = distance[currV].power + manpower[i]; // 所需人力
             // 如果新的开销能更小，就更新
             // 如果开销没变，但能集结更多人力，也更新
-            // printf("CHECK %d->%d cost:%d distance[i].cost=%d newCost=%d\n", currV, i, G[currV][i], distance[i].cost, newCost);
             if (newCost < distance[i].cost)
             {
                 // 到currV为止有pathNum[currV]条路径，i顶点新旧总开销不相同时，currV到i也只有唯一路径
                 // 但是当新旧开销相同，也就是newCost=distance[i].cost时，说明有多条路径出现
-                // printf("----------------VERTEX%d->%d pathNum:%d\n", currV, i, pathNum[currV]);
                 pathNum[i] = pathNum[currV];
                 distance[i].cost = newCost;
                 distance[i].power = newPower;
                 // 更新路径,paths数组储存的是各顶点的【前驱顶点】
                 paths[i] = currV; // 经过currV到i能有最短路径，i的前驱就是currV
-                // 重新加入队列
-                pq.push(VNode{i, newCost, newPower});
+                // 加入队列
+                pq.push(VNode{i, newCost});
             }
             else if (newCost == distance[i].cost)
             {
-                // printf("----------------VERTEX%d->%d pathNum:%d +1\n", currV, i, pathNum[currV]);
                 pathNum[i] += pathNum[currV];
                 if (newPower > distance[i].power)
                 {
@@ -113,8 +111,6 @@ int main()
                     // 更新路径,paths数组储存的是各顶点的【前驱顶点】
                     paths[i] = currV; // 经过currV到i能有最短路径，i的前驱就是currV
                 }
-                // 重新加入队列
-                pq.push(VNode{i, newCost, newPower});
             }
         }
     }
@@ -140,19 +136,16 @@ void printPath(VecInt &paths, int startV, int endV)
 }
 
 /*
-自己想的一个测试例，用来测试【最短路径的条数】的输出是否正确:
-8 11 0 7
-10 20 10 40 50 20 30 20
-0 1 2
-1 2 3
-2 7 2
-0 3 1
-3 7 6
-0 4 2
-4 7 5
-0 5 3
-5 7 4
-0 6 4
-6 7 3
+自己想的一个测试例，用来测试【最短路径的条数】和【救援队的数量】的输出是否正确:
+(对应【测试点1】:5条不同的最短路的情况)
+5 7 0 4
+10 30 50 40 20
+0 1 1
+1 3 1
+1 2 2
+0 2 3
+2 3 1
+2 4 3
+0 4 6
 
 */

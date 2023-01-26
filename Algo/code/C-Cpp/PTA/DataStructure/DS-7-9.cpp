@@ -199,6 +199,8 @@ Way *Dijkstra(int startV, int endV)
         int minV = minNode.vertex;          // 当前总路径最短的顶点
         int minDistance = minNode.distance; // 其路径长度
         queue.pop();                        // 弹出队头
+        if (visits[minV])
+            continue;        // 访问过的就不再继续
         visits[minV] = true; // 标记顶点被访问
         if (minV == endV)    // 如果已经确定到达目标顶点的最短路径，就不用继续了
             break;
