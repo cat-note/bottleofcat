@@ -199,16 +199,15 @@ Way *Dijkstra(int startV, int endV)
         int minV = minNode.vertex;          // 当前总路径最短的顶点
         int minDistance = minNode.distance; // 其路径长度
         queue.pop();                        // 弹出队头
-        // 如果已经访问过minV顶点，就跳到下一迭代
-        // 这个判断得写在这里，如果写在下面入队的地方(第220行左右)，队中会有大量被访问过的元素，因而导致不必要的时间开销
-        if (visits[minV])
-            continue;
         visits[minV] = true; // 标记顶点被访问
         if (minV == endV)    // 如果已经确定到达目标顶点的最短路径，就不用继续了
             break;
         // 扫描distances数组
         for (int i = 0; i < cityNum; i++)
         {
+            // 如果顶点已被访问，或者这条边不存在，就跳过
+            if (visits[i] || G[minV][i].len == INF)
+                continue;
             int iMinVLen = G[minV][i].len;     // minV到i顶点的距离
             int iMinVPrice = G[minV][i].price; // minV到i顶点的价格
             // 从起点到i顶点的距离 = 起点到minV顶点的距离 + minV到i顶点的距离
