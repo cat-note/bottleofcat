@@ -56,6 +56,8 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 菜鸟级水平，仅供参考，爱来自一些瓶子❤。  
 为了日后复习，代码注释我尽量写详细了~
 
+> **写给自己**: 掌握了某种刷题套路**并不代表**理解了某种算法。刷算法题其实是锻炼思维的一种途径，借此也能保持对某种编程语言的基本熟练度。刷题**不是越多越好**，而是重在**回顾、理解与总结**。
+
 * [用C/C++写的](./Algo/code/C-Cpp/)  
     - [蓝桥杯OJ](./Algo/code/C-Cpp/Lanqiao#readme)
     - [PTA (Pintia) 数据结构(中文)习题集](./Algo/code/C-Cpp/PTA/DataStructure#readme)
