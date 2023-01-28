@@ -35,6 +35,7 @@
 |7-9|[旅游规划](https://pintia.cn/problem-sets/15/exam/problems/717)| [DS-7-9.cpp](./DS-7-9.cpp) | 求**无向图**的**两点间最短路径**，采用**优先队列辅助的Dijkstra算法**(本题我**手写实现了基于小根堆的优先队列**) | √ |
 |7-10|[公路村村通](https://pintia.cn/problem-sets/15/exam/problems/718)| Prim(**AC**): [DS-7-10.cpp](./DS-7-10.cpp) <br>Kruskal(**AC**,并查集): [DS-7-10-Kruskal.cpp](DS-7-10-Kruskal.cpp) <br> Kruskal(**TLE**): [DS-7-10-Kruskal-TLE.cpp](./DS-7-10-Kruskal-TLE.cpp) <br> Dijkstra(错误思路): [DS-7-10-WA-Dijkstra.cpp](./DS-7-10-WA-Dijkstra.cpp) | 求**无向图**的**最小生成树**的**权**，有**Prim**和**Kruskal**实现 | √ |
 |7-11|[关键活动](https://pintia.cn/problem-sets/15/exam/problems/719)| [DS-7-11.cpp](./DS-7-11.cpp) <br> 随机AOE网生成工具: [randomAOE.js](./randomAOE.js) | 通过**拓扑排序**序列求**AOE**网(无环有向图)的**关键活动**。本题考察的点非常全面，涵盖到了关键路径这一块的所有内容。个人感觉出的很好，很适合查漏补缺。 | √√ |
+|7-12|[排序](https://pintia.cn/problem-sets/15/exam/problems/720)| [DS-7-12.cpp](./DS-7-12.cpp) | **常用的排序算法**我都尝试写了一遍，适合复习。 | √√ |
 |7-13|[统计工龄](https://pintia.cn/problem-sets/15/exam/problems/721)| [DS-7-13.cpp](./DS-7-13.cpp) | 简单题，利用**直接定址**哈希表对相应工龄的员工数进行统计  |  |
 |7-14|[电话聊天狂人](https://pintia.cn/problem-sets/15/exam/problems/722)| [DS-7-14.cpp](./DS-7-14.cpp) | 利用**哈希表**对大规模数据进行统计工作，采用**位与取余法**，并利用**链地址法**处理哈希碰撞。位与取余 `被除数 & (除数-1)`的公式值得记忆，不过这里的**除数必须是2的N次方**  |  |
 |7-15|[QQ帐户的申请与登陆](https://pintia.cn/problem-sets/15/exam/problems/723)| [DS-7-15.cpp](./DS-7-15.cpp) | 利用**哈希表**存取账号信息，哈希表实现几乎和题**7-14**一致。  |  |
@@ -59,4 +60,5 @@
 |7-34|[任务调度的合理性](https://pintia.cn/problem-sets/15/exam/problems/861)| [DS-7-34.cpp](./DS-7-34.cpp) / <br> **栈**辅助**拓扑排序**: [DS-7-34-withStack.cpp](./DS-7-34-withStack.cpp)  | 本题需要判断一张图是不是**AOV网**，也就是要判断是不是**无环**的有向图。我采用了**卡恩拓扑排序算法**，也就是比较常用的“**拆0入度顶点**”的方法。// 值得注意的是，拓扑排序可以用**栈**辅助储存**所有0入度的顶点**以优化运行时间。 |  |
 |7-35|[城市间紧急救援](https://pintia.cn/problem-sets/15/exam/problems/862)| [DS-7-35.cpp](./DS-7-35.cpp) | 和题**7-9**一样是采用**Djikstra**算法，但更进一步。不仅有**涉及两个因素**的最短路径的取舍，同时还考察了**最短路径的记录与输出**以及**对等长最短路径条数的统计**。<br>------<br> 其中最值得回味的是统计最短路径条数: 额外借助一个数组`pathNum`，用`pathNum[i]`标记**从起点到顶点`i`的最短路径条数**。当更新最短路径长时，对顶点**最短路径条数**进行赋值；而出现等长最短路径时，就得对顶点**最短路径条数**进行累加。 | √ |
 |7-36|[社交网络图中结点的“重要性”计算](https://pintia.cn/problem-sets/15/exam/problems/863)| [DS-7-36.cpp](./DS-7-36.cpp) | 常规的最短路径题，可以用Dijkstra高效求解。本题给出的是一张**无权**无向图，因此我默认**所有边的权为**`1`。 | |
+|7-37|[模拟EXCEL排序](https://pintia.cn/problem-sets/15/exam/problems/864)| [DS-7-37.cpp](./DS-7-37.cpp) | 选择一种排序算法(**稳定性无所谓**)来对包含多字段的元组进行排序。这里我采用了STL的`priority_queue`，辅以运算符重载实现了**堆排序**。快速排序更快，但我还没完全整会。稍后理解了我会在排序题**7-12**中写一下。 | |
 
