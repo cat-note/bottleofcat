@@ -2,118 +2,78 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
-#define TOLERANCE 1e-6
+#define INF 114514
+#define DOUBLE_TOLERANCE 1e-6
 
 using namespace std;
 
 // 表示一个国家
 struct Country
 {
-    int gold;       // 金牌总数
-    int medal;      // 奖牌总数
-    int population; // 国民总数
+    int gold;        // 金牌总数
+    int medal;       // 奖牌总数
+    double goldAvg;  // 国民人均金牌数
+    double medalAvg; // 国民人均奖牌数
+    int rank[4];     // 存放上面四种计算方式下的排名
 };
 
 vector<Country> countries; // 储存国家
+vector<short> rankings;    // 临时储存排名
 
-bool doubleEquals(double a, double b); // 判断浮点数a和b是否相等
-
-template <typename T>
-class Greater
-{
-public:
-    bool operator()(const T a, const T b) const
-    {
-        return a > b;
-    }
-};
-
-// 为了方便unique方法，特地写个浮点数比较类
-struct Double
-{
-    double val;
-    bool operator>(const Double &db) const
-    {
-        return val > db.val;
-    }
-    bool operator==(const Double &db) const
-    {
-        return doubleEquals(val, db.val);
-    }
-    bool operator!=(const Double &db) const
-    {
-        return !doubleEquals(val, db.val);
-    }
-};
+bool goldSort(short a, short b);       // 按金牌数比较的函数
+bool medalSort(short a, short b);      // 按奖牌数比较的函数
+bool goldAvgSort(short a, short b);    // 按人均金牌数比较的函数
+bool medalAvgSort(short a, short b);   // 按人均奖牌数比较的函数
+bool doubleEquals(double a, double b); // 判断两个浮点数是否相同
+void calcRank(int type);               // 根据计算方法type计算所有国家的排名，如果能更新则更新
 
 int main()
 {
     int countryNum, queryNum; // 国家数和查询数
     scanf("%d %d", &countryNum, &queryNum);
     countries.resize(countryNum);
-    vector<int> goldOrder(countryNum);   // 按金牌数降序排序的序列
-    vector<int> medalOrder(countryNum);  // 按奖牌数降序排序的序列
-    vector<Double> goldPer(countryNum);  // 按人均金牌数降序排序的序列
-    vector<Double> medalPer(countryNum); // 按人均奖牌数降序排序的序列
+    rankings.resize(countryNum);
     // 读入国家数据
-    for (int i = 0; i < countryNum; i++)
+    for (short i = 0; i < countryNum; i++)
     {
-        Country ct;
+        Country ct; // 最开始排名都是无穷
         scanf("%d", &ct.gold);
         scanf("%d", &ct.medal);
-        scanf("%d", &ct.population);
+        int population;
+        scanf("%d", &population);
+        ct.goldAvg = (double)ct.gold / population;
+        ct.medalAvg = (double)ct.medal / population;
         countries[i] = ct;
-        // 排序用的序列中储存的是国家编号
-        goldOrder[i] = ct.gold;
-        medalOrder[i] = ct.medal;
-        goldPer[i] = Double{(double)ct.gold / ct.population};
-        medalPer[i] = Double{(double)ct.medal / ct.population};
+        rankings[i] = i;
     }
-    // 按照不同标准分别进行降序排序
-    sort(goldOrder.begin(), goldOrder.end(), Greater<int>());
-    sort(medalOrder.begin(), medalOrder.end(), Greater<int>());
-    sort(goldPer.begin(), goldPer.end(), Greater<Double>());
-    sort(medalPer.begin(), medalPer.end(), Greater<Double>());
-    // 去重
-    unique(goldOrder.begin(), goldOrder.end());
-    unique(medalOrder.begin(), medalOrder.end());
-    unique(goldPer.begin(), goldPer.end());
-    unique(medalPer.begin(), medalPer.end());
+    // 按四种计算方法算出对应的排名
+    calcRank(1);
+    calcRank(2);
+    calcRank(3);
+    calcRank(4);
+    /* TEST
+    for (int i = 0; i < countryNum; i++)
+    {
+        printf("COUNTRY %d:\n", i);
+        printf("\t GOLD ORDER: %d\n", countries[i].rank[0]);
+        printf("\t MEDAL ORDER: %d\n", countries[i].rank[1]);
+        printf("\t GOLDAVG ORDER: %d\n", countries[i].rank[2]);
+        printf("\t MEDALAVG ORDER: %d\n", countries[i].rank[3]);
+    }*/
     // 输出最优计算方法和排名
     for (int i = 0; i < queryNum; i++)
     {
-        int orderBy = 0; // 计算方式编号
-        int ranking = 0; // 排名
-        short queryInd;  // 查询的国家编号
+        short queryInd; // 查询的国家编号
         scanf("%hd", &queryInd);
-        // 先找到待查询国家的四项指标
-        int queryGold = countries[queryInd].gold;
-        int queryMedal = countries[queryInd].medal;
-        double queryGoldPer = (double)countries[queryInd].gold / countries[queryInd].population;
-        double queryMedalPer = (double)countries[queryInd].medal / countries[queryInd].population;
-        // 同时扫描四个序列
-        for (int j = 0; j < countryNum; j++)
+        int ranking = INF; // 排序
+        int orderBy;       // 计算方式
+        // 从当前国家的四种计算方法的排序中找出最佳的
+        for (int type = 0; type < 4; type++)
         {
-            ranking = j + 1; // 排名
-            if (goldOrder[j] == queryGold)
+            if (countries[queryInd].rank[type] < ranking)
             {
-                orderBy = 1; // 金牌榜
-                break;
-            }
-            if (medalOrder[j] == queryInd)
-            {
-                orderBy = 2; // 奖牌榜
-                break;
-            }
-            if (doubleEquals(goldPer[j].val, queryGoldPer))
-            {
-                orderBy = 3; // 国民人均金牌榜
-                break;
-            }
-            if (doubleEquals(medalPer[j].val, queryMedalPer))
-            {
-                orderBy = 4; // 国民人均奖牌榜
-                break;
+                ranking = countries[queryInd].rank[type];
+                orderBy = type + 1;
             }
         }
         if (i != 0)
@@ -123,9 +83,80 @@ int main()
     return 0;
 }
 
-// 判断两浮点数是否相等
+void calcRank(int type)
+{
+    // 先按计算方法排序
+    switch (type)
+    {
+    case 1: // 按金牌数降序
+        sort(rankings.begin(), rankings.end(), goldSort);
+        break;
+    case 2: // 按奖牌数降序
+        sort(rankings.begin(), rankings.end(), medalSort);
+        break;
+    case 3: // 按人均金牌数降序
+        sort(rankings.begin(), rankings.end(), goldAvgSort);
+        break;
+    case 4: // 按人均奖牌数降序
+        sort(rankings.begin(), rankings.end(), medalAvgSort);
+        break;
+    }
+    int countryNum = countries.size(); // 国家数
+    // 处理并列排名
+    for (int i = 0; i < countryNum; i++)
+    {
+        int currRank = i + 1;     // 当前的排名
+        short curr = rankings[i]; // 当前国家编号
+        if (i > 0)
+        {
+            short prev = rankings[i - 1];
+            bool parallel = false; // 是否并列
+            switch (type)
+            {
+            case 1: // 如果金牌数相同，说明和序列中前一个国家并列了
+                parallel = countries[curr].gold == countries[prev].gold;
+                break;
+            case 2: // 如果奖牌数相同，说明和序列中前一个国家并列了
+                parallel = countries[curr].medal == countries[prev].medal;
+                break;
+            case 3: // 如果人均金牌数相同，说明和序列中前一个国家并列了
+                parallel = doubleEquals(countries[curr].goldAvg, countries[prev].goldAvg);
+                break;
+            case 4: // 如果人均奖牌数相同，说明和序列中前一个国家并列了
+                parallel = doubleEquals(countries[curr].medalAvg, countries[prev].medalAvg);
+                break;
+            }
+            // 如果和前一个国家并列了，排名也要和前一个国家一样
+            if (parallel)
+                currRank = countries[prev].rank[type - 1]; // 读取【前一个国家】在【相同计算方法下】的排名
+        }
+        // 更新当前国家的排名
+        countries[curr].rank[type - 1] = currRank;
+    }
+}
+
+bool goldSort(short a, short b)
+{
+    return countries[a].gold > countries[b].gold;
+}
+
+bool medalSort(short a, short b)
+{
+    return countries[a].medal > countries[b].medal;
+}
+
+bool goldAvgSort(short a, short b)
+{
+    return countries[a].goldAvg > countries[b].goldAvg;
+}
+
+bool medalAvgSort(short a, short b)
+{
+    return countries[a].medalAvg > countries[b].medalAvg;
+}
+
+// 浮点数表示不精确，只要两浮点数相差值小于容差，就认为相等
 bool doubleEquals(double a, double b)
 {
-    // 只要浮点数相差在误差范围内就认为相等
-    return abs(a - b) < TOLERANCE;
+    return abs(a - b) < DOUBLE_TOLERANCE;
 }
