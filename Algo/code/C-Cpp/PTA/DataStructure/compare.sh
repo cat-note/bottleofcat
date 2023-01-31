@@ -2,7 +2,7 @@
 # 比较两个程序的输出，直至出现不同的地方
 # 本脚本主要适用于Bash/Zsh
 
-# 用法：./compare.sh <execProgram1> <execProgram2> <refreshProgram> <input_file>
+# 用法：./compare.sh <execProgram1> <execProgram2> <refreshProgram> <inputFile>
 # 用法示例：./compare.sh ./a.out ./b.out 'node randomRank7-41.js 10 5' input.txt
 
 PROGRAM_1=$1
