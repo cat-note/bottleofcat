@@ -12,6 +12,7 @@ struct Item
     }
 };
 
+// 哈希表
 class HashTable
 {
 private:
@@ -89,7 +90,7 @@ public:
         if (!hashAvailable(hash, str)) // 如果hash处有碰撞，就处理碰撞
             while (true)
             {
-                int hashForward = (hash + inc * inc) % size; // 向前平方探测 1^2, 2^2, 3^2, ..., maxInc^2
+                int hashForward = (hash + inc * inc) % size; // 向后平方探测 1^2, 2^2, 3^2, ..., maxInc^2
                 if (hashAvailable(hashForward, str))
                 {
                     // 如果找到了表项就返回位置
@@ -97,7 +98,7 @@ public:
                     break;
                 }
                 // 💡注意这里要防止越界，hash在减去inc^2时还要加上size再取余
-                int hashBackward = (size + hash - inc * inc) % size; // 向后平方探测 -1^2, -2^2, -3^2, ..., -maxInc^2
+                int hashBackward = (size + hash - inc * inc) % size; // 向前平方探测 -1^2, -2^2, -3^2, ..., -maxInc^2
                 if (hashAvailable(hashBackward, str))
                 {
                     // 如果找到了表项就返回位置
@@ -149,7 +150,7 @@ int main()
     关于平方探测法:
         - 指定一个增量d
         - 查询hash+d^2和hash-d^2对应的位置是否有冲突
-            * 我愿称之为“向前探测”和“向后探测”
+            * 我愿称之为“向后探测”和“向前探测”
         - d+1
     直到找到【没有冲突的位置】为止。
 
@@ -174,4 +175,32 @@ int main()
 ABCD ABC BC C AC ACBD ABCDABCD ADB
 正确输出:
 2 1 0 3 6 4 9 10
+*/
+
+/*
+7-43 字符串关键字的散列映射
+    给定一系列由大写英文字母组成的字符串关键字和素数P，用移位法定义的散列函数H(Key)将关键字Key中的最后3个字符映射为整数，每个字符占5位；再用除留余数法将整数映射到长度为P的散列表中。例如将字符串AZDEG插入长度为1009的散列表中，我们首先将26个大写英文字母顺序映射到整数0~25；再通过移位将其映射为 3×32^2 + 4×32 + 6 = 3206 ；然后根据表长得到3206%1009=179，即是该字符串的散列映射位置。
+
+    发生冲突时请用平方探测法解决。
+
+输入格式:
+    输入第一行首先给出两个正整数N（≤500）和P（≥2N的最小素数），分别为待插入的关键字总数、以及散列表的长度。第二行给出N个字符串关键字，每个长度不超过8位，其间以空格分隔。
+输出格式:
+    在一行内输出每个字符串关键字在散列表中的位置。数字间以空格分隔，但行末尾不得有多余空格。
+输入样例1:
+    4 11
+    HELLO ANNK ZOE LOLI
+输出样例1:
+    3 10 4 0
+输入样例2:
+    6 11
+    LLO ANNA NNK ZOJ INNK AAA
+输出样例2:
+    3 0 10 9 6 1
+代码长度限制
+    16 KB
+时间限制
+    400 ms
+内存限制
+    64 MB
 */
