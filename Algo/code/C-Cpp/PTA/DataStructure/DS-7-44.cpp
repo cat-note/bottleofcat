@@ -1,10 +1,11 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <set>
 
 using namespace std;
 
-typedef vector<string> Words; // 储存单词的数组
+typedef set<string> Words; // 储存单词的数组
 
 // 哈希表项
 typedef struct TableItem
@@ -20,26 +21,16 @@ typedef struct TableItem
     }
 } *List;
 
-// 用于比较的伪函数类
-struct ListLess
-{
-    bool operator()(const List a, const List b) const
-    {
-        return a->key.compare(b->key) < 0 ? true : false;
-    }
-};
-
 // 哈希表
 class HashTable
 {
 private:
-    int size;              // 哈希表长度, 2的n次方，方便取余运算
-    vector<List> table;    // 哈希表底层数组
-    vector<List> queryBuf; // 访问记录
+    int size;           // 哈希表长度, 2的n次方，方便取余运算
+    vector<List> table; // 哈希表底层数组
 public:
     HashTable()
     {
-        size = 4096; // 2^14
+        size = (1 << 11); // 2^11 = 2048
         table.resize(size, NULL);
     }
     ~HashTable() // 析构，释放内存
@@ -58,12 +49,21 @@ public:
             }
         }
     }
-    // 重设访问记录queryBuf中的access=0
+    // 重置访问位access=0
     void resetAccess()
     {
-        for (int i = 0, len = queryBuf.size(); i < len; i++)
-            queryBuf[i]->access = 0;
-        queryBuf.clear();
+        for (int i = 0; i < size; i++)
+        {
+            if (table[i])
+            {
+                List node = table[i];
+                while (node)
+                {
+                    node->access = 0;
+                    node = node->next;
+                }
+            }
+        }
     }
     // 通过字符串键值访问哈希表元素
     int &operator[](const string &key)
@@ -89,8 +89,7 @@ public:
             // 如果对应的表还没有创建，就新建一下
             List node = new TableItem(key);
             table[hash] = node;
-            queryBuf.push_back(node); // 加入访问记录
-            return node->access;      // 返回引用
+            return node->access; // 返回引用
         }
         else
         {
@@ -99,9 +98,8 @@ public:
             while (curr)
             {
                 if (curr->key == key)
-                {                             // 已经存在了这一项
-                    queryBuf.push_back(curr); // 加入访问记录
-                    return curr->access;      // 返回引用
+                {                        // 已经存在了这一项
+                    return curr->access; // 返回引用
                 }
                 curr = curr->next;
             }
@@ -109,8 +107,7 @@ public:
             List node = new TableItem(key);
             node->next = table[hash]->next; // 头插法
             table[hash]->next = node;
-            queryBuf.push_back(node); // 加入访问记录
-            return node->access;      // 返回引用
+            return node->access; // 返回引用
         }
     }
 };
@@ -119,7 +116,6 @@ int main()
 {
     int fileNum, queryNum; // 文件数和查询数
     scanf("%d", &fileNum);
-    HashTable table; // 初始化哈希表, 储存词被访问的情况
     //  ----------------------------------------------------------开始读取文件内容
     int currentFile = 0;  // 当前正在读取哪个文件的内容(编号0~N-1)
     char wordBuf[11];     // 单词缓存，一个单词最多只考虑10个字母
@@ -147,25 +143,18 @@ int main()
             if (wordLen >= 3)
             {
                 // 只考虑长度>=3的单词
-                wordBuf[wordLen] = '\0'; // 封装成字符串
-                wordTmp.assign(wordBuf); // 转换为string
-                int &access = table[wordTmp];
-                if (!access) // 防止重复插入单词(去重)
-                {
-                    access = 1;                            // 标记当前文件中已经存在这个单词
-                    files[currentFile].push_back(wordTmp); // 将单词加入到文件中
-                }
+                wordBuf[wordLen] = '\0';            // 封装成字符串
+                wordTmp.assign(wordBuf);            // 转换为string
+                files[currentFile].insert(wordTmp); // 将单词加入到文件的单词集合中
             }
             if (readChar == '#') // 一个文件读取完毕
-            {
-                table.resetAccess(); // 重置所有访问记录access=0
                 currentFile++;
-            }
             wordLen = 0; // 清空单词缓存
         }
     }
     // ----------------------------------------------------------开始对比文件
     scanf("%d", &queryNum);
+    HashTable table; // 初始化哈希表, 储存词被访问的情况
     for (int i = 0; i < queryNum; i++)
     {
         int index1, index2; // 两个文件的编号
@@ -175,25 +164,25 @@ int main()
         int commonNum = 0; // 公共单词数(不包含重复词)
         int totalNum = 0;  // 总单词数(不包含重复词)
         // 扫描文件1的所有单词
-        for (int j = 0, len = files[index1].size(); j < len; j++)
+        for (set<string>::iterator it = files[index1].begin(); it != files[index1].end(); it++)
         {
-            table[files[index1][j]] = 1; // 标记单词存在于文件1
-            totalNum++;                  // 总单词数增加
+            table[*it] = 1; // 标记单词存在于文件1
+            totalNum++;     // 总单词数增加
         }
         // 扫描文件2的所有单词
-        for (int j = 0, len = files[index2].size(); j < len; j++)
+        for (set<string>::iterator it = files[index2].begin(); it != files[index2].end(); it++)
         {
-            int &access = table[files[index2][j]];
-            if (access) // 当前单词同时存在于文件1和文件2
+            int &access = table[*it];
+            if (access) // 当前单词同时存在于文件1和文件2，就是共有单词
             {
                 commonNum++;
-                access = 0; // 顺带把访问位归零
             }
             else // 单词只存在于文件2
             {
                 totalNum++;
             }
         }
+        table.resetAccess(); // 重置access=0
         printf("%.1lf%%\n", ((double)commonNum / totalNum) * 100);
     }
     return 0;
