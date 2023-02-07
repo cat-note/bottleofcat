@@ -76,6 +76,7 @@ int main()
     }
     // 接下来就是Kruskal算法
     UnionFind uf(townNum); // 并查集
+    int roadAddNum = 0;    // 加入图中的边数
     int totalCost = 0;     // 总成本
     while (!pq.empty())
     {
@@ -87,8 +88,11 @@ int main()
             // 不会形成环就加入这条边，把两个点放到同一个集合中(合并)
             uf.merge(curr.start, curr.end);
             totalCost += curr.cost; // 计入总成本
+            roadAddNum++;
         }
-        pq.pop(); // 弹出栈顶
+        pq.pop();                  // 弹出栈顶
+        if (roadAddNum >= townNum) // N个顶点的图的最小生成树有N-1条边，达到N-1条边就可以跳出循环了。
+            break;
     }
     // 如果图是连通的，最后所有顶点应该都和0号顶点在同一个集合中
     for (int i = 1; i < townNum; i++)
