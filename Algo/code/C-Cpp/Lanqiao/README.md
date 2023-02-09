@@ -12,3 +12,4 @@
 
 - [基础练习(BASIC)](./BASIC#readme)  
 - [算法训练(ALGO)](./ALGO#readme)  
+- [真题(PRACTICAL)](./PRACTICAL#readme)  
