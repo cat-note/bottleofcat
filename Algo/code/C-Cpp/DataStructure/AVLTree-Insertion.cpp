@@ -148,7 +148,7 @@ public:
             // 弹栈
             Tree curr = access.top();
             access.pop();
-            // 更新节点所在高度
+            // 回溯时顺带更新节点所在高度
             updateHeight(curr);
             // 获得节点平衡因子
             int bf = balanceFactor(curr);
@@ -156,38 +156,32 @@ public:
             if (bf == 0)
                 break;
             // 该节点失衡了，需要进行调整
-            if (bf > 1)
+            if (bf > 1) // 失衡节点的平衡因子>1，说明左子树比较高，因此找失衡节点的左孩子
             {
-                // 失衡节点的平衡因子>1，说明左子树比较高，因此找失衡节点的左孩子
                 // 看失衡节点左孩子的平衡因子
                 int leftBf = balanceFactor(curr->left);
-                if (leftBf > 0)
+                if (leftBf > 0) // 这个左孩子的左子树高于右子树
                 {
-                    // 这个左孩子的左子树高于右子树
                     // 这说明是LL型，即插入在失衡节点【左孩子的左子树中】而导致失衡，需要进行“右旋”进行调整
                     rotateRight(curr);
                 }
-                else
+                else // 这个左孩子的右子树高于左子树
                 {
-                    // 这个左孩子的右子树高于左子树
                     // 这说明是LR型，插入在失衡结点【左孩子的右子树中】而导致失衡，需要进行“左旋再右旋”进行调整
                     rotateLeft(curr->left); // 先对左孩子进行左旋
                     rotateRight(curr);      // 再对失衡节点进行右旋
                 }
             }
-            else if (bf < -1)
+            else if (bf < -1) // 失衡节点的平衡因子<-1，说明右子树比较高，因此找失衡节点的右孩子
             {
-                // 失衡节点的平衡因子<-1，说明右子树比较高，因此找失衡节点的右孩子
                 int rightBf = balanceFactor(curr->right);
-                if (rightBf < 0)
+                if (rightBf < 0) // 右孩子的右子树高于左子树
                 {
-                    // 右孩子的右子树高于左子树
                     // 这说明是RR型，即插入在失衡节点【右孩子的右子树中】，需要进行“左旋”进行调整
                     rotateLeft(curr);
                 }
-                else
+                else // 右孩子的左子树高于右子树
                 {
-                    // 右孩子的左子树高于右子树
                     // 这说明是RL型，即插入在失衡节点【右孩子的左子树中】，需要进行“右旋再左旋”进行调整
                     rotateRight(curr->right); // 先对右孩子进行右旋
                     rotateLeft(curr);         // 再对失衡节点进行左旋
