@@ -3,6 +3,7 @@
 | 题目 | 我的题解 | 值得玩味 | 备注 | 真题来源 |
 |:---:|:---:|:---:|:---:|:---:|
 |[左移右移](https://www.lanqiao.cn/problems/2219/learning/)|[2022-final-B-Java-1.cpp](./2022-final-B-Java-1.cpp)|  | 用**链表**储存序列，并用**数组**储存`x`与链表节点的映射关系，以按照**键值**对链表进行随机访问。 | 2022蓝桥国赛B组 |
-|[(填空问题)](https://www.luogu.com.cn/problem/P8771)|[2022-final-B-Cpp-filling.cpp](./2022-final-B-Cpp-filling.cpp)|  | 第一题就是简单的进制转换。第二题有歧义，洛谷这里考虑`012`和`123`的情况就能AC。 | 2022蓝桥国赛B组 |
-|[刷题统计](https://www.luogu.com.cn/problem/P8780)|[2022-final-B-Cpp-C.cpp](./2022-final-B-Cpp-C.cpp)|  | 用循环来模拟做题过程即可。注意，题目中的**数据规模可能达到** $10^{18}$ | 2022蓝桥国赛B组 |
+|[(填空问题)](https://www.luogu.com.cn/problem/P8771)|[2022-final-B-Cpp-filling.cpp](./2022-final-B-Cpp-filling.cpp)|  | 第一题就是简单的进制转换。第二题有歧义，洛谷这里考虑`012`和`123`的情况就能AC。 | 2022蓝桥省赛B组 |
+|[刷题统计](https://www.luogu.com.cn/problem/P8780)|[2022-final-B-Cpp-C.cpp](./2022-final-B-Cpp-C.cpp)|  | 用循环来模拟做题过程即可。注意，题目中的**数据规模可能达到** $10^{18}$ | 2022蓝桥省赛B组 |
+|[修剪灌木](https://www.luogu.com.cn/problem/P8781)|[2022-final-B-Cpp-D.cpp](./2022-final-B-Cpp-D.cpp)|  | 对于每棵灌木，**越久没被修剪就会长得越高**，而修剪者是**循环往复**地在修剪的，因此需要寻找每棵灌木在左端和右端中**距离哪一端更远**。 | 2022蓝桥省赛B组 |
 
