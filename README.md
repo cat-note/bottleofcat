@@ -27,6 +27,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 14. [【题解笔记】PTA基础6-10：阶乘计算升级版](Algo/BigNumberFactorial.md)  
 15. [【小记】二八十十六，进制团团转](Algo/ConversionOfNumberSystems.md)   
 16. [【速记】C++ STL自定义排序](C-Cpp/cppCustomCompareTricks.md)  
+17. [【动画笔记】数据结构-AVL树的插入操作](Algo/DS-AVL-Tree-Insertion.md)  
 
 ## Doodle
 
