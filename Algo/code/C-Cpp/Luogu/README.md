@@ -11,3 +11,4 @@
 | P1421 | [小玉买文具](https://www.luogu.com.cn/problem/P1421) | [P1421.cpp](./P1421.cpp) | | 把a看作十位，b看作个位，组成一个整数进行运算即可 |  
 | P1909 | [买铅笔](https://www.luogu.com.cn/problem/P1909) | [P1909.cpp](./P1909.cpp) | | 注意**刚好能买到n支**的情况即可 |  
 | P1089 | [津津的储蓄计划](https://www.luogu.com.cn/problem/P1089) | [P1089.cpp](./P1089.cpp) | | 简单的模拟题，记得**最后要加上手中的余额**。 |  
+| P1085 | [不高兴的津津](https://www.luogu.com.cn/problem/P1085) | [P1085.cpp](./P1085.cpp) | | 注意题目要求的是**最不高兴的一天**。 |  
