@@ -14,3 +14,4 @@
 | P1085 | [不高兴的津津](https://www.luogu.com.cn/problem/P1085) | [P1085.cpp](./P1085.cpp) | | 注意题目要求的是**最不高兴的一天**。 |  
 | P1035 | [级数求和](https://www.luogu.com.cn/problem/P1035) | [P1035.cpp](./P1035.cpp) | | 题目已经给出公式，直接求和+判断即可。 |  
 | P1980 | [计数问题](https://www.luogu.com.cn/problem/P1980) | [P1980.cpp](./P1980.cpp) | | 注意题目要统计的是一串数字**字符**序列中**某一个0-9的数字的出现次数**，本题考察的其实是整型到字符串的转换。 |  
+| P1014 | [Cantor表](https://www.luogu.com.cn/problem/P1014) | [P1014.cpp](./P1014.cpp) | | 观察枚举规律写出模拟过程即可。本题还有更快的、非模拟写法。 |  
