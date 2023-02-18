@@ -17,3 +17,4 @@
 | P1014 | [Cantor表](https://www.luogu.com.cn/problem/P1014) | [P1014.cpp](./P1014.cpp) | | 观察枚举规律写出模拟过程即可。本题还有更快的、非模拟写法。 |  
 | P1307 | [数字反转](https://www.luogu.com.cn/problem/P1307) | [P1307.cpp](./P1307.cpp) | | 以字符串的形式去处理数字，用**双指针交换字符**对字符串进行翻转并**剔除高位多余的0**。 |  
 | P1046 | [陶陶摘苹果](https://www.luogu.com.cn/problem/P1046) | [P1046.cpp](./P1046.cpp) | | 简单题。扫描数组统计符合要求的值的个数即可。 |  
+| P1047 | [校门外的树](https://www.luogu.com.cn/problem/P1047) | [P1047.cpp](./P1047.cpp) | | 用数组记录各棵树是否被移走即可。 |  
