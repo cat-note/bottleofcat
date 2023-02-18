@@ -5,6 +5,8 @@ using namespace std;
 // 矩阵和前缀二维数组，为了方便处理（以免越界），从下标1开始储存
 long long matrix[502][502], prefix[502][502]{0};
 
+long long sumMatrix(int up, int down, int left, int right); // 计算矩阵和
+
 int main()
 {
     int N, M;
@@ -28,25 +30,19 @@ int main()
     {
         for (down = up; down <= N; down++) // 下边界下移，从1x..到2x.., 3x..
         {
-            // 此时上下边界已经确定，专心处理左右边界即可。
+            // 此时上下边界up, down已经确定，专心处理左右边界即可。
             left = 1; // 左边界最开始在最左边
             right = 1;
-            while (left <= M) // 左指针移动到最右边为止
+            while (right <= M) // 右指针右移到最右边为止
             {
                 // 子矩阵左上角(up,left), 右下角(down,right)
-                // 利用前缀求子矩阵的和
-                long long sum = prefix[down][right] - prefix[up - 1][right] - prefix[down][left - 1] + prefix[up - 1][left - 1];
-                if (sum > K || right >= M) // 如果算出来的子矩阵和>K，或右指针到顶
+                while (left <= right && sumMatrix(up, down, left, right) > K) // 左、右指针围起来的矩阵和>K，左指针右移以缩小矩阵
                 {
-                    left++;       // 左指针右移
-                    right = left; // 右指针回退
+                    left++;
                 }
-                else // 是满足要求的子矩阵，右指针右移
-                {
-                    right++;
-                }
-                if (sum <= K) // 统计符号要求的子矩阵
-                    count++;
+                // 此时有几种可行的矩阵，宽度从1到(right-left+1)
+                count += (right - left + 1);
+                right++;
             }
         }
     }
@@ -54,8 +50,16 @@ int main()
     return 0;
 }
 
+// 计算左上角(up,left), 右下角(down,right)的子矩阵和
+long long sumMatrix(int up, int down, int left, int right)
+{
+    // 利用前缀求子矩阵的和
+    return prefix[down][right] - prefix[up - 1][right] - prefix[down][left - 1] + prefix[up - 1][left - 1];
+}
+
 /*
-    这个写法能得到80分，最后两个测试例时间超限，岂可休！
+    之前的一个80分写法中，右指针right会回退，时间开销更大。
+    而这种写法中不会有指针回退。
 
     在一个大矩阵中，我可以用四条边界确定一块子矩阵
 */

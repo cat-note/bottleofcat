@@ -45,7 +45,7 @@ int main()
                 {
                     right++;
                 }
-                if (sum <= K) // 统计符号要求的子矩阵
+                if (sum <= K) // 统计符合要求的子矩阵
                     count++;
             }
         }
