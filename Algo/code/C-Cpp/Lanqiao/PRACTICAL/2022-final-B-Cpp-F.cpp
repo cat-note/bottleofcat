@@ -1,14 +1,16 @@
 #include <cstdio>
+#include <cstring>
 
 using namespace std;
 
 // 矩阵和前缀二维数组，为了方便处理（以免越界），从下标1开始储存
-long long matrix[502][502], prefix[502][502]{0};
+long long matrix[502][502], prefix[502][502];
 
 long long sumMatrix(int up, int down, int left, int right); // 计算矩阵和
 
 int main()
 {
+    memset(prefix, 0, sizeof(long long) * 502 * 502); // 初始前缀数组所有元素为0，memset按字节复制
     int N, M;
     long long K;
     scanf("%d %d %lld", &N, &M, &K);
@@ -96,7 +98,7 @@ long long sumMatrix(int up, int down, int left, int right)
 
     这题的AC思路还是挺巧妙的，值得回顾。
     --------------------------
-    这里我是先确定高度(up/down)再移动left/right寻找同高度下满足要求的子矩阵。其实先确定宽度(left/right)再移动up/down寻找同宽度下满足要求的子矩阵也是可行的。
+    这里我是每次迭代中先确定高度(up/down)再移动left/right寻找同高度下满足要求的子矩阵。其实先确定宽度(left/right)再移动up/down寻找同宽度下满足要求的子矩阵也是可行的。
 
         - SomeBottle 2023.2.19
 

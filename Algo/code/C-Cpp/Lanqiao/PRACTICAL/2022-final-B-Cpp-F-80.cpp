@@ -1,12 +1,14 @@
 #include <cstdio>
+#include <cstring>
 
 using namespace std;
 
 // 矩阵和前缀二维数组，为了方便处理（以免越界），从下标1开始储存
-long long matrix[502][502], prefix[502][502]{0};
+long long matrix[502][502], prefix[502][502];
 
 int main()
 {
+    memset(prefix, 0, sizeof(long long) * 502 * 502); // 初始前缀数组所有元素为0
     int N, M;
     long long K;
     scanf("%d %d %lld", &N, &M, &K);
