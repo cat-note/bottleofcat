@@ -24,3 +24,4 @@
 | P5015 | [标题统计](https://www.luogu.com.cn/problem/P5015) | [P5015.cpp](./P5015.cpp) | | 逐字符读入，判断每个字符是否满足要求，进行统计即可。 |  
 | P1055 | [ISBN号码](https://www.luogu.com.cn/problem/P1055) | [P1055.cpp](./P1055.cpp) | | 按格式读取ISBN号并进行计算即可。本题值得回顾的是`printf`和`scanf`的**限定字符串宽度**进行输出/输入的方法。 |  
 | P1308 | [统计单词数](https://www.luogu.com.cn/problem/P1308) | [P1308.cpp](./P1308.cpp) | | 主要考察基本的字符串读取和处理以及比较。注意题目中**没有**说两个词之间只会有一个空格。 |  
+| P2010 | [回文日期](https://www.luogu.com.cn/problem/P2010) | [P2010.cpp](./P2010.cpp) | | **枚举年份**，每枚举一年，就把年份倒过来作为月日，判断日期是否合法即可。 |  
