@@ -61,8 +61,11 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 
 * [用C/C++写的](./Algo/code/C-Cpp/)  
     - [蓝桥杯OJ](./Algo/code/C-Cpp/Lanqiao#readme)
+    - [洛谷](./Algo/code/C-Cpp/Luogu#readme)
     - [PTA (Pintia) 数据结构(中文)习题集](./Algo/code/C-Cpp/PTA/DataStructure#readme) <sup>(已完结)</sup>  
     - [其他地方做的数据结构题](./Algo/code/C-Cpp/DataStructure#readme)  
+
+* [SomeBottle的蒟蒻题解](https://www.luogu.com.cn/blog/somebottle/) - 洛谷博客  
 
 🐟👋 - - - - - - - - - - - - - - - -
 
