@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstring>
 
 using namespace std;
 
@@ -7,7 +8,9 @@ int main()
     int N;
     scanf("%d", &N);
     int dp[N + 1];               // 动态规划数组
-    for (int i = 1; i <= N; i++) // 从i=1推到i=N
+    memset(dp,0,sizeof(dp));
+    dp[1]=1; // 初始化
+    for (int i = 2; i <= N; i++) // 从i=2推到i=N
     {
         int halfN = i / 2;
         int count = 0;
