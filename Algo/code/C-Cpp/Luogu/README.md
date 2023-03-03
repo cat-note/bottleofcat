@@ -30,3 +30,4 @@
 | P1028 | [数的计算](https://www.luogu.com.cn/problem/P1028) | 递归做法: [P1028.cpp](./P1028.cpp) <br> DP做法: [P1028-dp.cpp](./P1028-dp.cpp) <br> 改进的DP做法: [P1028-dp-optimized.cpp](P1028-dp-optimized.cpp) | 0.5√ | 寻找规律进行递推，可以用递归亦或是DP进行解决。本题的关键就是找到**递推公式**。 |  
 | P1036 | [数的计算](https://www.luogu.com.cn/problem/P1036) | [P1036.cpp](./P1036.cpp) |  | 利用**限制深度**的**深度优先搜索遍历**(DFS)写法，另外注意，并不需要每层都把`n`个数全遍历一遍。 |  
 | P1464 | [Function](https://www.luogu.com.cn/problem/P1464) | [P1464.cpp](./P1464.cpp) |  | **记忆化搜索**入门题。用一个三维数组**储存递归函数之前计算过的结果**，以避免重复调用，增加无谓的开销。 |  
+| P5534 | [【XR-3】等差数列](https://www.luogu.com.cn/problem/P5534) | [P5534.cpp](./P5534.cpp) <br> 用求和公式:[P5534-formula.cpp](./P5534-formula.cpp) |  | 简单递推题，可以用等差数列求和公式秒杀。 |  

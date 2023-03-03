@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#define MODULUS 1000000007
+#define DIVISOR 1000000007
 
 using namespace std;
 
@@ -41,13 +41,13 @@ int main()
     long long weights[maxLen]; // 各位的权重
     weights[0] = 1;
     for (int i = 1; i < maxLen; i++) // 推算出权重
-        weights[i] = (weights[i - 1] * systems[i - 1]) % MODULUS;
+        weights[i] = (weights[i - 1] * systems[i - 1]) % DIVISOR;
     long long decimalA = 0, decimalB = 0; // A和B的十进制数
     for (int i = aDigits.size() - 1; i >= 0; i--)
-        decimalA = (decimalA + aDigits[i] * weights[i]) % MODULUS;
+        decimalA = (decimalA + aDigits[i] * weights[i]) % DIVISOR;
     for (int i = bDigits.size() - 1; i >= 0; i--)
-        decimalB = (decimalB + bDigits[i] * weights[i]) % MODULUS;
-    cout << (decimalA - decimalB + MODULUS) % MODULUS; // 可能减出负数，先加上模数再模
+        decimalB = (decimalB + bDigits[i] * weights[i]) % DIVISOR;
+    cout << (decimalA - decimalB + DIVISOR) % DIVISOR; // 可能减出负数，先加上模数再模
     return 0;
 }
 
