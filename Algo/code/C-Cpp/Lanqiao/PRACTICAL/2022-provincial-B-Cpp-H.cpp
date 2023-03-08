@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <vector>
 #define LL long long
 
 using namespace std;
@@ -8,42 +7,40 @@ typedef struct Bomb // 炸弹亦或者火箭都可以用一个三元组(x,y,r)�
 {
     LL x; // x,y的规模可能很大
     LL y;
-    int r; // 半径
+    int r;      // 半径
+    int serial; // 编号
     Bomb *next;
-    void operator=(const Bomb &bomb) // 运算符重载，用于拷贝结点值
-    {
-        x = bomb.x;
-        y = bomb.y;
-        r = bomb.r;
-    }
-    Bomb(LL x, LL y, int r)
+    Bomb(LL x, LL y, int r, int serial)
     {
         this->x = x;
         this->y = y;
         this->r = r;
+        this->serial = serial;
         next = NULL;
     }
 } *BombPtr;
 
 LL findBombs(LL x, LL y, int r); // 声明函数，寻找(x,y,r)内的炸雷数目
 
-BombPtr bombs = new Bomb(0, 0, 0); // 链表头结点
+BombPtr bombs = new Bomb(0, 0, 0, 0); // 链表头结点
 
 int main()
 {
     int n, m;
     scanf("%d %d", &n, &m);
-    for (int i = 0; i < n; i++) // 先读入炸雷
+    // 先读入炸雷
+    for (int i = 0; i < n; i++)
     {
         LL bombX, bombY;
         int bombR;
         scanf("%lld %lld %d", &bombX, &bombY, &bombR);
-        BombPtr nBomb = new Bomb(bombX, bombY, bombR);
+        BombPtr nBomb = new Bomb(bombX, bombY, bombR, i);
         nBomb->next = bombs->next; // 头插法
         bombs->next = nBomb;
     }
-    LL count = 0;               // 排除掉的炸雷数
-    for (int i = 0; i < m; i++) // 读入排雷火箭
+    LL count = 0; // 排除掉的炸雷数
+    // 读入排雷火箭
+    for (int i = 0; i < m; i++)
     {
         LL rocketX, rocketY;
         int rocketR;

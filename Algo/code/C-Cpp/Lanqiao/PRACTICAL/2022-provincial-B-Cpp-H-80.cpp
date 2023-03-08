@@ -1,5 +1,4 @@
 #include <cstdio>
-#include <vector>
 #define LL long long
 
 using namespace std;
