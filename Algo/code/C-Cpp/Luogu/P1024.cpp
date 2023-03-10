@@ -27,7 +27,7 @@ int main()
         {
             // 以0.001为粒度s在这个大小为1的区间内进行二分搜寻
             double start = (double)lower;
-            double end = (double)upper;
+            double end = (double)upper; // 防止上界重复
             while (end - start > TOLERANCE)
             {
                 double mid = start + (end - start) / 2; // 算出中间值
@@ -36,7 +36,10 @@ int main()
                 else
                     start = mid; // 否则移动左边界
             }
-            printf("%.2lf ", start);
+            // 每一次会先处理左边界并输出可行解，而这次迭代的右边界就是下次迭代的左边界
+            // 因此这里如果start趋近于右边界，就不输出了，以免重复输出
+            if ((double)upper - start >= TOLERANCE)
+                printf("%.2lf ", start);
         }
     }
     return 0;
