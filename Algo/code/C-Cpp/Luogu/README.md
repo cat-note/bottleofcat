@@ -42,3 +42,4 @@
 | P1003 | [铺地毯](https://www.luogu.com.cn/problem/P1003) | [P1003.cpp](./P1003.cpp) | | 简单的几何计算题 |  
 | P1024 | [一元三次方程求解](https://www.luogu.com.cn/problem/P1024) | [P1024.cpp](./P1024.cpp) | √ | **小区间**内的**浮点数折半查找**，还挺新奇的，值得回顾。 |  
 | P1226 | [快速幂and取余运算](https://www.luogu.com.cn/problem/P1226) | [P1226.cpp](./P1226.cpp) | √ | **快速幂**模板题，快速幂的核心其实就是**进制转换**与**递推**，这种思想很值得回顾。 |  
+| P1208 | [混合牛奶 Mixing Milk](https://www.luogu.com.cn/problem/P1208) | [P1208.cpp](./P1208.cpp) |  | 基础的**贪心算法**题，每次决策的时候只选定目前最优的方案。 |  
