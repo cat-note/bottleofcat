@@ -43,3 +43,4 @@
 | P1024 | [一元三次方程求解](https://www.luogu.com.cn/problem/P1024) | [P1024.cpp](./P1024.cpp) | √ | **小区间**内的**浮点数折半查找**，还挺新奇的，值得回顾。 |  
 | P1226 | [快速幂and取余运算](https://www.luogu.com.cn/problem/P1226) | [P1226.cpp](./P1226.cpp) | √ | **快速幂**模板题，快速幂的核心其实就是**进制转换**与**递推**，这种思想很值得回顾。 |  
 | P1208 | [混合牛奶 Mixing Milk](https://www.luogu.com.cn/problem/P1208) | [P1208.cpp](./P1208.cpp) |  | 基础的**贪心算法**题，每次决策的时候只选定目前最优的方案。 |  
+| P1601 | [ A+B Problem（高精）](https://www.luogu.com.cn/problem/P1601) | [P1601.cpp](./P1601.cpp) |  | 实现高精度的**无符号十进制整数**加法，注意运算过程中的进位以及**运算终止条件**。 |  
