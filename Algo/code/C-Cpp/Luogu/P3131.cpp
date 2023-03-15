@@ -15,21 +15,25 @@ int main()
         prefix[i] = prefix[i - 1] + num; // 计算前缀和
     }
     // 要找最长的，且其和能被7整除的序列
-    int front = 0, rear = 1;
-    int longest = 0;
-    for (; front < N; front++)
+    int len = N;        // 从最长的开始找
+    bool found = false; // 找到了就不继续循环了
+    for (; len > 0; len--)
     {
-        for (rear = front + 1; rear <= N; rear++)
+        for (int i = len; i < N; i++)
         {
-            int span = rear - front;
-            if (span > longest && (prefix[rear] - prefix[front]) % 7 == 0)
-                longest = span;
+            if ((prefix[i] - prefix[i - len]) % 7 == 0)
+            {
+                found = true;
+                break;
+            }
         }
+        if (found)
+            break;
     }
-    printf("%d", longest);
+    printf("%d", len);
     return 0;
 }
 
 /*
-    O(n^2)算法会TLE
+    O(n^2)算法会TLE，得想办法优化到O(n)
 */
