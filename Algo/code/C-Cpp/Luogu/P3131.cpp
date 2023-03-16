@@ -12,25 +12,27 @@ int main()
     {
         int num;
         scanf("%d", &num);
-        prefix[i] = prefix[i - 1] + num; // 计算前缀和
+        prefix[i] = (prefix[i - 1] + num) % 7; // 计算前缀和
     }
     // 要找最长的，且其和能被7整除的序列
-    int len = N;        // 从最长的开始找
-    bool found = false; // 找到了就不继续循环了
-    for (; len > 0; len--)
+    int front;
+    int back;
+    int longest = 0;
+    for (int i = 0; i < 7; i++) // 枚举余数
     {
-        for (int i = len; i < N; i++)
-        {
-            if ((prefix[i] - prefix[i - len]) % 7 == 0)
-            {
-                found = true;
+        front = 0;
+        back = N;
+        for (; front <= N; front++)
+            if (prefix[front] == i)
                 break;
-            }
-        }
-        if (found)
-            break;
+        for (; back >= 1; back--)
+            if (prefix[back] == i)
+                break;
+        int len = back - front;
+        if (len > longest)
+            longest = len;
     }
-    printf("%d", len);
+    printf("%d", longest);
     return 0;
 }
 
