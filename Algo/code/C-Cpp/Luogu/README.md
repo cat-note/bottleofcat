@@ -44,3 +44,4 @@
 | P1226 | [快速幂and取余运算](https://www.luogu.com.cn/problem/P1226) | [P1226.cpp](./P1226.cpp) | √ | **快速幂**模板题，快速幂的核心其实就是**进制转换**与**递推**，这种思想很值得回顾。 |  
 | P1208 | [混合牛奶 Mixing Milk](https://www.luogu.com.cn/problem/P1208) | [P1208.cpp](./P1208.cpp) |  | 基础的**贪心算法**题，每次决策的时候只选定目前最优的方案。 |  
 | P1601 | [ A+B Problem（高精）](https://www.luogu.com.cn/problem/P1601) | [P1601.cpp](./P1601.cpp) |  | 实现高精度的**无符号十进制整数**加法，注意运算过程中的进位以及**运算终止条件**。 |  
+| P4995 | [跳跳！](https://www.luogu.com.cn/problem/P4995) | [P4995.cpp](./P4995.cpp) |  | 典型的贪心算法题，需要借助排序来降低时间复杂度。注意最后输出的数值大小可能超过`int`类型所能表示的范围。 |  
