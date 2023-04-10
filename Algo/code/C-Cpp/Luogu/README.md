@@ -46,3 +46,4 @@
 | P1601 | [ A+B Problem（高精）](https://www.luogu.com.cn/problem/P1601) | [P1601.cpp](./P1601.cpp) |  | 实现高精度的**无符号十进制整数**加法，注意运算过程中的进位以及**运算终止条件**。 |  
 | P4995 | [跳跳！](https://www.luogu.com.cn/problem/P4995) | [P4995.cpp](./P4995.cpp) |  | 典型的贪心算法题，需要借助排序来降低时间复杂度。注意最后输出的数值大小可能超过`int`类型所能表示的范围。 |  
 | P1094 | [纪念品分组](https://www.luogu.com.cn/problem/P1094) | [P1094.cpp](./P1094.cpp) |  | 贪心算法+排序优化题。关键点在于**尽量让每组的纪念品价格总和接近上限**。 |  
+| P1067 | [多项式输出](https://www.luogu.com.cn/problem/P1067) | [P1067.cpp](./P1067.cpp) |  | 简单粗暴的模拟题。 |  
