@@ -6,3 +6,4 @@
 |:---:|:---:|:---:|:---:|:---:|
 |Dotcpp-1713|[平衡二叉树的基本操作](https://www.dotcpp.com/oj/problem1713.html)|[AVLTree-Insertion.cpp](./AVLTree-Insertion.cpp)| √ | 主要考察**AVL**(二叉平衡搜索)树的**插入**和**查找**操作 |  
 |408-2010统考-42题|[循环左移p位](https://zhuanlan.zhihu.com/p/574160078)|暴力解：[408-2010-BF.cpp](./408-2010-BF.cpp)|  | 要考虑到循环左移超过一个序列长度的情况。 |  
+|408-2015统考-41题|[单链表去重复绝对值](https://zhuanlan.zhihu.com/p/570729543)|优解：[408-2015-OP.cpp](./408-2015-OP.cpp)|  | 注意到题目**特意强调** $$ \left \| data \right \|  \le n $$ |
