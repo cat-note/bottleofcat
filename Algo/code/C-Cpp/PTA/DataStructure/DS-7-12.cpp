@@ -1,11 +1,12 @@
 #include <cstdio>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
 typedef vector<long> Sequence; // 长整型数字序列
 
-void Swap(long &elem1, long &elem2);
+inline void Swap(long &elem1, long &elem2);
 void BubbleSort(Sequence &seq);                                           // 冒泡排序
 void SelectionSort(Sequence &seq);                                        // 选择排序
 void InsertionSort(Sequence &seq);                                        // 插入排序
@@ -41,7 +42,7 @@ int main()
 }
 
 // 交换元素
-void Swap(long &elem1, long &elem2)
+inline void Swap(long &elem1, long &elem2)
 {
     long tmp = elem1;
     elem1 = elem2;
@@ -301,7 +302,7 @@ void RecursiveMerge(int start, int end, Sequence &origin, Sequence &buf)
 // 快速排序
 void QuickSort(Sequence &seq, int left, int right)
 {
-    if (right < left)
+    if (right <= left)
         return;
     int pivotInd = Partition(seq, left, right);
     QuickSort(seq, left, pivotInd - 1);
@@ -310,7 +311,9 @@ void QuickSort(Sequence &seq, int left, int right)
 
 int Partition(Sequence &seq, int left, int right)
 {
-    int pivot = seq[left]; // 选取第一个元素作为枢轴
+    int randInd = rand() % (right - left + 1) + left; // 随机生成一个位置
+    Swap(seq[left], seq[randInd]);                    // 把这个随机选取的元素交换到首位（因为首个元素会被覆盖）
+    int pivot = seq[left];                            // 选取第一个元素作为枢轴
     while (left < right)
     {
         while (seq[right] > pivot && right > left)
