@@ -15,7 +15,7 @@ typedef struct Node
         this->data = data;
         next = NULL;
     }
-} *List, LNode;
+} *List,LNode;
 
 int main()
 {

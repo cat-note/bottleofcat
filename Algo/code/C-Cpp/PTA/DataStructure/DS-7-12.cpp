@@ -11,7 +11,9 @@ void SelectionSort(Sequence &seq);                                        // 选
 void InsertionSort(Sequence &seq);                                        // 插入排序
 void ShellSort(Sequence &seq);                                            // 希尔排序
 void MergeSort(Sequence &seq);                                            // 归并排序
-void recursiveMerge(int start, int end, Sequence &origin, Sequence &buf); // 归并排序的递归体
+void RecursiveMerge(int start, int end, Sequence &origin, Sequence &buf); // 归并排序的递归体
+void QuickSort(Sequence &seq, int left, int right);
+int Partition(Sequence &seq, int left, int right);
 
 int main()
 {
@@ -26,7 +28,8 @@ int main()
     // SelectionSort(seq);
     // InsertionSort(seq);
     // ShellSort(seq);
-    MergeSort(seq);
+    // MergeSort(seq);
+    QuickSort(seq, 0, seq.size() - 1);
     // 输出序列
     for (int i = 0; i < N; i++)
     {
@@ -249,18 +252,18 @@ void MergeSort(Sequence &seq)
     // 如果写在recursiveMerge中，在递归过程中每一层都要存放一个容器，开销很大
     Sequence buf(len);
     // 开始递归
-    recursiveMerge(0, len - 1, seq, buf);
+    RecursiveMerge(0, len - 1, seq, buf);
 }
 
 // 处理从start到end下标的序列，origin是排序序列，buf是一个临时数组
-void recursiveMerge(int start, int end, Sequence &origin, Sequence &buf)
+void RecursiveMerge(int start, int end, Sequence &origin, Sequence &buf)
 {
     if (start >= end) // 已经划分成最小的序列(只有一个元素)，就回溯
         return;
     int mid = start + (end - start) / 2; // 防溢出写法
     // 将[start,end]的序列二分为[start,mid]和[mid+1,end]这两个序列分别进行排序
-    recursiveMerge(start, mid, origin, buf);   // 对左半边进行排序，操作原数组的[start,mid]序列
-    recursiveMerge(mid + 1, end, origin, buf); // 对右半边进行排序，操作原数组的[mid+1,end]序列
+    RecursiveMerge(start, mid, origin, buf);   // 对左半边进行排序，操作原数组的[start,mid]序列
+    RecursiveMerge(mid + 1, end, origin, buf); // 对右半边进行排序，操作原数组的[mid+1,end]序列
     // 到这里，[start,mid]和[mid+1,end]这两个序列已经【各自被排序好了】，要将这两个合并
     // 合并方式是将两个序列的元素【按顺序】放入buf数组
     int bufSize = 0;       // 记录用到的临时数组大小
@@ -293,4 +296,30 @@ void recursiveMerge(int start, int end, Sequence &origin, Sequence &buf)
     // 将buf临时数组的结果更新到【原数组】的[start,end]这段序列中
     for (int i = start, j = 0; i <= end; i++)
         origin[i] = buf[j++];
+}
+
+// 快速排序
+void QuickSort(Sequence &seq, int left, int right)
+{
+    if (right < left)
+        return;
+    int pivotInd = Partition(seq, left, right);
+    QuickSort(seq, left, pivotInd - 1);
+    QuickSort(seq, pivotInd + 1, right);
+}
+
+int Partition(Sequence &seq, int left, int right)
+{
+    int pivot = seq[left]; // 选取第一个元素作为枢轴
+    while (left < right)
+    {
+        while (seq[right] > pivot && right > left)
+            right--;
+        Swap(seq[left], seq[right]);
+        while (seq[left] < pivot && right > left)
+            left++;
+        Swap(seq[left], seq[right]);
+    }
+    seq[left] = pivot;
+    return left; // 返回枢轴下标
 }
