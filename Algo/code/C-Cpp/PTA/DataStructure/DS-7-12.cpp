@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <vector>
 #include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -18,6 +19,7 @@ int Partition(Sequence &seq, int left, int right);
 
 int main()
 {
+    srand((unsigned int)time(NULL));
     int N;
     scanf(" %d", &N);
     // 初始化数字序列
