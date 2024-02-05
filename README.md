@@ -29,7 +29,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 16. [【速记】C++ STL自定义排序](C-Cpp/cppCustomCompareTricks.md)  
 17. [【动画笔记】数据结构-AVL树的插入操作](Algo/DS-AVL-Tree-Insertion.md)  
 18. [Docker容器间SSH公钥自动交换实现免密登录的一次尝试](Containerization/DockerSSHKeyExchange.md)  
-19. [【斩虫】Hadoop中作业执行刚开始就挂掉的两种情况](SlayBugs/HadoopContainerLaunchIssues.md)  
+19. [【斩虫】Hadoop中作业执行刚开始就挂掉的两种情况](SlayBugs/HadoopJobContainerLaunchIssues.md)  
 
 ## Doodle
 
