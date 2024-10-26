@@ -99,7 +99,7 @@
 在混淆前和混淆后有啥没变呢？没错，就是**字形**，即文字看上去的样子。如果我能根据字形找到其原本对应的码点 $uni_s$，问题不就迎刃而解了！大概思路表示如下：  
 
 $$
-uni_t \xrightarrow{ \texttt{exam\_font\_*.ttf} } glp_s \xrightarrow{Original\ Font} uni_s
+uni_t \xrightarrow{ \texttt{exam_font_*.ttf} } glp_s \xrightarrow{Original\ Font} uni_s
 $$
 
 要找到字形和原码点的对应关系，那么就必须要**找到原字体**。
@@ -287,7 +287,7 @@ let hash = Array.from(
 已知要还原字符，需要建立的映射是：  
 
 $$
-uni_t \xrightarrow{ \texttt{exam\_font\_*.ttf} } \texttt{hash} (glp_s) \xrightarrow{ \texttt{SourceHanSansSC-VF.ttf} } uni_s
+uni_t \xrightarrow{ \texttt{exam_font_*.ttf} } \texttt{hash} (glp_s) \xrightarrow{ \texttt{SourceHanSansSC-VF.ttf} } uni_s
 $$
 
 上面提到过，每次页面载入的 `exam_font_*.ttf` 是不同的，即 $uni_t$ 至 $\texttt{hash}(glp_s)$ 的映射关系是在变动的，因此必须实时在浏览器中进行处理。  
@@ -344,7 +344,7 @@ writeFileSync('./original_glyph_to_uni.json', JSON.stringify(glyphsToUni), {
 在页面中抓取到混淆字体 `exam_font_*.ttf` 并解析后，就可以建立以下的映射关系了：  
 
 $$
-uni_t \xrightarrow{ \texttt{exam\_font\_*.ttf} } \texttt{hash} (glp_s)
+uni_t \xrightarrow{ \texttt{exam_font_*.ttf} } \texttt{hash} (glp_s)
 $$
 
 遍历混淆字体中的每一个字形 $glp_s$，其码点就是 $uni_t$ 了。  
@@ -440,7 +440,7 @@ for (let elem of obfuscatedElems) {
 但...也不是没有办法。最容易能想到的手段就是 OCR 了，也就是让映射关系变成下面这样：
 
 $$
-uni_t \xrightarrow{ \texttt{exam\_font\_*.ttf} } glp_s \xrightarrow{OCR} uni_s
+uni_t \xrightarrow{ \texttt{exam_font_*.ttf} } glp_s \xrightarrow{OCR} uni_s
 $$
 
 然而这样一来，开销就会变大很多了。
