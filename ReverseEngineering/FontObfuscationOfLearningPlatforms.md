@@ -94,7 +94,7 @@
 
 ## 2. 反混淆的突破口
 
-![strenuous-2024-10-20](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/strenuous-2024-10-20.png)  
+![strenuous-2024-10-26](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/strenuous-2024-10-26.png?n)  
 
 在混淆前和混淆后有啥没变呢？没错，就是**字形**，即文字看上去的样子。如果我能根据字形找到其原本对应的码点 $uni_s$，问题不就迎刃而解了！大概思路表示如下：  
 
