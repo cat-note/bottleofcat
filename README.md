@@ -30,7 +30,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 17. [【动画笔记】数据结构-AVL树的插入操作](Algo/DS-AVL-Tree-Insertion.md)  
 18. [Docker容器间SSH公钥自动交换实现免密登录的一次尝试](Containerization/DockerSSHKeyExchange.md)  
 19. [【斩虫】Hadoop中作业执行刚开始就挂掉的两种情况](SlayBugs/HadoopJobContainerLaunchIssues.md)  
-20. [【小记】探探学习平台的字体混淆](Others/FontObfuscationOfLearningPlatforms.md)  
+20. [【小记】探探学习平台的字体混淆](ReverseEngineering/FontObfuscationOfLearningPlatforms.md)    
 
 ## Doodle
 
