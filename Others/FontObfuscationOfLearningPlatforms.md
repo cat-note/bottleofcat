@@ -68,14 +68,15 @@
 
     ![obfuscatedGlyphCorrespondingTo81ea-2024-10-20](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/obfuscatedGlyphCorrespondingTo81ea-2024-10-20.png)  
 
+
 ### 1.3. 可能的混淆实现方式
 
 到这里，大致就可以**猜出**混淆的基本原理了：
 
-* **定义**原字形为 $glp_s$，其码点为 $uni_s$
-* **定义**混淆后码点为 $uni_t$，$uni_t$ 原本对应的字形为 $glp_t$
+* **定义**原字形为 $glp_s$，其字符码点为 $uni_s$
+* **定义**混淆后字符码点为 $uni_t$，$uni_t$ **原本对应的**字形为 $glp_t$
 
-对于某个字符，**混淆的操作就是**把字体文件中 $uni_t$ 对应的字形（$glp_t$）篡改为 $glp_s$，且在网页中用码点 $uni_t$ 取代 $uni_s$。
+对于某个字符，**混淆的操作就是**把字体文件中 $uni_t$ 对应的字形（$glp_t$）篡改为 $glp_s$，且在网页中用字符码点 $uni_t$ 取代 $uni_s$。
 
 这样一来虽然文本内容上是 $uni_t$ 对应的字符，但是网页中渲染出来的字形却是 $glp_s$。  
 
@@ -95,7 +96,11 @@
 
 ![strenuous-2024-10-20](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/strenuous-2024-10-20.png)  
 
-在混淆前和混淆后有啥没变呢？没错，就是**字形**，即文字看上去的样子。如果我能根据字形找到其原本对应的码点 $uni_s$，问题不就迎刃而解了！  
+在混淆前和混淆后有啥没变呢？没错，就是**字形**，即文字看上去的样子。如果我能根据字形找到其原本对应的码点 $uni_s$，问题不就迎刃而解了！大概思路表示如下：  
+
+$$
+uni_t \xrightarrow{exam\_font\_*.ttf} glp_s \xrightarrow{Original\ Font} uni_s
+$$
 
 要找到字形和原码点，那么就必须要**找到原字体**。
 
@@ -153,7 +158,9 @@ console.log(JSON.stringify(examCommands) === JSON.stringify(originalCommands))
 // true
 ```
 
-除了上面这个例子外，我还对多对码点 $(uni_t,uni_s)$ 进行了验证，此处不多赘述。经过比较，可以发现每一对码点在两个字体文件中对应的两个字形都是**相同**的，也就是说混淆过程并没有在字形上动手脚。
+除了上面这个例子外，我还对多对码点 $(uni_t,uni_s)$ 进行了验证，此处不多赘述。  
+
+经过比较，可以发现每一对码点在两个字体文件中对应的两个字形都是**相同**的，也就是说混淆过程并没有在字形上动手脚。
 
 ![gotcha-2024-10-20](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/gotcha-2024-10-20.jpg)  
 
@@ -210,6 +217,7 @@ for (let s of styleElems) {
     if (/font-family:\s*\"exam-data-decrypt-font\"/.test(s.innerHTML)) {
         // 先找到和 exam-data-decrypt-font 相关的 font-face 样式
         fontStyle = s.innerHTML;
+        break;
     }
 }
 let matches = fontStyle.match(/url\("(.+?)"\)/);
@@ -217,8 +225,221 @@ let matches = fontStyle.match(/url\("(.+?)"\)/);
 let obfuscatedFontUrl = matches[1];
 ```
 
+就算找不到这样的元素，也可以枚举所有引入的样式表 [`document.styleSheets`](https://developer.mozilla.org/zh-CN/docs/Web/API/Document/styleSheets) 来找到 `@font-face` 规则。  
+
 ### 4.2. 唯一地标识每个字形
 
+接下来要解决的问题就是如何唯一地标识每个字形。
+
+TTF 字体中，决定字形的是一个轮廓（contour）序列，相同的字形的 contour 序列应当是一致的。
+
+* [Glyph Outline Table - TrueType Reference Manual - Apple Developer](https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6glyf.html)  
+
+而在 `opentype.js` 库中， contour 序列被大致表示成了一种易于与 SVG 进行转换的绘制命令序列 `glyph.path.commands`，**相同的字形的绘制命令应当也是一致的**。咱们的目标就是唯一地标识这个序列。  
+
+* [opentype.js - path commands 文档](https://github.com/opentypejs/opentype.js?tab=readme-ov-file#path-commands)  
+
+要唯一地标识这种序列，首先能想到的就是为每个序列计算一个在数万（一个字体文件内可能有数以万计的字形）的规模下**唯一的散列值**，比如计算较快的 SHA-1 值。
+
+> 用散列值唯一标识字形还可以大大减少最终生成的映射表（字形→原码点）的体积，基于散列值进行存储和运算操作也开销较小，使得反混淆操作在浏览器中实际可行。
+
+对于相同的字形要计算出相同的散列值，需要保证用于散列计算的输入**在相同字形下总是一致的**。`glyph.path.commands` 是有序的数组结构，但是 `commands` 中每一项是无序的 JavaScript 键值对对象 (Object)，为了转无序为有序，可以先按照固定的排序规则进行处理，然后按序拼接为字串：  
+
+```javascript
+let strToBeHashed = '';
+for (let i = 0; i < pathCommands.length; i++) {
+    // entries 枚举对象的 [键, 值]，组成一个数组，转换为有序结构。
+    let sortedCommand = Object.entries(pathCommands[i]).sort((a, b) => {
+        if (a[0] != b[0]) {
+            // 先按键排
+            return a[0] - b[0];
+        } else {
+            // 键相同就按值排
+            return a[1] - b[1];
+        }
+    });
+    for (let kv of sortedCommand) {
+        // 顺序拼接起来成为字串
+        strToBeHashed += (kv[0].toString() + kv[1].toString());
+    }
+}
+```
+
+相同字形下的 `strToBeHashed` 是一致的，将这个字串转换为字节串，就可以计算出这个字形对应的 SHA-1 值了：  
+
+```javascript
+let hash = Array.from(
+    new Uint8Array(
+        await crypto.subtle.digest('SHA-1',
+            new TextEncoder().encode(strToBeHashed)
+        )
+    )
+).map(b => b.toString(16).padStart(2, '0')).join('');
+// 最终把输出的字节串转换为 16 进制表示，两位表示一个字节
+```
+
+> 这里用了 [`Crypto`](https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto) 这个 Web API。  
+
+### 4.3. 烘焙映射表
+
+已知要还原字符，需要建立的映射是：  
+
+$$
+uni_t \xrightarrow{exam\_font\_*.ttf} \texttt{hash} (glp_s) \xrightarrow{SourceHanSansSC-VF.ttf} uni_s
+$$
+
+上面提到过，每次页面载入的 `exam_font_*.ttf` 是不同的，即 $uni_t$ 至 $\texttt{hash}(glp_s)$ 的映射关系是在变动的，因此必须实时在浏览器中进行处理。  
+
+而在找到原字体 `SourceHanSansSC-VF.ttf` 后， $\texttt{hash}(glp_s)$ 到原码点 $uni_s$ 的映射是固定不变的，因此我可以**在本地预先建立二者的映射表**，在浏览器中执行处理时只用载入映射表进行映射即可，能大大减小开销。  
+
+检查发现 `exam_font_*.ttf` 似乎**只对汉字字符进行了混淆**，因此我可以只导出汉字字形和原码点的映射关系，以减小映射表文件体积。  
+
+由于一些历史原因，在不同的 Unicode 码点区间可能有看上去相同的汉字，字体设计者可能让这些码点**共用一个字形**。比如 `SourceHanSansSC-VF.ttf` 字体中 “一” 这个字形就对应有 `0x2F00` 和 `0x4E00` 两个码点。
+
+![theGlyphInfoOfOne-2024-10-24](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/theGlyphInfoOfOne-2024-10-24.png)  
+> 上图为 `opentype.js` 获取的 “一” 对应的字形信息，在 `unicodes` 属性中可以看到有两个码点。  
+
+* 因此在这里咱依赖于 `glyph.unicodes` 这个数组来对汉字进行筛选。
+
+筛选汉字字符时往往会采用 $[\texttt{0x4E00},\ \texttt{0x9FFF}]$ 这个码点区间，这部分子字符集被称作 CJK Unified Ideographs（中日韩统一表意文字）：
+
+```javascript
+const isChineseChar = (unicodeArr) => { 
+    for (let u of unicodeArr) {
+        if (u >= 0x4E00 && u <= 0x9FFF)
+            return true;
+    }
+    return false;
+}
+```
+
+建立映射表的过程实际上就是**遍历字体中的字形表**的每个字形，并拿到其对应的 Unicode 码点，然后将计算得到的字形的唯一标识（SHA-1）和码点对应起来：
+
+```javascript
+// opentype.js Font 对象的 Glyph 列表（其实也是一个 Object）
+const glyphs = font.glyphs.glyphs;
+let glyphsToUni = {};
+
+for (let i in glyphs) {
+    if (isChineseChar(glyphs[i].unicodes)) {
+        // 设 hashGlyph 为字形的 SHA-1 值计算函数
+        let [glyphHash, _] = await hashGlyph(glyphs[i].path.commands);
+        if (Object.hasOwn(glyphsToUni, glyphHash)) {
+            // 字形哈希发生碰撞，一般不会有这种情况。
+            // pass
+        }
+        glyphsToUni[glyphHash] = glyphs[i].unicode;
+    }
+}
+// 序列化得到 原字形 glp_s 至原码点 uni_s 的映射表
+writeFileSync('./original_glyph_to_uni.json', JSON.stringify(glyphsToUni), {
+    encoding: "utf-8"
+});
+```
+
+### 4.4. 在页面中将混淆后的码点映射回原码点
+
+在页面中抓取到混淆字体 `exam_font_*.ttf` 并解析后，就可以建立以下的映射关系了：  
+
+$$
+uni_t \xrightarrow{exam\_font\_*.ttf} \texttt{hash} (glp_s)
+$$
+
+遍历混淆字体中的每一个字形 $glp_s$，其码点就是 $uni_t$ 了。  
+
+再辅以上面映射表 `original_glyph_to_uni.json` 提供的映射关系：  
+
+$$
+\texttt{hash} (glp_s) \xrightarrow{SourceHanSansSC-VF.ttf} uni_s
+$$
+
+就可以根据传递性得到映射关系：
+
+$$
+uni_t \rightarrow uni_s
+$$
+
+代码实现的片段如下：  
+
+```javascript
+// loadFont: 载入字体数据后用 opentype.js 解析为 Font 对象
+const obfuscatedFont = await loadFont(obfuscatedFontUrl);
+// 混淆字体的所有字形
+let obfuscatedGlyphs = obfuscatedFont.glyphs.glyphs;
+// hash(glp_s) 至 uni_s 的映射表
+const originalGlyphToUni = await fetch('original_glyph_to_uni.json').then(res => res.json());
+
+// 混淆后的 uni_t 至原 uni_s 的映射
+const obfuscatedToOriginal = {};
+
+for (let i in obfuscatedGlyphs) {
+    let { unicode, path } = obfuscatedGlyphs[i];
+    if (unicode === undefined) // 跳过未知码点的
+        continue;
+    // 设 hashGlyph 为字形的 SHA-1 值计算函数
+    // 即 glyphHash = hash(glp_s)
+    let [glyphHash, _] = await hashGlyph(path.commands);
+    // 先寻找映射表中是否有键 glyphHash
+    if (Object.hasOwn(originalGlyphToUni, glyphHash)) {
+        // uni_t -> glyphHash -> uni_s
+        obfuscatedToOriginal[unicode] = originalGlyphToUni[glyphHash];
+    } else {
+        // 没有找到字形对应的 uni_s
+    }
+}
+```
+
+> 你可能好奇这里我为什么没用 `glyph.unicodes`，不是说一个字形可能对应多个码点吗？其实是因为我发现这样写其实就已经能达成目的了 (・ω<)。
+
+### 4.5. 临门一脚
+
+最后根据映射 `obfuscatedToOriginal` 把页面中的被混淆段落的字符全部还原即可。  
+
+在[上面 4.1 节](#41-获取混淆字体的-url)中咱们发现被混淆段落的元素都有一个特定的 `class`，因此只需要将这些元素的文本内容进行替换即可。  
+
+```javascript
+const obfuscatedElems = document.querySelectorAll('.xuetangx-com-encrypted-font');
+
+for (let elem of obfuscatedElems) {
+    let resultHtml = '';
+    for (let chr of elem.innerHTML) {
+        if (/[\u4e00-\u9fff]/g.test(chr)) {
+            // 仅处理汉字字符
+            let uni_t = chr.codePointAt(0);
+            if (Object.hasOwn(obfuscatedToOriginal, uni_t)) {
+                let realChr = String.fromCodePoint(obfuscatedToOriginal[uni_t]);
+                resultHtml += realChr;
+            } else {
+                // 没有映射成功
+            }
+        } else {
+            resultHtml += chr;
+        }
+    }
+    elem.innerHTML = resultHtml;
+    // 取消掉 class，以用原字体渲染字符
+    elem.classList.remove('xuetangx-com-encrypted-font');
+}
+```
+
+把上面这些代码片段结合起来，在页面中执行一次后，蹬蹬蹬~ 现在每个汉字都“字如其貌”了！  
+
+![resultOfAntiObfuscation-2024-10-25](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/resultOfAntiObfuscation-2024-10-25.png)  
 
 
-...
+## 5. 写在最后
+
+咱这回写这篇笔记主要也是为了记录一下解决这类问题的思路，事实上也有很多网站采用了类似的混淆方法来实现反爬机制。
+
+可以发现整个反混淆过程中最关键的一步就是[找到原字体](#21-找到原字体)，如果没有原字体，建立映射关系就没有那么容易了。
+
+但...也不是没有办法。最容易能想到的手段就是 OCR 了，也就是让映射关系变成下面这样：
+
+$$
+uni_t \xrightarrow{exam\_font\_*.ttf} glp_s \xrightarrow{OCR} uni_s
+$$
+
+然而这样一来，开销就会变大很多了。
+
+无论是防止文本被复制，还是抵御爬虫抓取，这类防御手段的核心意图就在于：“虽然无法完全杜绝此类行为，但我可以提高门槛，增加你实施这些行为的成本。”
+
