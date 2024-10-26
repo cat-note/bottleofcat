@@ -102,7 +102,7 @@ $$
 uni_t \xrightarrow{exam\_font\_*.ttf} glp_s \xrightarrow{Original\ Font} uni_s
 $$
 
-要找到字形和原码点，那么就必须要**找到原字体**。
+要找到字形和原码点的对应关系，那么就必须要**找到原字体**。
 
 ### 2.1. 找到原字体
 
@@ -176,6 +176,8 @@ console.log(JSON.stringify(examCommands) === JSON.stringify(originalCommands))
 
 但平台在这点上也挺鸡贼，每次刷新页面后，都会**随机取出一个** `exam_font_*.ttf` ，对应混淆后的字符码点 $uni_t$ 也**都不同**。  
 
+![notBadKid-2024-10-26](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/notBadKid-2024-10-26.jpg)  
+
 因此我必须要能在页面中截获字体文件 `exam_font_*.ttf` 的 URL 并就地将字体读取出来进行处理。
 
 ### 3.2. 如何唯一地标识字形
@@ -243,7 +245,7 @@ TTF 字体中，决定字形的是一个轮廓（contour）序列，相同的字
 
 > 用散列值唯一标识字形还可以大大减少最终生成的映射表（字形→原码点）的体积，基于散列值进行存储和运算操作也开销较小，使得反混淆操作在浏览器中实际可行。
 
-对于相同的字形要计算出相同的散列值，需要保证用于散列计算的输入**在相同字形下总是一致的**。`glyph.path.commands` 是有序的数组结构，但是 `commands` 中每一项是无序的 JavaScript 键值对对象 (Object)，为了转无序为有序，可以先按照固定的排序规则进行处理，然后按序拼接为字串：  
+对于相同的字形要计算出相同的散列值，需要保证用于散列计算的输入**在相同字形下总是一致的**。`glyph.path.commands` 是有序的数组结构，但是 `commands` 中每一项是无序的 JavaScript 键值对对象 (Object)，为了转无序为有序，可以先**按照固定的排序规则**进行处理，然后按序拼接为字串：  
 
 ```javascript
 let strToBeHashed = '';
@@ -393,7 +395,7 @@ for (let i in obfuscatedGlyphs) {
 
 ### 4.5. 临门一脚
 
-最后根据映射 `obfuscatedToOriginal` 把页面中的被混淆段落的字符全部还原即可。  
+最后根据上一小节得到的映射 `obfuscatedToOriginal` 把页面中的被混淆段落的字符全部还原即可。  
 
 在[上面 4.1 节](#41-获取混淆字体的-url)中咱们发现被混淆段落的元素都有一个特定的 `class`，因此只需要将这些元素的文本内容进行替换即可。  
 
@@ -429,9 +431,11 @@ for (let elem of obfuscatedElems) {
 
 ## 5. 写在最后
 
+![tehe-2024-10-26](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/tehe-2024-10-26.png)  
+
 咱这回写这篇笔记主要也是为了记录一下解决这类问题的思路，事实上也有很多网站采用了类似的混淆方法来实现反爬机制。
 
-可以发现整个反混淆过程中最关键的一步就是[找到原字体](#21-找到原字体)，如果没有原字体，建立映射关系就没有那么容易了。
+可以发现整个反混淆过程中最关键的一步就是[找到原字体](#21-找到原字体)，如果没有原字体，建立码点映射关系就没有那么容易了。
 
 但...也不是没有办法。最容易能想到的手段就是 OCR 了，也就是让映射关系变成下面这样：
 
