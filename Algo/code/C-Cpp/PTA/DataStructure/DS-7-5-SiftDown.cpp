@@ -1,127 +1,82 @@
-/*
-https://pintia.cn/problem-sets/15/exam/problems/713
-这里我采用了自下向上的建堆方式，可惜PTA不认，这题PTA只认自顶向下插入建堆的方式
-但这个题解代码我写都写了，还是把代码留着作为以后的参考吧。
-*/
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-void Swap(int &src, int &dest);           // 交换结点值
-bool SiftDown(vector<int> &H, int i);     // 下滤结点
-void AdjustHeap(vector<int> &H);          // 调整完全二叉树为小根堆
-void PrintPath(vector<int> &H, int dest); // 打印从根结点到dest的路径
+vector<int> H; // 初始化存放堆的数组
 
-int main()
-{
-    int insertNum, pathNum;
-    cin >> insertNum >> pathNum; // 输入元素个数和路径个数
-    vector<int> H(insertNum);    // 初始化存放堆的数组
-    // 建堆方法采用自下而上建堆
-    // 先把所有结点构造成完全二叉树存放于数组
-    for (int i = 0; i < insertNum; i++)
-    {
-        cin >> H[i];
+void Swap(int& src,int& dest); // 交换结点值
+void InitializeHeap(); // 自底向上建堆
+void SiftDown(int i); // 下滤下标为 i 的结点
+void PrintPath(int start); // 打印从start下标到根节点的路径
+
+int main(){
+    int insertNum,pathNum;
+    cin>>insertNum>>pathNum; // 输入元素个数和路径个数
+    H.resize(insertNum+1); // 初始化数组结点数
+    for(int i=0;i<insertNum;i++){
+        int insertVal;
+        cin>>insertVal;
+        // 为了方便，从下标 1 开始存储
+        H[i+1]=insertVal;
     }
-    // 接下来从最底层的父节点开始自下而上逐层调整
-    AdjustHeap(H);
-    // 打印从根节点到指定下标结点的路径
-    for (int i = 0; i < pathNum; i++)
-    {
-        int destInd;
-        cin >> destInd;
-        PrintPath(H, destInd);
-        if (i != pathNum - 1)
-            cout << "\n";
+    // 初始化堆
+    InitializeHeap();
+    // 输出堆
+    for(int i=1;i<H.size();i++){
+        cout<<H[i]<<" ";
+    }
+    cout<<endl;
+    for(int i=0;i<pathNum;i++){
+        int startInd;
+        cin>>startInd;
+        PrintPath(startInd);
+        if(i!=pathNum-1)
+            cout<<"\n";
     }
     return 0;
 }
-// 对需要移动的父节点进行下滤操作
-void AdjustHeap(vector<int> &H)
-{
-    int len = H.size(); // 结点数
-    // 从最后一个元素开始，找最接近底层的父节点
-    // 注意只用遍历到下标为1的结点，下标为0的是根结点
-    for (int i = len - 1; i >= 1; i--)
-    {
-        // 如果当前遍历到的是某个右子节点，就跳过左结点（因为左右子结点的父节点是一致的）
-        if (SiftDown(H, i))
-            i--;
+
+void InitializeHeap(){
+    // 初始化堆其实就是从最后一个有孩子的结点开始向前
+    for(int i=((H.size()-1)>>1);i>=1;i--){
+        SiftDown(i);
     }
 }
+
+void SiftDown(int i){
+    // 下滤堆中下标为 i 的结点
+    // 因为是小根堆，应该和孩子中更小的那个比较
+    // 注意，结点数n = H.size()-1，n/2 的地方为最后一个有孩子的结点的位置
+    while(i<=((H.size()-1)>>1)){
+        int leftInd=(i<<1),rightInd=leftInd+1;
+        if(rightInd<H.size()&&H[rightInd]<H[leftInd]){
+            // 如果结点还有右边孩子，比较两个孩子的大小，如果右孩子更小则准备和右孩子比
+            // 也就是让 H[i] 和较小的一个孩子比
+            leftInd=rightInd;
+        }
+        if(H[i]<=H[leftInd]){
+            // 如果 i 结点比孩子都小，那就不用继续了
+            break;
+        }
+        // 否则交换
+        Swap(H[i],H[leftInd]);
+        i=leftInd;
+    }
+}
+
 // 交换结点值
-void Swap(int &src, int &dest)
-{
-    int temp = src;
-    src = dest;
-    dest = temp;
+void Swap(int& src,int& dest){
+    int temp=src;
+    src=dest;
+    dest=temp;
 }
 
-// 下滤结点，第一步是将from下标结点和to结点交换
-// 返回true/false代表当前结点是/否是右结点
-bool SiftDown(vector<int> &H, int i)
-{
-    int parentInd = (i - 1) / 2;     // 当前结点的父节点下标
-    bool isRight = (i - 1) % 2 == 1; // 当前结点是否是右子节点
-    bool returnVal = isRight;
-    int nodeNum = H.size(); // 节点数量
-    while (i < nodeNum)
-    {
-        if (!isRight)
-        {
-            // 只有左子的情况
-            // 当前结点是左子的话，直接和父节点比较
-            // 如果左子比父节点小，就和父节点交换
-            if (H[parentInd] > H[i])
-            {
-                Swap(H[parentInd], H[i]);
-                parentInd = i; // 继续和下层比较
-            }
-            else
-            {
-                break;
-            }
-        }
-        else if (H[parentInd] > H[i] && H[i] < H[i - 1])
-        {
-            // 父节点大于右子，且右子小于左子，把右子和父节点交换，保证父节点小于子节点
-            Swap(H[parentInd], H[i]);
-            parentInd = i; // 继续和下层比较
-        }
-        else if (H[parentInd] > H[i - 1] && H[i - 1] < H[i])
-        {
-            // 父节点大于左子，且左子小于右子，把左子和父节点交换
-            Swap(H[parentInd], H[i - 1]);
-            parentInd = i - 1; // 继续和下层比较
-        }
-        else
-        {
-            break;
-        }
-        // 更新parentInd后再更新i为这个父节点的左子结点
-        i = parentInd * 2 + 1;
-        if (i >= nodeNum) // 如果左结点都没了就说明到底了，break
-            break;
-        if (i + 1 < nodeNum)
-        { // 如果有右子就i++，更新i为右子节点
-            i++;
-            isRight = true; // 标记：有右结点
-        }
-        else
-        {
-            isRight = false; // 标记：非右结点
-        }
+// 注意末尾不能有多余空格
+void PrintPath(int start){
+    int i=start;
+    for(;i>1;i>>=1){
+        cout<<H[i]<<" ";
     }
-    return returnVal;
-}
-
-void PrintPath(vector<int> &H, int dest)
-{
-    int i = dest - 1; // 因为我的堆的下标是从0开始，但题目是1
-    for (; i > 0; i = (i - 1) / 2)
-    {
-        cout << H[i] << " ";
-    }
-    cout << H[i];
+    cout<<H[i];
 }
