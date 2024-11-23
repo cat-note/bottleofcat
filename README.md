@@ -32,6 +32,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 19. [【斩虫】Hadoop中作业执行刚开始就挂掉的两种情况](SlayBugs/HadoopJobContainerLaunchIssues.md)  
 20. [【小记】探探学习平台的字体混淆](ReverseEngineering/FontObfuscationOfLearningPlatforms.md)    
 21. [【题解笔记】LeetCode 134. Gas Station](./Algo/GasStation.md)  
+22. [【小记】 Matplotlib 中设置自定义中文字体的正确姿势](./Python/matplotlibWithCJKChars.md)    
 
 ## Doodle
 
