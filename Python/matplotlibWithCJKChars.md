@@ -149,7 +149,7 @@ plt.rcParams['font.family']=[font_name, 'sans-serif']
 
 以上的方式可以直接让当前运行环境中的 Matplotlib 支持中文字符的渲染。  
 
-如果你要为少数几条字体**单独配置字体**，可以在相关的绘制语句上配置相应参数：  
+如果你要为少数几条文本**单独配置字体**，可以在相关的绘制语句上配置相应参数：  
 
 ```python
 font_props=fm.FontProperties(fname=FONT_PATH)
