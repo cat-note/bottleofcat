@@ -52,6 +52,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 8. [打印杨辉三角的Shell脚本](Linux/ShellScripts/PascalTriangle.sh) 
 9. [Linux课程设计(略赶工)](Linux/CourseProject)  
 10. [汉诺塔演示页](Algo/code/Web/Hanoi/index.html) ([在线演示](https://cat-note.github.io/bottleofcat/Algo/code/Web/Hanoi/index.html))  
+11. [A* 和 JPS 寻路算法的实现](https://github.com/SomeBottle/PathPlanningAlgorithms) - 这个仓库里有详细的笔记。
 
 ## OnlineJudge
 
