@@ -1045,3 +1045,87 @@ fmt.Println(string(s)) // Hello, Somebottle!
 
 ## 12.1. 接口（Interfaces）
 
+Go 语言的接口表示了**具有相同行为的一类对象**，可以认为接口是一组抽象方法的集合。
+
+💡 上面已经提到，为了表意清晰，对于**只有一个方法**的接口往往以这个方法的名字 + `er` 来命名，比如 `io.Writer` 接口只有一个 `Write` 方法，所以被命名为 `Writer`。  
+
+* 只要在一个类型上**定义了接口中所有的方法**，那它就实现了这个接口。
+* ❗ 一个类型因而**能实现多个接口**。  
+
+## 12.2. 类型转换
+
+对于取了别名的类型是可以**在相同类型之间**直接进行转换的：  
+
+```go
+type Sequence []int
+
+func (s Sequence) String() string {
+    s = s.Copy()
+    sort.IntSlice(s).Sort()
+    // 转换回 []int
+    return fmt.Sprint([]int(s))
+}
+```
+
+* `IntSlice` 的定义是 `type IntSlice []int` ，它也是整型切片的别名，因此可以直接把 `Sequence` 转换为 `IntSlice`。
+* ❗ 因为 `IntSlice` 上定义了方法，**把 `Sequence` 转换为 `IntSlice` 后自然也就可以使用这些方法了**，比如上面就可以调用 `IntSlice` 的 `Sort` 方法。  
+
+相比让一个类型去实现多个接口，利用这种类型转换来在不同别名类型下调用不同方法的做法也是很有效的。
+
+## 12.3. 接口转换和类型断言
+
+* ❗ 显然，类型断言**只适用于接口类型**。
+
+上面已经记录过类型断言 switch 的写法，断言 switch 可以**灵活地根据接口变量值的数据类型来路由到不同的转换逻辑上**。  
+
+```go
+type Stringer interface {
+    String() string
+}
+
+var value interface{} // 调用者提供的值
+switch str := value.(type) {
+case string:
+    return str
+case Stringer:
+    return str.String()
+}
+```
+> 可以看到第二个 `case` 就相当于对接口进行了转换。  
+
+💡 如果已经知道接口值的具体类型，可以直接用**类型断言**语法进行显式转换：  
+
+```go
+value, ok := interfaceVal.(typeName)
+```
+> ❗ 类型断言会返回两个值，第二个是一个布尔值，表明 `interfaceVal` 是否持有 `typeName` 类型。若不是 `typeName` 这个类型，`value` 将会是这个类型的零值。  
+
+## 12.4. ❗ 导出接口，而不是仅实现接口的类型
+
+如果某个类型**仅仅是实现了接口，而没有定义其他方法**，那么就没有必要把这个类型导出，而**只用导出接口类型**。  
+
+```go
+// 导出接口 MyInterface
+type MyInterface interface {
+    DoSomething()
+}
+
+// myType 首字母小写，不导出
+type myType struct{}
+
+func (t myType) DoSomething() {
+    // 实现接口方法
+}
+
+// 返回接口 MyInterface，而不是 myType
+func NewMyType() MyInterface {
+    return myType{}
+}
+```
+> `myType` 仅仅是实现了 `MyInterface`，其没有额外定义方法。直接导出 `MyInterface` **更便于代码可维护性**（💡 便于修改具体实现类型），且也**不需要重复为 `myType` 编写文档**。    
+
+* 💡 上面这个代码中可以看到，**构造函数**返回类型时也是**遵循这一原则**的，对于 `myType` 仅返回接口类型。
+* 这样一来便于代码解耦，在修改接口实现类型时，调用方不需要对调用代码进行修改。  
+
+比如 Go 加密库中，`crc32.NewIEEE` 和 `adler32.New` 就均返回 `hash.Hash32` 接口类型，而不是具体的实现类型。
+
