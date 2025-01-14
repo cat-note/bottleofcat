@@ -9,7 +9,7 @@ There must be something that I misunderstood , I'll appreciate it if you can poi
 The notes here will be synchronized with my [blog](https://somebottle.cnblogs.com/).   
 
 -------
-## Content  
+## Blog Posts  
 0. [书签签](bookmarks.md)  
 1. [JS小记：闭...闭包？](JavaScript/JavaScript-Closure.md)  
 2. [大学物理实验有效数字与测量值小记](Physics/PhyExpMeasuredAndSignificantFigure.md)  
@@ -32,8 +32,12 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 19. [【斩虫】Hadoop中作业执行刚开始就挂掉的两种情况](SlayBugs/HadoopJobContainerLaunchIssues.md)  
 20. [【小记】探探学习平台的字体混淆](ReverseEngineering/FontObfuscationOfLearningPlatforms.md)    
 21. [【题解笔记】LeetCode 134. Gas Station](./Algo/GasStation.md)  
-22. [【小记】 Matplotlib 中设置自定义中文字体的正确姿势](./Python/MatplotlibWithCJKChars.md)    
-23. [Effective Go 阅读笔记](./Golang/EffectiveGoReadingNotes.md)  
+22. [【小记】 Matplotlib 中设置自定义中文字体的正确姿势](./Python/MatplotlibWithCJKChars.md)   
+
+## Reading Notes
+
+0. [Effective Go 阅读笔记](./ReadingNotes/Golang/EffectiveGoReadingNotes.md)  
+
 
 ## Doodle
 
