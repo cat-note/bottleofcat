@@ -36,8 +36,13 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 
 ## Reading Notes
 
+### Golang
+
 0. [Effective Go 阅读笔记](./ReadingNotes/Golang/EffectiveGoReadingNotes.md)  
 
+### Research Related
+
+0. [差分隐私友好介绍阅读笔记](./ReadingNotes/Research/DiffrentialPrivacyIntroReadingNotes.md)  
 
 ## Doodle
 
