@@ -186,7 +186,7 @@ $$
 P\left[D=D_{in}\mid A(D)=O \right] 
 $$
 
-因为 $A$ 满足差分隐私，$P\left[D=D_{in}\mid A(D)=O \right]$ 和 $P[D=D_{in}]$ 的差距不会很大，且**易于量化这种差距**（没错，还是 $\varepsilon$ 这个参数）  
+因为 $A$ 满足差分隐私， $P\left[D=D_{in}\mid A(D)=O \right]$ 和 $P[D=D_{in}]$ 的差距不会很大，且**易于量化这种差距**（没错，还是 $\varepsilon$ 这个参数）  
 
 比如在 $\varepsilon=1.1$ 的情况下，可视化后的上下界如下：  
 
