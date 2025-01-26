@@ -1,18 +1,21 @@
-# 【小记】在 Google Colab 上基于 Apptainer 运行 GPU 容器  
+# 【小记】在 Google Colab 等平台上运行 GPU 容器  
 
-最近想到了可能的创新点，准备开始做实验了。在前期我准备先薅一波提供免费 GPU 运算资源的平台的羊毛，但这些平台提供的免费时长并不多，可能这家配额跑完了就要换下家，如果每次都要重新搭建环境多少有些不方便。  
+最近想到了可能的创新点，准备开始做实验了。咱想先在 Colab 这种提供免费 GPU 算力的平台上跑一些小实验，后续再转移到实验室机器上。
+
+如果每次都要重复搭建环境多少有些麻烦了。  
 
 ![subaru_nerd-2025-01-18](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/subaru_nerd-2025-01-18.png)  
 
-那咱用容器化技术不就行啦！直接把环境打包成镜像，哪个平台都能跑。  
+那咱用容器化技术不就行啦！直接把环境打包成镜像，到时候环境迁移和实验复现都能便捷很多。  
 
-比起 Docker，这回咱决定采用**更为轻量的** Apptainer（前身为 Singularity）：  
+比起 Docker，这回咱决定试试**更为轻量的** Apptainer（前身为 Singularity）：  
 
-* Apptainer 默认以普通用户的身份运行容器，无需类似于 root 用户的特权，不像 Docker Daemon 那样必须要运行在特权用户下。（因而更安全，也更容易安装部署，不会有什么权限问题）  
+* Apptainer 默认以普通用户的身份运行容器，**没有守护进程**，也无需类似于 root 用户的特权，不像 Docker Daemon 那样必须要运行在特权用户下。（因而更安全，也更容易安装部署，不会有什么权限问题）  
+  * ✨ 尽管如此，Apptainer 仍然要求系统支持 User Namespace 等特性，如果**平台在各方面限制得比较死的话**可以看看[第 4 节](#4-系统不支持用户命名空间)，有惊喜哦 (￣▽￣) 。
 * Apptainer 针对高性能计算（HPC）这种并行场景进行了优化（虽然我还不太用得上）。
 * Apptainer 支持 Docker 镜像，体验上近乎无缝（这个是最爽滴）。
 
-这篇笔记主要记录一下咱在 Google Colab 上基于 Apptainer 运行 GPU 容器时的踩坑和爬出坑的过程。  
+这篇笔记主要记录一下咱在 Google Colab 以及 AutoDL 平台上运行 GPU 容器时的踩坑和爬出坑的过程。  
 
 ## 1. 安装 Apptainer  
 
@@ -70,7 +73,7 @@ apptainer run hello.sif
 
 * 相关 issue：https://github.com/apptainer/apptainer/issues/1041  
 
-利用 `setcap` 进行 capabilities 权限设定还是麻烦了，这里我根据 issue 中的指引，直接在一个新的**命名空间**下运行了容器:  
+✨ 利用 `setcap` 进行 capabilities 权限设定还是麻烦了，这里我根据 issue 中的指引，直接在一个新的**命名空间**下运行了容器:  
 
 ```bash
 # 在 root 用户下执行这条命令，容器内用户为 root
@@ -89,7 +92,7 @@ unshare -r apptainer run hello.sif
 sudo -u somebottle apptainer run hello.sif
 ```
 
-> Apptainer 默认借助用户命名空间来运行容器，系统应支持以非特权方式建立用户命名空间，经测试 Colab 已经满足了这点。具体要求可查看[文档](https://apptainer.org/docs/admin/1.3/user_namespace.html)。    
+> Apptainer 借助用户命名空间特性来运行容器，系统应**支持以非特权方式建立用户命名空间**，经测试 Colab 已经满足了这点。具体要求可查看[文档](https://apptainer.org/docs/admin/1.3/user_namespace.html)。    
 
 ---
 
@@ -147,13 +150,18 @@ Please also try adding directory that contains libnvidia-ml.so to your system PA
 提到动态链接库路径，很快能想到一个环境变量 `LD_LIBRARY_PATH`，动态链接器会在其列出的目录下搜索库。分别在宿主机和容器内输出这个环境变量看看:    
 
 ```bash
+# 宿主机上
 unshare -r env | grep LD_
 # >> LD_LIBRARY_PATH=/usr/lib64-nvidia
+
+# 容器中
 unshare -r apptainer exec --nv pytorch-gpu.sif env | grep LD_
 # >> LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/.singularity.d/libs
 ```
 
-可见**宿主机上 NVIDIA 动态链接库**位于 `/usr/lib64-nvidia`，而容器内列出了三个路径，其中前两个路径对应的目录是不存在的，链接器会去 `/.singularity.d/libs` 这个路径下找共享库。  
+可见**宿主机上 NVIDIA 动态链接库**位于 `/usr/lib64-nvidia`。  
+
+容器内列出了三个路径，因为其中前两个路径在容器内是不存在的，所以链接器会去 `/.singularity.d/libs` 这个路径下找共享库。  
 
 ```bash
 # 输出看看目录下有什么
@@ -162,20 +170,20 @@ unshare -r apptainer exec --nv pytorch-gpu.sif ls -ahl /.singularity.d/libs
 
 ![list_libraries-2025-01-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/list_libraries-2025-01-22.png)  
 
-推测在使用 `--nv` 选项时，Apptainer 会自动将宿主机上的 NVIDIA 动态链接库绑定挂载到容器内的 `/.singularity.d/libs` 目录下。  
+推测在使用 `--nv` 选项时，Apptainer 会自动**将宿主机上的 NVIDIA 动态链接库绑定挂载到容器内**的 `/.singularity.d/libs` 目录下。  
 
 * [用户文档 - GPU Support](https://apptainer.org/docs/user/1.3/gpu.html#requirements) [1]  
 * [管理文档 - Apptainer Configuration Files](https://apptainer.org/docs/admin/1.3/configfiles.html#nvidia-gpus-cuda) [2]  
 
-从上面两个文档可以得知，Apptainer 有一个配置文件 `nvliblist.conf`，其中指定了可执行文件和动态链接库的**文件名**（没错，仅仅是文件名！）。  
+从上面两个文档可以得知，为了处理绑定挂载，Apptainer 有一个配置文件 `nvliblist.conf`，其中指定了 NVIDIA 相关的可执行文件和动态链接库的**文件名**（没错，仅仅是文件名！）。  
 
-* 注: 通过 `find / -name "nvliblist.conf"` 找到配置文件路径。  
+* 注: 通过 `find / -name "nvliblist.conf"` 可找到配置文件路径。  
 
 在默认的 `nvliblist.conf` 中可以找到上面 `NVIDIA-SMI` 运行所缺失的库: 
 
 ![find_libnvidia-ml-2025-01-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/find_libnvidia-ml-2025-01-22.png)  
 
-当然也可以找到 `/.singularity.d/libs` 目录下已有的库。  
+当然也可以找到容器内 `/.singularity.d/libs` 目录下已有的库。  
 
 ---
 
@@ -185,13 +193,13 @@ unshare -r apptainer exec --nv pytorch-gpu.sif ls -ahl /.singularity.d/libs
 
 > When adding new entries to `nvliblist.conf` use the bare filename of executables, and the `xxxx.so` form of libraries. Libraries are resolved via `ldconfig -p`, and exectuables are found by searching `$PATH`.   
 
-即共享库（`.so`）路径是通过 `ldconfig -p` 来解析的，而可执行文件则是通过 `$PATH` 来搜索的。  
+即共享库（`.so`）路径是通过 `ldconfig -p` 来解析的，而可执行文件则是通过 `$PATH` 来搜索的。很有可能 Apptainer 在挂载时没有找到 NVIDIA 的库路径。
 
 ```bash
 # ldconfig 可以管理动态链接库的缓存
 # 查看 ldconfig -p 的输出（输出已缓存的库），筛出有 nvidia 字段的
 ldconfig -p | grep nvidia
-# 没有输出
+# 没有输出，说明 nvidia 相关的库没有被缓存
 ```
 
 哔啵~问题已定位。接下来只需要把宿主机上的 NVIDIA 共享库目录 `/usr/lib64-nvidia` 加入到缓存中即可。  
@@ -223,13 +231,13 @@ ls /usr/local/nvidia/lib
 
 看来大概是 Colab 官方的配置有误。  
 
-最后，咱们**直接把路径 `/usr/lib64-nvidia` 写入到这里的一个配置文件**中:    
+✨ 为了修复这点，咱们**直接把库路径 `/usr/lib64-nvidia` 写入到这里的一个配置文件**中:    
 
 ```bash
 echo "/usr/lib64-nvidia" >> /etc/ld.so.conf.d/nvidia.conf
 ```
 
-然后**刷新缓存**，让 `ldconfig` 重新读取配置文件即可:  
+✨ 然后**刷新缓存**，让 `ldconfig` 重新读取配置文件即可:  
 
 ```bash
 ldconfig
@@ -274,7 +282,130 @@ sudo -u somebottle apptainer exec --bind /content/test:/mnt/data --nv pytorch-gp
 
 这样一来我应该就能愉快地在 Google Colab 等平台上使用 Apptainer 跑实验啦~  
 
-## 3.6. 关于 sudo -u
+# 4. 系统不支持用户命名空间
+
+事情并不总是一帆风顺。当我尝试在 AutoDL 平台上复现上面的流程时，发现 AutoDL 禁止了非特权用户创建用户命名空间，且禁用了 `unshare`，Apptainer 根本就跑不起来:  
+
+![autodl_unprivileged_user_namespace_not_allowed_2-2025-01-23](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/autodl_unprivileged_user_namespace_not_allowed_2-2025-01-23.png)  
+> 而且 AutoDL 也禁用了 `setuid` 机制。
+
+难道...就要到此为止了吗！  
+
+![kuyashii-2025-01-24](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/kuyashii-2025-01-24.jpg)  
+
+不，还没完！我还能战斗！    
+其实还有个能**完全在用户空间运行**的容器工具实现: [udocker](https://indigo-dc.github.io/udocker/)。  
+
+默认情况下 udocker 利用 [PRoot](https://github.com/proot-me/proot) 在用户空间拦截并模拟一些系统调用和特权操作，以在非特权用户下运行容器。 
+
+* udocker 的环境隔离性没有 apptainer 和 docker 好。但我本来也就只想要迁移运行时环境，隔离性也无所谓了（详见官方文档 [1.3. Security](https://indigo-dc.github.io/udocker/user_manual.html#13-security)）。  
+
+* udocker 容器中**无法执行真正需要特权的操作**，比如文件系统挂载、修改受保护的配置等。当然跑个机器学习实验是没啥问题的（详见官方文档 [1.2. Limitations](https://indigo-dc.github.io/udocker/user_manual.html#12-limitations)）。
+
+* 以下代码暂且以 `udocker 1.3.17` 版本为例。
+
+## 4.1. 以 root 用户运行 udocker
+
+直接在 root 用户下运行，命令更为简短，注意需要加上 `--allow-root` 选项: 
+
+<details>
+
+<summary>点击展开示例代码（IPython）</summary>
+
+```python
+# 下载 udocker 包并解压
+!wget https://github.com/indigo-dc/udocker/releases/download/1.3.17/udocker-1.3.17.tar.gz
+!tar -xzf udocker-1.3.17.tar.gz
+
+# 把 udocker 添加到环境变量中
+# 方便起见，给 udocker --allow-root 起个别名 mydocker
+%alias mydocker export PATH=udocker-1.3.17/udocker:$PATH; udocker --allow-root
+
+# 初始化 udocker（即使不初始化，首次执行时也会自动初始化）
+mydocker install
+
+# 拉取镜像
+# dockerpull.cn 是一个 DockerHub 镜像站
+mydocker pull dockerpull.cn/pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+
+# 创建容器，容器名 gputest
+mydocker create --name=gputest dockerpull.cn/pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
+
+# 启动 NVIDIA 支持
+mydocker setup --nvidia gputest
+
+# 查看 GPU 信息（如果有问题请见下面的 4.3 节）
+mydocker run gputest nvidia-smi
+
+# 挂载测试脚本并运行
+mydocker run --volume=/root/test.py:/script/test.py gputest python /script/test.py
+```
+
+</details>
+
+## 4.2. 以普通用户运行 udocker
+
+废话不多说，上代码:  
+
+<details>
+
+<summary>点击展开示例代码（IPython）</summary>
+
+```python
+# 首先还是新建普通用户
+!adduser --home /home/somebottle --gecos "" --shell /bin/bash --disabled-password somebottle
+
+# 下载 udocker 包并解压
+!wget -P /home/somebottle https://github.com/indigo-dc/udocker/releases/download/1.3.17/udocker-1.3.17.tar.gz
+!cd /home/somebottle && tar zxvf udocker-1.3.17.tar.gz && chown somebottle udocker-1.3.17
+
+# 把 udocker 添加到用户的环境变量中
+!echo "export PATH=/home/somebottle/udocker-1.3.17/udocker:$PATH" >> /home/somebottle/.profile
+
+# 给以 somebottle 身份运行的命令起个别名 urun
+# 加上 -l 选项后才会执行 Shell 配置文件(包括上面的 .profile)
+%alias urun su somebottle -l -c 
+
+# AutoDL 平台上 python 路径在 /root 目录下，这里为了方便起见直接把目录所有权给 somebottle
+# 💡 在 Colab 上可能不需要这一步
+!chown -R somebottle /root 2>/dev/null
+
+# 初始化 udocker（即使不初始化，首次执行时也会自动初始化）
+urun 'udocker install'
+
+# 接下来就可以拉取镜像试试了
+# dockerpull.cn 是一个 DockerHub 镜像站
+urun 'udocker pull dockerpull.cn/pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime'
+
+# 创建容器，容器名 gputest
+# 从实现上来讲，这一步实际上是把镜像解包到一个用户可访问的目录中，作为 rootfs
+urun 'udocker create --name=gputest dockerpull.cn/pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime'
+
+# 启动 NVIDIA 支持
+urun 'udocker setup --nvidia gputest'
+# 查看 GPU 信息（如果有问题请见下面的 4.3 节）
+urun 'udocker run gputest nvidia-smi'
+# 挂载测试脚本并运行
+urun 'udocker run --volume=/root/test.py:/script/test.py gputest python /script/test.py'
+```
+
+</details>
+
+## 4.3. udocker 容器中没有 nvidia-smi
+
+udocker 通过将一些 NVIDIA 相关的可执行文件和库文件复制到容器的对应目录中，从而实现了对 GPU 的支持。  
+
+但是目前 udocker 复制 NVIDIA 相关文件的逻辑可能有些问题。已知在 Google Colab 平台上可能无法在容器中访问 `nvidia-smi` 这种可执行文件，但是相关库文件是可以访问的，因此 PyTorch 能正常使用 GPU。  
+
+等待修复:  
+
+* [Pull Request #438](https://github.com/indigo-dc/udocker/pull/438)  
+
+💡 你可以直接用这个 PR 的提交中的 `nvidia.py` 替换 `udocker/engine/nvidia.py` 这个文件。
+
+
+
+# 5. 附：关于 sudo -u 
 
 在上面的例子中，我使用了 `sudo -u somebottle <command>` 来以 somebottle 用户的身份执行命令。  
 
@@ -293,7 +424,9 @@ sudo -u somebottle env | grep PATH
 
 > ... , and exectuables are found by searching `$PATH`.  
 
-即 Apptainer 在挂载时， `nvidia-smi` 这类可执行文件是依赖于 `$PATH` 环境变量进行搜索的。幸运的是，可执行文件 `nvidia-smi` 在 `/usr/bin` 目录下有软链，因此这里启动容器时 Apptainer 能成功找到。    
+即 Apptainer 在挂载时， `nvidia-smi` 这类可执行文件是依赖于 `$PATH` 环境变量进行搜索的。  
+
+幸运的是，可执行文件 `nvidia-smi` 在 `/usr/bin` 目录下有软链，而默认的 `$PATH` 环境变量中包含有这个目录，因此启动容器时 Apptainer 能成功找到。    
 
 ```bash
 whereis nvidia-smi
@@ -304,14 +437,14 @@ ls -hl /usr/bin/nvidia-smi
 
 ----
 
-假如需要保留 `sudo` 执行命令时的环境变量，可以使用 `sudo -E` 选项，但尽管如此 `$PATH` 环境变量可能仍然会被重置，因为在 `/etc/sudoers` 中可能有 `secure_path` 配置项进行了限制:  
+假如需要保留 `sudo` 执行命令时的环境变量，可以使用 `sudo -E` 选项，但 `$PATH` 环境变量可能仍然会被重置，因为在配置文件 `/etc/sudoers` 中可能有 `secure_path` 配置项进行了限制:  
 
 ```bash
 cat /etc/sudoers | grep secure_path
 # >> Defaults   secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 ```
 
-这种情况下要不直接修改 `/etc/sudoers` 文件，要不就手动设置 `$PATH` 环境变量:  
+这种情况下要不直接修改 `/etc/sudoers` 文件，要不就手动设定 `$PATH` 环境变量:  
 
 ```bash
 # env PATH=$PATH <command>，在指定环境变量后执行命令
@@ -319,10 +452,5 @@ sudo -u somebottle env PATH=$PATH printenv PATH
 # >> /opt/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tools/node/bin:/tools/google-cloud-sdk/bin
 ```
 
-
-
-
-
-
-
+# 6. 总结
 
