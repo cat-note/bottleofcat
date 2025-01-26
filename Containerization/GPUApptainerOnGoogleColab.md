@@ -105,9 +105,9 @@ sudo -u somebottle apptainer run --fakeroot hello.sif
 
 具体行为可见[官方文档](https://apptainer.org/docs/user/1.3/fakeroot.html)说明。
 
-# 3. 尝试跑一个 GPU 容器
+## 3. 尝试跑一个 GPU 容器
 
-## 3.1. 构建 .sif 文件
+### 3.1. 构建 .sif 文件
 
 这里拉取了 Docker Hub 上 PyTorch 官方的一个 GPU 支持镜像：  
 
@@ -116,7 +116,7 @@ sudo -u somebottle apptainer run --fakeroot hello.sif
 apptainer build pytorch-gpu.sif docker://pytorch/pytorch:2.5.1-cuda12.4-cudnn9-runtime
 ```
 
-## 3.2. 使用 Apptainer 的标准 GPU 支持
+### 3.2. 使用 Apptainer 的标准 GPU 支持
 
 Apptainer 默认支持 NVIDIA GPU，前提是宿主机系统中已经安装了 Nvidia 驱动以及 CUDA 相关库。
 
@@ -130,7 +130,7 @@ Apptainer 默认支持 NVIDIA GPU，前提是宿主机系统中已经安装了 N
 sudo -u somebottle apptainer exec --nv pytorch-gpu.sif nvidia-smi
 ```
 
-## 3.3. 問題、襲来  
+### 3.3. 問題、襲来  
 
 ![problem_emergence-2025-01-21](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/problem_emergence-2025-01-21.png)  
 
@@ -145,7 +145,7 @@ Please also try adding directory that contains libnvidia-ml.so to your system PA
 
 定睛一看发现是在容器内找不到动态链接库 `libnvidia-ml.so`。  
 
-## 3.4. 解决问题
+### 3.4. 解决问题
 
 提到动态链接库路径，很快能想到一个环境变量 `LD_LIBRARY_PATH`，动态链接器会在其列出的目录下搜索库。分别在宿主机和容器内输出这个环境变量看看:    
 
@@ -249,7 +249,7 @@ ldconfig
 
 ![nvidia-smi_success-2025-01-22](https://raw.githubusercontent.com/cat-note/bottleassets/main/img/nvidia-smi_success-2025-01-22.png)  
 
-## 3.5. 测试一下 PyTorch 是否能正常使用 GPU
+### 3.5. 测试一下 PyTorch 是否能正常使用 GPU
 
 咱先把如下脚本 `test.py` 放在了 Colab 会话环境的 `/content/test` 目录下:  
 
@@ -282,7 +282,7 @@ sudo -u somebottle apptainer exec --bind /content/test:/mnt/data --nv pytorch-gp
 
 这样一来我应该就能愉快地在 Google Colab 等平台上使用 Apptainer 跑实验啦~  
 
-# 4. 系统不支持用户命名空间
+## 4. 系统不支持用户命名空间
 
 事情并不总是一帆风顺。当我尝试在 AutoDL 平台上复现上面的流程时，发现 AutoDL 禁止了非特权用户创建用户命名空间，且禁用了 `unshare`，Apptainer 根本就跑不起来:  
 
@@ -304,7 +304,7 @@ sudo -u somebottle apptainer exec --bind /content/test:/mnt/data --nv pytorch-gp
 
 * 以下代码暂且以 `udocker 1.3.17` 版本为例。
 
-## 4.1. 以 root 用户运行 udocker
+### 4.1. 以 root 用户运行 udocker
 
 直接在 root 用户下运行，命令更为简短，注意需要加上 `--allow-root` 选项: 
 
@@ -343,7 +343,7 @@ mydocker run --volume=/root/test.py:/script/test.py gputest python /script/test.
 
 </details>
 
-## 4.2. 以普通用户运行 udocker
+### 4.2. 以普通用户运行 udocker
 
 废话不多说，上代码:  
 
@@ -391,7 +391,7 @@ urun 'udocker run --volume=/root/test.py:/script/test.py gputest python /script/
 
 </details>
 
-## 4.3. udocker 容器中没有 nvidia-smi
+### 4.3. udocker 容器中没有 nvidia-smi
 
 udocker 通过将一些 NVIDIA 相关的可执行文件和库文件复制到容器的对应目录中，从而实现了对 GPU 的支持。  
 
@@ -405,7 +405,7 @@ udocker 通过将一些 NVIDIA 相关的可执行文件和库文件复制到容�
 
 
 
-# 5. 附：关于 sudo -u 
+## 5. 附：关于 sudo -u 
 
 在上面的例子中，我使用了 `sudo -u somebottle <command>` 来以 somebottle 用户的身份执行命令。  
 
@@ -452,7 +452,7 @@ sudo -u somebottle env PATH=$PATH printenv PATH
 # >> /opt/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/tools/node/bin:/tools/google-cloud-sdk/bin
 ```
 
-# 6. 总结
+## 6. 总结
 
 总结一些要点：  
 
