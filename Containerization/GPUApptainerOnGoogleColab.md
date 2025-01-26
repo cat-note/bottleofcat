@@ -454,3 +454,17 @@ sudo -u somebottle env PATH=$PATH printenv PATH
 
 # 6. 总结
 
+总结一些要点：  
+
+1. 在 Google Colab 上以 `root` 用户运行 Apptainer 容器时，需要**使用 `unshare -r` 命令**来在新的命名空间下运行容器，以获得完整的 capabilities 权限集。  
+
+2. 如果容器中部分 NVIDIA 的库 `.so` 文件找不到：
+   1. 先在宿主机上查看 `$LD_LIBRARY_PATH` 环境变量找到 NVIDIA 共享库路径。
+   2. 把这个路径写入到 `/etc/ld.so.conf.d/` 目录下的一个配置文件中。
+   3. 利用 `ldconfig` 刷新共享库缓存。  
+
+3. 如果平台（比如 AutoDL）不支持用户命名空间，可以尝试使用 udocker 来运行容器。  
+
+希望这篇笔记能多多少少帮助到大家吧，咱也要继续苦逼地做实验去啦！  
+
+咱们下次再会~ (∠・ω< )⌒★  
