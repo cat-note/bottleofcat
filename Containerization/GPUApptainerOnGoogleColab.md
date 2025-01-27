@@ -463,7 +463,7 @@ sudo -u somebottle env PATH=$PATH printenv PATH
    2. 把这个路径写入到 `/etc/ld.so.conf.d/` 目录下的一个配置文件中。
    3. 利用 `ldconfig` 刷新共享库缓存。  
 
-3. 如果平台（比如 AutoDL）不支持用户命名空间，可以尝试使用 udocker 来运行容器。  
+3. 如果平台（比如 AutoDL）不支持非特权用户建立命名空间，可以尝试使用 udocker 来运行容器。  
 
 希望这篇笔记能多多少少帮助到大家吧，咱也要继续苦逼地做实验去啦！  
 
