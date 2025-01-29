@@ -341,6 +341,21 @@ mydocker run gputest nvidia-smi
 mydocker run --volume=/root/test.py:/script/test.py gputest python /script/test.py
 ```
 
+💡 在 root 用户下执行 `run` 命令时可能会遇到这样的问题:  
+
+```Text
+Error: invalid host volume path: /tmp/udocker-1623-93007aea-e4b6-38ae-86dc-7695a497b69e-group
+```
+
+究其原因，是因为[这一行](https://github.com/indigo-dc/udocker/blob/638bc42f236e29a85368b38d21e49940c5908dfe/udocker/engine/base.py#L503)的 `os.getgroups()` 返回了空列表，导致没有调用 `add_group()` 方法，进而相应的[临时文件](https://github.com/indigo-dc/udocker/blob/638bc42f236e29a85368b38d21e49940c5908dfe/udocker/engine/base.py#L484)没有被创建。  
+
+目前可以加上 `--hostauth` 选项来暂时解决这个问题，即采用宿主机的用户和用户组信息，而不是临时建立用户:  
+
+```python
+mydocker run --hostauth gputest nvidia-smi
+```
+
+
 </details>
 
 ### 4.2. 以普通用户运行 udocker
