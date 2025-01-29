@@ -341,6 +341,10 @@ mydocker run gputest nvidia-smi
 mydocker run --volume=/root/test.py:/script/test.py gputest python /script/test.py
 ```
 
+</details>
+
+---
+
 💡 在 root 用户下执行 `run` 命令时可能会遇到这样的问题:  
 
 ```Text
@@ -354,9 +358,6 @@ Error: invalid host volume path: /tmp/udocker-1623-93007aea-e4b6-38ae-86dc-7695a
 ```python
 mydocker run --hostauth gputest nvidia-smi
 ```
-
-
-</details>
 
 ### 4.2. 以普通用户运行 udocker
 
