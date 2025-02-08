@@ -846,7 +846,19 @@ func (m MyPointer) test() {
 
 其他**自定义命名类型**都可以用作 receiver，即可以在其上定义方法。
 
-比如可以给 `[]byte` 类型取别名后在其上定义方法：  
+* 💡 没错，**函数类型都可以**：
+
+	```go
+	type HandlerFunc func(ResponseWriter, *Request)
+	
+	// ServeHTTP calls f(w, req).
+	func (f HandlerFunc) ServeHTTP(w ResponseWriter, req *Request) {
+	    f(w, req)
+	}
+	```
+
+比如还可以给 `[]byte` 类型取别名后在其上定义方法：  
+
 
 ```go
 type ByteSlice []byte
@@ -1128,4 +1140,82 @@ func NewMyType() MyInterface {
 * 这样一来便于代码解耦，在修改接口实现类型时，调用方不需要对调用代码进行修改。  
 
 比如 Go 加密库中，`crc32.NewIEEE` 和 `adler32.New` 就均返回 `hash.Hash32` 接口类型，而不是具体的实现类型。
+
+# 13. 空白标识符（Blank Identifier）
+
+空白标识符 `_` 可以接受任意类型的任意值，**并进行抛弃**。其可以视为一个**仅可写的占位符**。  
+
+## 13.1. 忽略赋值时用不着的值
+
+```go
+// 两个返回值，但我只想要 err
+if _, err := os.Stat(path); os.IsNotExist(err) {
+    fmt.Printf("%s does not exist\n", path)
+}
+```
+
+## 13.2. 没有使用的导入和变量
+
+对于未使用的导入和变量，Go 语言编译器会报错。但是实际开发中，**可能会有后面需要用到但现在暂且还没使用的变量**，这种时候就可以用占位符，以临时通过编译：  
+
+```go
+package main
+
+import (
+    "fmt"
+    "io"
+    "log"
+    "os"
+)
+
+var _ = fmt.Printf // For debugging; delete when done.
+var _ io.Reader    // For debugging; delete when done.
+
+func main() {
+    fd, err := os.Open("test.go")
+    if err != nil {
+        log.Fatal(err)
+    }
+    // TODO: use fd.
+    _ = fd
+}
+```
+
+❗ 对于 `var _ = fmt.Printf` 这种调试语句应该紧接在 `import` 语句之后，这样**在开发完毕后能及时发现并清理这些语句**。  
+
+## 13.3. ❗ 不使用导入的包，但是需要其初始化过程
+
+上面提到过，包中可以有 `init` 函数来进行一些初始化操作，其在导入包时执行。  
+
+有时候**只需要这个初始化操作**，后续并不会使用这个包，就可以将其重命名为 `_`：  
+
+```go
+// 仅执行包初始化，后续不使用包
+import _ "net/http/pprof"
+```
+
+## 13.4. ❗ 接口实现检查
+
+前面写到，实现接口中的所有方法即实现了接口。  
+
+接口的实现和转换有很多是在**编译时**进行检查的，也有在**运行时**进行检查的情况。  
+
+往往我们可能**只需要检查接口的类型**，而**不需要用到其转换后的值**，就可以用空白占位符：  
+
+```go
+// 类型断言
+if _, ok := val.(json.Marshaler); ok {
+    fmt.Printf("value %v of type %T implements json.Marshaler\n", val, val)
+}
+```
+
+💡 为了**在编译时**检查一个类型是否实现了接口，可以写一个**对 `nil` 进行转换**的表达式：  
+
+```go
+var _ json.Marshaler = (*RawMessage)(nil)
+```
+> 这样一来在编译的时候编译器就会检查 `*RawMessage` 是否实现了 `json.Marshaler`。  
+
+* ❗ 这是比较常见的实践，**如果接口发生更改，编译器就不会编译成功**，开发者也就能及时注意到这些类型的实现并进行修改更新。  
+* ❗ 并不是所有实现了接口的类型都要这样写一句，**当且仅当代码中没有这种静态转换时才会用到**。
 
