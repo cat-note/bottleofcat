@@ -1219,3 +1219,224 @@ var _ json.Marshaler = (*RawMessage)(nil)
 * ❗ 这是比较常见的实践，**如果接口发生更改，编译器就不会编译成功**，开发者也就能及时注意到这些类型的实现并进行修改更新。  
 * ❗ 并不是所有实现了接口的类型都要这样写一句，**当且仅当代码中没有这种静态转换时才会用到**。
 
+
+# 14. ❗ 结构体 / 接口嵌入（Embedding）
+
+Go 语言中没有典型的继承和子类，但是在结构体和接口上有**嵌入**机制。  
+
+## 14.1. 接口嵌入
+
+可以把已有的接口**类型直接列在**新接口的定义中，**新的接口就能继承这些接口的所有方法声明**。
+
+加入已经定义了 `Reader` 和 `Writer` 接口，那么可以定义 `ReadWriter` 如下：  
+
+```go
+// ReadWriter 结合了两个接口
+type ReadWriter interface {
+    Reader
+    Writer
+}
+```
+
+❗ Go 语言中**能嵌入接口的只有接口**（怎么想也不可能把结构体或其他类型嵌入接口啊）。  
+
+## 14.2. 类型嵌入
+
+💡 **类型可以嵌入到结构体中**，同样是**直接把类型名列出**，没有字段名。
+
+嵌入类型上的**方法**以及**字段**都会提升（promote）到**最外部的结构体类型**：  
+
+```go
+type Job struct {
+    Command string
+    *log.Logger
+}
+```
+> 这样一来 `Job` 就隐含了定义在 `*log.Logger` 上的所有方法。
+
+再比如自定义类型：  
+
+```go
+type MyInt int
+
+type MyStruct struct {
+    MyInt
+}
+```
+
+### 14.2.1. ❗ 初始化与赋值
+
+可以看到嵌入的只是类型名，没有字段，那初始化结构体的时候该怎么处理？  
+
+💡 其实一样可以用**字面量**来初始化：  
+
+```go
+func NewJob(command string, logger *log.Logger) *Job {
+    return &Job{command, logger}
+}
+```
+
+💡 比较疯狂的是，**你甚至还可以对其重新进行赋值**：
+
+```go
+// 定义 Person 结构体
+type Person struct {
+    Age int
+    Id  int
+}
+
+// 定义 Person 的 Tell 方法
+func (p Person) Tell() {
+    fmt.Printf("Age: %d\n", p.Age)
+}
+
+// 定义 Group 结构体，并嵌入 Person
+type Group struct {
+    Person
+    GroupName string
+}
+
+func main() {
+    // 初始化 Group 实例
+    g := Group{
+        Person: Person{
+            Age: 25,
+            Id : 0,
+        },
+        GroupName: "Go Developers",
+    }
+
+    // 调用嵌入的 Tell 方法
+    g.Tell()
+
+    // 💡 重新为嵌入的 Person 赋值
+    g.Person = Person{
+        Age: 30,
+        Id:  1,
+    }
+
+    // 调用嵌入的 Tell 方法查看更新后的 Age
+    g.Tell()
+}
+```
+> Example. 1
+
+```go
+job := NewJob(command, log.New(os.Stderr, "Job: ", log.Ldate))
+
+// 忽略嵌入类型的包名
+job.Logger = log.New(os.Stderr, "Job 2: ", log.Ldate)
+```
+> Example. 2
+
+❗ 需要注意：
+1. 没有字段名，**直接通过嵌入的 类型名 访问**。
+2. **嵌入类型的 包名 这个时候要 忽略 掉**，比如 `Job` 结构体中嵌入的 `*log.Logger`，重新在变量上赋值时用的是 `job.Logger` 来指定。
+3. 💡 也就是说，**嵌入类型名可以视作结构体的一个常规字段**来用。
+
+### 14.2.2. ❗ 方法接受者（receiver）是谁？
+
+这也是嵌入和子类很不相同的一点。  
+
+把类型 A 嵌入到结构体 B 中时：
+
+1. 类型 A 的方法**变成了外层类型结构体 B 的方法**。
+2. ❗ 但是在结构体 B 的实例上**调用这些方法时，其接受者（receiver）仍然是嵌入类型 A** 的实例。
+
+```go
+// 定义类型 A
+type A struct {
+    Name string
+}
+
+// 为类型 A 定义方法 Tell
+func (a A) Tell() {
+    fmt.Printf("Name: %s\n", a.Name)
+}
+
+// 定义结构体 B，并嵌入类型 A
+type B struct {
+    A
+}
+
+func main() {
+    // 初始化结构体 B 的实例
+    b := B{
+        A: A{
+            Name: "John",
+        },
+    }
+
+    // 在结构体 B 上调用 A 的方法 Tell
+    // 💡 此时 Tell 的 receiver 仍然是 A{Name: "John"} 这个实例
+    b.Tell()
+}
+```
+
+----  
+
+接下来来个记忆大恢复术：
+
+```go
+type Job struct {
+    Command string
+    *log.Logger
+}
+```
+
+`Job` 结构体中嵌入了 `*log.Logger` 方法，`*log.Logger` 的方法的接受者**可能是指针类型**，那我在非指针类型的 `job` 实例上能访问到 `*log.Logger` 的方法吗？  
+
+```go
+// 使用非指针类型创建 Job 实例
+job := Job{
+	Command: "example",
+	Logger:  log.New(os.Stdout, "INFO: ", log.LstdFlags),
+}
+
+// 直接访问 Logger 的方法
+job.Println("This is a log message.")
+```
+
+答案是当然可以。上面已经提到，嵌入方法的接受者在这里仍然是 `*log.Logger` 。以 `Println` 为例，在调用 `job.Println` 时， `job` 是值而不是指针，根据上面第 11 节的纪录，Go 语言是有自动取地址机制的，因此 `job.Println` 的写法也是可以接受的。  
+
+等等，我怎么记得有一个机制是指针类型的接受者不能干啥来着...回去看看第 11.3.1 节，其实这是实现接口时的限制，而不是调用方法时的，一定要区分开！  
+
+### 14.2.3. 方法 / 字段名的冲突处理
+
+💡 很明显，嵌入后可能嵌入类型和结构体有方法和字段上的冲突，解决规则如下：  
+
+1. **外层类型的方法 `X` 会覆盖**嵌入类型的方法 `X`。
+2. 如果**嵌入的类型名和结构体已有的字段或者方法名重合了**，是无法通过编译的。
+
+对于第 2 点，如果重复的名字从未在结构体定义之外被使用，是可以接受的：  
+
+```go
+type A struct {
+    Name string
+}
+
+type B struct {
+    Name string
+}
+
+type C struct {
+    A
+    B
+}
+
+func main() {
+    // 虽然 A 和 B 都有 Name 字段，但在 C 的定义之外没有使用它们
+    c := C{
+        A: A{Name: "Name from A"},
+        B: B{Name: "Name from B"},
+    }
+
+    // 手动访问 A 和 B 的 Name 字段
+    fmt.Println(c.A.Name) 
+    fmt.Println(c.B.Name) 
+}
+```
+> 这个时候如果用 `c.Name`，编译器会报错，因为不知道到底是指的哪个。  
+
+💡 建议还是尽量避开这种容易造成混淆的局面。
+
