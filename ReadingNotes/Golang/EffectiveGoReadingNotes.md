@@ -149,7 +149,7 @@ for key := range m {
 
 💡 对 `string` 使用 `range` 时，会以 `UTF-8` 编码将字串按码点拆分，取得的**每个 Unicode 码点用 `rune` 类型存储**。
 
-* ❗ 有问题的编码会被替换为 `U+FFFD`  
+* ❗ 有问题的编码会被替换为 `U+FFFD` ，即 “�” 这个字符。  
 
 ## 7.2. 循环中声明多个局部变量
 
@@ -1406,7 +1406,7 @@ job.Println("This is a log message.")
 💡 很明显，嵌入后可能嵌入类型和结构体有方法和字段上的冲突，解决规则如下：  
 
 1. **外层类型的方法 `X` 会覆盖**嵌入类型的方法 `X`。
-2. 如果**嵌入的类型名和结构体已有的字段或者方法名重合了**，是无法通过编译的。
+2. 如果**嵌入类型的名字和结构体已有的字段或者方法名重合了**，是无法通过编译的。
 
 对于第 2 点，如果重复的名字从未在结构体定义之外被使用，是可以接受的：  
 
@@ -1439,4 +1439,504 @@ func main() {
 > 这个时候如果用 `c.Name`，编译器会报错，因为不知道到底是指的哪个。  
 
 💡 建议还是尽量避开这种容易造成混淆的局面。
+
+
+# 15. 并发（Concurrency）
+
+## 15.1. 核心思想：通过通信来共享内存
+
+> Share by communicating.  
+
+💡 比起其他编程语言里用各种机制来共享变量这种内存信息，Go 语言**鼓励让共享变量在通道（channels）之间传递**，而不是让其在各个执行线程间不停被共享。  
+
+这种并发模型下，在任意一个时间点，**某个共享数据只会有一个 Go 协程（Goroutine）访问**，因而数据竞态问题就不会发生。  
+
+> 不要通过共享内存来通信，而是通过通信来共享内存。  
+
+❗ 不过**死磕这种思路可能会过犹不及**，比如引用计数当然还是用互斥量（mutex）搭配一个计数变量来实现更好。
+
+但是作为一种高级别的手段，用通道来控制访问或许能让程序更加清晰。  
+
+----
+比如 A、B 是在 CPU 上独立运行的两个单线程的程序，它们各自显然不需要同步原语（primitives）。  
+
+如果让 A、B 进行通信，**且通信机制本身就能保证同步**，那么就不需要额外的同步机制了。
+
+* 例如：程序 A 发送消息给程序 B 时，A 会阻塞直到 B 接收，消息的发送 / 接收本身就是同步的。  
+
+💡 Unix 系统的管道 `|` 机制就是这种同步模型的典型实现，写入和读取会自动阻塞，通信本身同步。  
+
+💡 Go 语言的通道 `chan` 可以视作**类型安全的 Unix 管道**，因为 Go 语言的通道是**有严格的类型检查的**。  
+
+## 15.2. Go 协程（Goroutines）  
+
+💡 一个 Goroutine 其实是一个简单的模型：在**同一个地址空间**中和其他 goroutines 一起并发执行的**一个函数**。
+
+* Go 协程是轻量的，除了必要的栈空间分配外几乎不怎么占用额外的空间，最开始需要分配的栈空间往往很小，仅在有需要的时候随着分配或释放堆内存而变化。    
+
+Goroutines 在底层**多路复用（multiplexed）了多条操作系统线程**，包装并简化了线程的创建和管理。
+
+💡 在函数调用时，**在调用语句前加上一个 `go` 关键字就能在新的 goroutine 中执行函数调用**。函数返回后，Goroutine 也就安静地退出了（很像 Unix Shell 中的后台执行标记 `&`）。  
+
+```go
+// 并发运行 list.Sort，不阻塞
+go list.Sort()
+```
+
+匿名函数调用（函数字面量）也可以转换为 Goroutine 来执行：  
+
+```go
+func Announce(message string, delay time.Duration) {
+    go func() {
+        time.Sleep(delay)
+        fmt.Println(message)
+    }()  // 匿名函数调用
+}
+```
+
+❗ 这种匿名函数在 Go 中本质上是**闭包**（closures），实现上**保证被其引用的变量在函数执行期间一直是可用的**。  
+
+## 15.3. 通道（Channels）  
+
+### 15.3.1. 通道的创建
+
+之前提到过，通道 `chan` 作为复合类型，可以**用 `make` 来创建并初始化**：  
+
+```go
+ci := make(chan int) // 整型通道，无缓冲（unbuffered）
+```
+
+如果在 `make` 第二个参数处传入整型，则会为这个通道配置**缓冲**（buffer）大小。
+
+```go
+cs := make(chan *os.File, 100) // 缓冲大小 100
+```
+
+* ❗ 没有缓冲的通道就是一个**同步**通道，**发送方的内容没有被接受时，发送方会一直阻塞下去**！适用于对同步要求很高的情况。
+
+💡 同步的（无缓冲）通道把**通信**（一个值的递交）和**同步**（确保两个协程的计算顺序是确定的）结合在了一起。    
+
+----
+### 15.3.2. ❗ 通道的同步作用
+
+```go
+c := make(chan int)  // Allocate a channel.
+// Start the sort in a goroutine; when it completes, signal on the channel.
+go func() {
+    list.Sort()
+    c <- 1  // Send a signal; value does not matter.
+}()
+doSomethingForAWhile()
+<-c   // Wait for sort to finish; discard sent value.
+```
+利用**无缓冲**通道，可以让一个 Goroutine 等待另一个 Goroutine 执行结束以实现同步。  
+
+* 再回忆一下，无缓冲通道中，发送者在接收者接受数据前会一直阻塞。
+* 如果通道**有缓冲**，且还有空间，只要**数据被复制到了通道内**，发送者就会解除阻塞，继续执行后续代码。
+	* 当通道缓冲区填满时，发送者无法发送数据，也就会被阻塞（直至接收者取走了一个数据）。
+
+可以利用这个性质来实现**信号量（Semaphore）机制**，以限制吞吐量：  
+
+```go
+var sem = make(chan int, MaxOutstanding)
+
+func handle(r *Request) {
+    sem <- 1    // Wait for active queue to drain.
+    process(r)  // May take a long time.
+    <-sem       // Done; enable next request to run.
+}
+
+func Serve(queue chan *Request) {
+    for {
+        req := <-queue
+        go handle(req)  // Don't wait for handle to finish.
+    }
+}
+```
+> 这个例子中，新来的请求会被传递到 `handle` 方法。方法中先将一个值送入通道（Acquire），如果通道满了，说明现在有过多的请求在处理。每一个请求处理完成后，从通道取走一个值（Release）。显然**通道缓冲区的大小**即限制了**同时在处理的请求数量**。  
+
+> ❗❗❗ 注意，这个设计有些问题，对于每个到来的请求，`Serve` 都会创建一个新的 Goroutine，尽管任何时候最多只有 `MaxOutstanding` 个 Goroutine 能在同一时刻运行。 如果在某一段时间有巨多请求突然涌入，很容易就会消耗很多资源（创建了很多执行被阻塞的 Goroutine）。  
+
+💡 可以通过把这种”信号量“移动到 `Serve` 方法内来解决问题，仅在实际要执行的时候才创建 Goroutine：  
+
+```go
+func Serve(queue chan *Request) {
+    for req := range queue {
+        sem <- 1
+        go func() {
+            process(req)
+            <-sem
+        }()
+    }
+}
+```
+
+----
+另一种管理资源的方式是启动**固定数量的** `handle` Goroutine，每个 Goroutine 都在尝试从请求队列（一个通道）中读取请求进行处理，Goroutine 的数量也就自然而然决定了同时能处理的请求数量：  
+
+```go
+func handle(queue chan *Request) {
+    for r := range queue {
+        process(r)
+    }
+}
+
+func Serve(clientRequests chan *Request, quit chan bool) {
+    // Start handlers
+    for i := 0; i < MaxOutstanding; i++ {
+        go handle(clientRequests)
+    }
+    <-quit  // Wait to be told to exit.
+}
+```
+> 这里 `Serve` 函数还有一个 `quit` 通道，用来接受结束执行 `Serve` 的信号。  
+
+### 15.3.3. ❗ 通道中的通道
+
+💡 Go 语言中通道类型是**一等公民**（first-class citizen），即可以被当作基本数据类型来进行自由操作，可以像其他基本类型一样被分配和传递（比如作为实参、返回值）。  
+
+通道的一大用途是实现安全、并行的多路分解（demultiplexing，解复用，💡 即把合并的信号拆分回原始信号，并分发给正确的接收方）。  
+
+比如上述的每个请求 `Request` 类型，就可以附带有一个通道，以告诉程序处理完时候**应答信息应该递交给谁**：  
+
+```go
+type Request struct {
+    args        []int
+    f           func([]int) int
+    resultChan  chan int
+}
+```
+> 比如这个请求结构体中包括**处理函数**、**函数参数**以及一个**用于传递结果对象**的通道。  
+
+用起来大概是这样：  
+
+```go
+func sum(a []int) (s int) {
+    for _, v := range a {
+        s += v
+    }
+    return
+}
+
+request := &Request{[]int{3, 4, 5}, sum, make(chan int)}
+// 发送请求
+clientRequests <- request
+// 等待接受请求执行结果
+fmt.Printf("answer: %d\n", <-request.resultChan)
+```
+
+服务端唯一要变动的就是 `handle` 函数，把处理结果回传： 
+
+```go
+func handle(queue chan *Request) {
+    for req := range queue {
+	    // 处理结果回传
+        req.resultChan <- req.f(req.args)
+    }
+}
+```
+
+### 15.3.4. 并行化（Parallelization）  
+
+如果一个繁杂的运算可以分解成多部分独立执行，这种运算就可以被并行化。  
+
+💡 Go 语言中协程会自动被调度，有多个 CPU 时，协程可在多 CPU 上**并行执行**（CPU 数量不够则会有部分并发执行）。  
+
+```go
+type Vector []float64
+
+// Apply the operation to v[i], v[i+1] ... up to v[n-1].
+func (v Vector) DoSome(i, n int, u Vector, c chan int) {
+    for ; i < n; i++ {
+        v[i] += u.Op(v[i])
+    }
+    c <- 1    // signal that this piece is done
+}
+
+const numCPU = 4 // number of CPU cores
+
+func (v Vector) DoAll(u Vector) {
+    c := make(chan int, numCPU)  // Buffering optional but sensible.
+    for i := 0; i < numCPU; i++ {
+        go v.DoSome(i*len(v)/numCPU, (i+1)*len(v)/numCPU, u, c)
+    }
+    // Drain the channel.
+    for i := 0; i < numCPU; i++ {
+        <-c    // wait for one task to complete
+    }
+    // All done.
+}
+```
+> 这个例子中把一个向量中不同分量的运算分成了多片来进行，并用通道 `c` 来标记运算是否全部完成。  
+
+其实 Go 语言 `runtime` 包内有方法可以直接获取主机拥有的 CPU 核数：  
+
+```go
+var numCPU = runtime.NumCPU()
+```
+
+也可以通过这个方法来设置最大可并行使用的 CPU 数量：  
+
+```go
+runtime.GOMAXPROCS(n int)
+runtime.GOMAXPROCS(0) // <1 时不会执行操作，仅获得先前的设置，相当于 runtime.NumCPU()
+```
+
+----
+
+❗ 不过要注意，Go 语言终究还是**并发语言**，而不是并行语言，因此**不是所有的并行化问题都符合 Go 语言的模型**。  
+
+### 15.3.5. 泄漏（漏桶）缓冲区（Leaky Buffer）
+
+LeakyBuffer 是一种资源池实现，其特点是：
+
+- 当池中**有可用资源**时，直接返回给请求者。
+- 当**池为空**时，不是阻塞等待或拒绝请求，而是"泄漏"（创建）一个新的资源实例。
+
+Go 语言中可以利用**有缓冲通道**实现泄漏缓冲区机制：  s
+
+```go
+var freeList = make(chan *Buffer, 100)
+var serverChan = make(chan *Buffer)
+
+func client() {
+    for {
+        var b *Buffer
+        // Grab a buffer if available; allocate if not.
+        select {
+        case b = <-freeList:
+            // Got one; nothing more to do.
+        default:
+            // None free, so allocate a new one.
+            b = new(Buffer)
+        }
+        load(b)              // Read next message from the net.
+        serverChan <- b      // Send to server.
+    }
+}
+```
+> `client` 模拟从某个信息源不断接受消息的场景。为了避免频繁分配和释放缓冲区（buffers），这里维护了一个空闲缓冲区池 `freeList` （也是用通道实现的），当没有多的空闲缓冲区时（`freeList` 为空），则会分配一个新的缓冲区，否则直接取出空闲缓冲区。
+> 在向缓冲区中读取消息后就通过管道 `serverChan` 发给服务端。  
+
+
+```go
+func server() {
+    for {
+        b := <-serverChan    // Wait for work.
+        process(b)
+        // Reuse buffer if there's room.
+        select {
+        case freeList <- b:
+            // Buffer on free list; nothing more to do.
+        default:
+            // Free list full, just carry on.
+        }
+    }
+}
+```
+> 服务端通过 `serverChan` 接收缓冲区（信息）后进行处理，然后归还这个缓冲区到空闲缓冲区列表中。  
+> ❗ 注意，这里如果 `freeList` 已经满了，**这个缓冲区会被直接抛弃掉**（跳转到空的 `default` 分支），**让 GC 自动处理掉**。  
+> 
+
+
+# 16. 错误处理（Errors）
+
+库方法往往会返回一个**指示是否出现错误的状态信息**，正好利用了 Go 语言函数可以有多返回值的性质。
+
+* 比如 `os.Open` 在执行出错时就会返回一个错误值来描述发生了什么错误。  
+
+## 16.1. error 接口与实现
+
+Go 语言中 `error` 类似是一个简单的**内置接口**类型：  
+
+```go
+type error interface {
+    Error() string
+}
+```
+
+💡 具体实现的时候可以让结构体携带更多错误相关的信息，以辅助诊断：  
+
+```go
+type PathError struct {
+    Op string    // "open", "unlink", etc.
+    Path string  // The associated file.
+    Err error    // Returned by the system call.
+}
+
+func (e *PathError) Error() string {
+    return e.Op + " " + e.Path + ": " + e.Err.Error()
+}
+```
+> 比如 `PathError` 就携带了错误相关的：文件操作、文件路径以及系统调用的错误信息。  
+
+上面这个实现的 `Error()` 方法会返回类似于这样的详细信息：  
+
+```go
+open /etc/passwx: no such file or directory
+```
+> 发生了什么问题简直一目了然有木有！  
+
+## 16.2. error 实现和处理的常见实践
+
+💡 `Error()` 返回的字串信息应该包含错误发生的源头，比如可以加个前缀来**指明是哪个操作或者在哪个包中产生了这个错误**。
+
+在处理的时候为了提取错误的详细信息，可以用**类型 switch** 或**类型断言**语法来进行处理：  
+
+```go
+for try := 0; try < 2; try++ {
+    file, err = os.Create(filename)
+    if err == nil {
+        return
+    }
+    if e, ok := err.(*os.PathError); ok && e.Err == syscall.ENOSPC {
+        deleteTempFiles()  // Recover some space.
+        continue
+    }
+    return
+}
+```
+> 先用 `ok` 判断是不是这个类型的错误，如果是，则提取其中的系统调用错误信息 `Err`。  
+
+## 16.3. Panic
+
+Error 当然也是分等级滴，有的错误一旦发生，程序可能难以继续执行下去（unrecoverable）。
+
+为了报告这种情况，Go 语言内置了 `panic` 这个函数，其会**抛出一个运行时错误（Run-time Error），导致程序终止执行**。  
+
+* 💡 `panic` 往往只接受一个任意类型的参数，**往往是字符串**，在程序无法继续执行时会将其打印出来。
+
+❗ 当然，在写库函数时要尽量避免 `panic`，总不能方法每次执行异常就让进程终止了吧！  
+
+```go
+var user = os.Getenv("USER")
+
+func init() {
+    if user == "" {
+        panic("no value for $USER")
+    }
+}
+```
+> 👆 一个正确的用例：库初始化时发生错误，这个时候抛出 `panic` 可以理解。
+
+## 16.4. ❗ Recover
+
+`panic` 发生时，会立即停止当前函数的执行并开始回溯 Goroutine 的栈（💡从当前发生 `panic` 的函数开始逐层退出调用栈中的函数），也就会运行所有被 `defer` 延迟执行的函数，如果一直这样下去，回溯到栈顶（Goroutine **调用栈的最外层**）时，进程最终会终止。
+
+* 即一直到最后都没有函数可以处理这个 `panic`，导致程序崩溃。
+
+💡 而对 `recover` 函数的调用会停止这个回溯过程，这个函数会返回传递给 `panic` 的参数。
+
+* ❗❗❗ 因为在这个回溯过程中**只有 `defer` 函数内的代码**会被执行，`recover` **只有在 `defer` 的函数中才有效**。  
+
+`recover` 的一个用例就是在服务端中，某个 Goroutine 崩溃时及时进行处理，而不是让进程终止，导致所有 Goroutine 都停止执行：
+```go
+func server(workChan <-chan *Work) {
+    for work := range workChan {
+        go safelyDo(work)
+    }
+}
+
+func safelyDo(work *Work) {
+    defer func() {
+        if err := recover(); err != nil {
+            log.Println("work failed:", err)
+        }
+    }()
+    do(work)
+}
+```
+> 这个例子中如果 `do(work)` 发生了 `panic`，`panic` 信息会被记录下来，而这个有问题的 Goroutine 会正常退出，而不会影响其他 Go 协程。  
+
+
+💡 库函数的 `panic/recover` 处理不会影响当前 `defer` 函数中 `panic/recover` 的处理。
+
+```go
+func safelyDo() {
+    defer func() {
+        // 先调用日志函数（可能内部有 panic/recover）
+        logError("something happened") // 即使 logError 内部有 panic，也不会影响外层 recover
+        
+        // 再捕获当前 panic（仍然有效）
+        if err := recover(); err != nil {
+            fmt.Println("Recovered in safelyDo:", err)
+        }
+    }()
+    
+    doSomethingRisky() // 可能触发 panic
+}
+
+func logError(msg string) {
+    // 假设这个日志库内部可能 panic 并自行 recover
+    defer func() {
+        if err := recover(); err != nil {
+            fmt.Println("Logged panic in library:", err)
+        }
+    }()
+    panic("logError fake panic") // 模拟库内部 panic
+}
+```
+> 💡 即 `recover()` 只会捕获**当前层或更内层**中**未经处理**的 `panic`，如果没有 `panic`，`recover()` 只会返回 `nil`。内层处理了 `panic` 的不会传播到外层。  
+
+❗ **总结大概是这样**：
+
+1. `recover` 必须在 `defer` 函数中被调用
+2. 内层捕获、外层无感知
+3. 内层未捕获，外层可捕获（和 Python 的 `except` 很像）  
+
+---
+在复杂软件开发中可以用 `panic/recover` 来简化错误处理：
+```go
+// Error is the type of a parse error; it satisfies the error interface.
+type Error string
+func (e Error) Error() string {
+    return string(e)
+}
+
+// error is a method of *Regexp that reports parsing errors by
+// panicking with an Error.
+func (regexp *Regexp) error(err string) {
+    panic(Error(err))
+}
+
+// Compile returns a parsed representation of the regular expression.
+func Compile(str string) (regexp *Regexp, err error) {
+    regexp = new(Regexp)
+    // doParse will panic if there is a parse error.
+    defer func() {
+        if e := recover(); e != nil {
+            regexp = nil    // Clear return value.
+            err = e.(Error) // Will re-panic if not a parse error.
+        }
+    }()
+    return regexp.doParse(str), nil
+}
+```
+> 这里 `Compile` 方法有**已命名的返回值**，发生 `panic` 时，`recover` 处理块会把返回的 `regexp` 设为 `nil` 并设置返回的错误值 `err`。
+> 
+> ❗ 如果 `e` 不是指定的错误 `Error` ，类型断言会继续产生一个运行时错误（`panic`），继续向上层回溯调用栈。如果有未曾预料的错误发生了，会继续 `panic`，注意，上面这个代码的写法中，新的 `panic` 没有包含原始 `e` 的信息，但是因为是断言时发生的问题，如果直接在上层崩溃，在程序崩溃报告时新的 `panic` 和旧的 `panic` 信息都会被记录。    
+
+```go
+defer func() {
+    if e := recover(); e != nil {
+        regexp = nil
+        if parseErr, ok := e.(Error); ok { // 检查是否是预期的 Error 类型
+            err = parseErr  // 如果是，转为 error 返回
+        } else {
+            panic(e)  // 如果不是，重新 panic(e)
+        }
+    }
+}()
+```
+> 这样写的话，原始错误 `e` 如果无法处理会继续向上 `panic`。   
+
+这样一来，在 `doParse` 中发生错误时，可以直接调用 `error` 方法来 `panic`，反正都会被 `recover` 所捕获，这样就简化了错误处理的写法：  
+
+```go
+if pos == 0 {
+    re.error("'*' illegal at start of expression")
+}
+```
+
+* ❗ 注意：**库内部的错误不应该作为 `panic` 抛出到库外部**（除非是库所不知道的意外错误），传递到外部时还是得转换为库中定义的 `Error` 值。  
 
