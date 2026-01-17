@@ -34,7 +34,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 21. [【题解笔记】LeetCode 134. Gas Station](./Algo/GasStation.md)  
 22. [【小记】 Matplotlib 中设置自定义中文字体的正确姿势](./Python/MatplotlibWithCJKChars.md)   
 23. [【小记】在 Google Colab 等平台上运行 GPU 容器](./Containerization/GPUApptainerOnGoogleColab.md)  
-24. [【小记】解决 LAN 中不同单播互通子网间 LocalSend 的发现问题]
+24. [【小记】解决 LAN 中不同单播互通子网间 LocalSend 的发现问题](./Networking/LocalSendSwitch.md)  
 
 ## Reading Notes
 
