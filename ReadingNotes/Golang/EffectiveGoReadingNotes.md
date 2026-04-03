@@ -343,9 +343,10 @@ a := [3]any{1, 2, 3}
 fmt.Println(a[:]...)
 ```
 
-## 8.5. 在内置类型上自定义方法
+## 8.5. 在内置类型上自定义方法（定义新类型和赋予别名）
 
-内置类型无法像结构体那样可以直接定义其上的方法，不过我**可以先给内置类型定义一个别名，就可以直接在这个别名类型上定义方法了**。  
+内置类型无法像结构体那样可以直接定义其上的方法，不过我**可以先给内置类型定义一个自定义类型，就可以直接在这个类型上定义方法了**。  
+
 
 ```go
 type MySize float64 // 别名
@@ -354,6 +355,23 @@ func (ms MySize) String() string {
 	...
 }
 ```
+
+
+> [!WARNING]
+> 注意这里 MySize 就是一个**新类型**，**没法直接把 `float64` 类型赋值给 MySize 类型**，需要显式转换。
+
+```go
+type MyType1 float64 // 新定义了一个 MyType1 类型
+type MyType2 = float64 // 给 float64 取了别名 MyType2
+
+var a float64 = 3.14
+var b MyType1
+var c MyType2
+
+b = a // 会 panic，Go 语言中必须显式进行转换，即 b = MyType1(a)
+c = a // 正常赋值，只是别名
+```
+
 
 # 9. 数据与操作（Data）
 
