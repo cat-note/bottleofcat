@@ -149,7 +149,27 @@ for key := range m {
 
 💡 对 `string` 使用 `range` 时，会以 `UTF-8` 编码将字串按码点拆分，取得的**每个 Unicode 码点用 `rune` 类型存储**。
 
-* ❗ 有问题的编码会被替换为 `U+FFFD` ，即 “�” 这个字符。  
+* ❗ 有问题的编码会被替换为 `U+FFFD` ，即 ”�“ 这个字符。
+
+> [!WARNING] 
+> `for range` 遍历字符串时，取出的下标是 `rune` **开头字节**对应的下标！！
+
+```go
+var s string = "你好world"
+
+for idx, chr := range s {
+	fmt.Printf("Index: %d, Char: %c\n", idx, chr)
+}
+// 输出
+// Index: 0, Char: 你
+// Index: 3, Char: 好
+// Index: 6, Char: w
+// Index: 7, Char: o
+// Index: 8, Char: r
+// Index: 9, Char: l
+// Index: 10, Char: d
+```
+
 
 ## 7.2. 循环中声明多个局部变量
 
