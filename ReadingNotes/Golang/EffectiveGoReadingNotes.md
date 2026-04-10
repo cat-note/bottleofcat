@@ -2042,3 +2042,57 @@ if pos == 0 {
 
 * ❗ 注意：**库内部的错误不应该作为 `panic` 抛出到库外部**（除非是库所不知道的意外错误），传递到外部时还是得转换为库中定义的 `Error` 值。  
 
+# 17. ❗❗  补充：值本身的内存占用
+
+`unsafe` 包的 `Sizeof` 方法可以窥见某个类型变量所占用的内存，可以先看看官方文档的描述:  
+
+> `Sizeof` takes an expression x of any type and returns the size in bytes of a hypothetical variable v as if v was declared via var v = x. The size does not include any memory possibly referenced by x. For instance, if x is a slice, Sizeof returns the size of the slice descriptor, not the size of the memory referenced by the slice; if x is an interface, Sizeof returns the size of the interface value itself, not the size of the value stored in the interface. For a struct, the size includes any padding introduced by field alignment. The return value of Sizeof is a Go constant if the type of the argument x does not have variable size. (A type has variable size if it is a type parameter or if it is an array or struct type with elements of variable size).
+
+> `Sizeof` 的输入是一个任意类型的表达式 `x`。假设将其赋值给某个变量 `v`，`Sizeof` 的输出是**变量 `v` 存储占用的实际字节数**，简单说看的是**值本身**的占用字节数。
+> ❗❗❗ 这个字节数**不包含任何 `x` 底层所引用的内存部分**。
+>
+> 举例来说：
+> 1. 如果 `x` 是一个切片，`Sizeof` 会返回切片描述符（`x` 其实是一个结构体）的大小；
+> 2. 如果 `x` 是一个接口，其返回的是 `interface` 本身的占用，而不是接口内部实际存储占用的字节数；
+> 3. 对于结构体，其返回的字节数包含字段内存对齐所引入的填充。
+>
+> 如果参数 `x` 的类型大小在编译期就能确定，那么 `unsafe.Sizeof(x)` 的结果就是一个 **Go 常量**，可以赋给 `const` 常量。
+> 但如果 `x` 的类型大小不是固定的，那结果就不是编译期常量。
+
+因此 `Sizeof` 返回值和类型内存布局有关，典型要注意的有下面几种。 
+
+## 17.1. 字符串 `string`
+
+`string` 虽然是值类型，但他的值本身**不是字符串内容字节**，而是一个类似结构体的**描述符**：  
+
+```go
+type stringStruct struct {
+    data *byte
+    len  int
+}
+```
+
+存了一个长度以及指向底层数据的指针。
+
+`Sizeof` 返回的就是这个描述符占用的大小，`data` 和 `len` 各自占一个**机器字**，因此：  
+
+* 64 bit 机器：8+8=16 字节
+* 32 bit 机器：4+4=8 字节
+
+## 17.2. 切片
+
+`slice` 则包含数据指针 `data`、长度 `len`、底层容量 `cap` 三个机器字，因此：  
+
+* 64 bit 机器：8+8+8=24 字节
+* 32 bit 机器：4+4+4=12 字节
+
+## 17.3. 接口
+
+`interface` 值通常包含类型指针 `type` 和一个数据指针 `data`，两个机器字，因此：  
+
+* 64 bit 机器：16 字节
+* 32 bit 机器：8 字节
+
+## 17.4. 结构体
+
+结构体包含编译器插入的填充（为了字段对齐），因此总占用大小不定。 `Sizeof` 返回包含填充在内的整个结构体大小。
