@@ -18,7 +18,7 @@
 
 Pi 的安装咱就不啰嗦了，直接从配置入手。和 Claude Code、Codex 等开箱即用 Agent 不同，Pi 仅提供了最基本的功能，俗称毛坯房，需要什么就自己加上什么（~~搞半天还要自己拼~~）。
 
-阅读了作者的[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)后，个人理解，Pi 的哲学简单来说就是 “*Bash and Documents are All You Need*”：只要有 Bash，Agent 就能在当前用户权限的范围下执行任何操作，启动用户有执行权限的程序，**甚至再启动一个它自己的实例**；而只要有 Documents (通常是 Markdown 这种结构化文档)，Agent 就能将上下文中的信息持久化到硬盘上并能够**按需**读取和更新，也能读取文档，按照文档中的指示执行操作，而且这些文档是**可以跨工具、跨 Agent，甚至是可以在 Agent 和人之间共用**的。
+阅读了作者的[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)后，个人理解，Pi 的哲学简单来说就是 “*Bash and Documents are All You Need*”：只要有 Bash，Agent 就能在当前用户权限的范围下执行任何操作，复用现有的命令行程序，**甚至再启动一个它自己的实例**；而只要有 Documents (通常是 Markdown 这种结构化文档)，Agent 就能将上下文中的信息持久化到硬盘上并能够**按需**读取和更新，也能读取文档，按照文档中的指示执行操作，而且这些文档是**可以跨工具、跨 Agent，甚至是可以在 Agent 和人之间共用**的。
 
 二者组合起来有多强大呢？不妨看看 Pi 和开箱即用 Agent 的不同之处，以及符合上述哲学的解决方案：  
 
@@ -26,7 +26,9 @@ Pi 的安装咱就不啰嗦了，直接从配置入手。和 Claude Code、Codex
 2. **没有 Sub-Agents**：Agent 可以通过 Bash 再启动另一个 Agent 实例，并且可以通过文档来共享必要的信息；
 3. **没有 Plan / Todo 模式**：完全可以让 Agent 把计划写入本地文档（如 PLAN.md），然后新开会话载入文档来执行计划。而 TODO 也可也写成文档，让 Agent 在执行计划的同时顺手去修改 TODO.md 来勾选完成的内容。  
 
-追究到底，Pi 主打复用现有的命令行工具，不引入过多的复杂度，实在满足不了需求再自己加。个人认为，之所以可以如此极简（只要有 Bash 和文档读写就能完成大部分操作），还得是多亏了模型本身经过强化学习后训练所掌握的**越来越强大的任务规划和指令遵循能力**。模型越强，以往框架中繁多的约束就越冗余，我们能简化的部分就越多。  
+追究到底，Pi 主打复用现有的命令行工具生态，不引入过多的复杂度，实在满足不了需求再自己加。个人认为，之所以可以如此极简（只要有 Bash 和文档读写就能完成大部分操作），还得是多亏了模型本身经过强化学习后训练所掌握的**越来越强大的任务规划和指令遵循能力**。模型越强，以往框架中繁多的约束就越冗余，我们能简化的部分就越多。  
+
+* 比如最近 GPT 5.6 推出后，Superpowers 这类规范工作流程的 Skills 反而会降低模型的编码效率（尤其是在中小项目上），浪费更多 Token，而产出也没比模型自行规划好多少。  
 
 但！是！纵使模型再强大，其也终究是按概率来行事，有些缰绳是我们不能完全放松的，比如安全边界的硬性控制。
 
@@ -34,33 +36,111 @@ Pi 的安装咱就不啰嗦了，直接从配置入手。和 Claude Code、Codex
 
 ### 0.0. 权限控制
 
-权限控制是我们首当其冲要配置的，自 Coding Agent 大火以来其一直是令人头疼的问题。再怎么对齐训练，模型总会有灵机一动越过安全边界的时刻，无论模型能力有多强，**权限控制必须至少交由 Agent 框架的确定性代码来控制**，而不是指望概率上不会犯错。  
+权限控制是我们首当其冲要配置的，自 Coding Agent 大火以来其一直是令人头疼的问题。再怎么对齐训练，模型总会有灵机一动越过安全边界的时刻，无论模型能力有多强，**权限控制必须至少交由 Agent 框架的确定性代码逻辑来控制**，而不是指望概率上不会犯错。  
 
-但交由确定性的逻辑来约束不代表不会出事了，就算用商业公司设计和维护的 Agent，也难免有数据被误删的血泪史（硬盘分区文件被清空的事屡见不鲜，比较常见的是模型在 Windows 上用不明白 PowerShell 或者用错了斜杠和反斜杠）。对此，Pi 作者的解决方案是——把 Agent 整个放到 Docker 容器这种隔离化环境中，直接不加权限控制，默认 YOLO（完全放权）。  
+但交由确定性的逻辑来约束不代表不会出事了，就算用商业公司设计和维护的 Agent，也难免有数据被误删的血泪史（硬盘分区文件被清空的事屡见不鲜，比较常见的是模型在 Windows 上用不明白 PowerShell 或者用错了斜杠和反斜杠）。对此，Pi 作者的解决方案是——直接不加权限控制，默认 YOLO（完全放权），但把 Agent 整个放到 Docker 容器这种隔离化环境中。  
 
-个人感觉这样整还是太复杂了：我需要在 Docker 镜像中重复安装和配置宿主机已经有的各种环境依赖，每次开发时还得把工作目录映射到容器中。为了提高系统安全性总得付出些代价，但为了更方便进行开发，我的权衡是放弃高隔离性，仅通过**安装扩展包**给 Pi 加上类似于其他成熟 Agent 的权限控制机制：    
+个人感觉这样整还是太复杂了：我需要在容器镜像中重复安装和配置宿主机已经有的各种环境依赖，每次开发时还得把工作目录映射到容器中。提高系统安全性总得付出些代价，但为了更方便进行开发，我的权衡是放弃高隔离性，仅通过**安装扩展包**给 Pi 加上类似于其他成熟 Agent 的权限控制机制：    
 
 ```bash
+# -l 选项会将这个包安装到项目级别，这里是为了方便配置备份
 pi install -l npm:@gotgenes/pi-permission-system
 ```
 
-* `-l` 选项会将这个包安装到项目级别，这里是为了方便配置备份
 * 官方仓库: https://github.com/gotgenes/pi-packages/tree/main/packages/pi-permission-system  
 * `gotgenes/pi-permission-system` 是 Pi 生态中被广泛使用的权限控制包，其在 Agent 框架程序的代码层面上拦截越权的操作
 
-`pi-permission-system` 自带有文档，完全是可以让 Pi 自己去阅读文档写配置的，直接告诉 Pi 你的需求，例如：  
+`pi-permission-system` 自带有文档，完全是可以让 Pi 自己去阅读文档写配置的。直接告诉 Pi 你的需求，例如：  
 
 ```text
-帮我写一下 pi-permission-system 这个插件的配置，我希望日常开发还是尽量能轻松点，少一些确认的步骤。主要管控 git reset, rm -rf 等常见危险命令以及常见敏感文件（如 .env 环境变量配置文件）和目录的访问，同时模型在访问工作目录以外的路径时必须进行询问（临时目录除外）。
+帮我写一下 pi-permission-system 这个插件的配置，我希望日常开发还是尽量能轻松点，少一些确认的步骤。主要管控 git reset, rm -rf 等常见危险命令以及常见敏感文件（如 .env 环境变量配置文件）和目录的访问，同时在访问工作目录以外的路径时必须进行询问（临时目录除外）。
 ```
 
-Agent 为我生成的配置在这里: [config.json](https://github.com/SomeBottle/pi-config/blob/main/.pi/extensions/pi-permission-system/config.json), 可以看到覆盖还是较为全面的，可以直接采用。   
+Agent 为我生成的配置在这里: [config.json](https://github.com/SomeBottle/pi-config/blob/main/.pi/extensions/pi-permission-system/config.json), 我自己只小改了一下，去掉了部分我不需要的条目。可以看到配置主要覆盖了 `path` (保护敏感文件被任何路径相关的工具访问), `external_directory` (工作目录外路径访问约束) 以及 `bash` (约束敏感命令的执行)，还是比较全面的。后续根据个人需求还可以灵活变动。  
 
-## 1. 优化输入，明确需求
+* 注: pi 在一个工作目录中启动时会先询问用户是否信任目录，这个机制主要是提醒用户要**防范提示词注入攻击**（目录下的文档、Skills、pi 扩展等都有可能暗藏玄机）。即便引入上述扩展后有权限审批环节，但仍然不排除有看走眼的情况，况且开发中我们难免要用到网络工具（如 curl），而有网络就扩大了攻击面，不可掉以轻心。  
+
+### 0.1. 网络搜索
+
+网络信息日新月异，而模型训练的周期至少也是按月来算的，为了让模型能检索到最新的数据，网络搜索相关工具是必须得配备的。作为编码日常使用，我的选择是引入 [Context7](https://context7.com/docs/clients/cli) 和 [Tavily](https://docs.tavily.com/documentation/agent-skills) 的相关 Skills（而不是 MCP，为什么不用 MCP 可以看下面的 [1.1 节](#progressive-disclosure)），前者提供最新文档的查询，后者则作为补充，提供网页搜索和页面提取功能：  
+
+```bash
+# 在当前项目下安装 Context7 和 Tavily Skills
+# --copy 保证会在当前目录下生成 SKILL.md 而不是创建软链
+# --agent pi 会将 Skills 安装到 ./.pi/skills
+# 如果要安装在全局而不是当前工作目录下，可以用 -g 选项
+npx skills add tavily-ai/skills --skill tavily-search tavily-extract --agent pi -y --copy
+npx skills add upstash/context7 --skill find-docs --agent pi -y --copy
+
+# 安装 Tavily CLI (参考 https://docs.tavily.com/documentation/agent-skills#installation), Skill 需要
+curl -fsSL https://cli.tavily.com/install.sh | bash
+```
+
+安装 Skills 时也主打一个**按需引入**，比如 Tavily 实际上提供了 6 个 skill，但我最常用的主要是 `tavily-search` 和 `tavily-extract`，因此只引入这两个。Skills 的元数据依旧会占用少数上下文，skill 数量越多（尤其是语义相近的 skill 越多），上下文也会越混乱，干扰模型做出决策。  
+
+[图片]
+
+### 0.2. 安装和魔改 Matt Pocock 的 Skills
+
+随着模型能力越来越强，咱认为对于中小项目越来越不需要 OpenSpec, Superpowers 这类比较沉重的工作流编排 skills，繁重的约束虽然能最大程度对项目进行规范，但毫无疑问**相当耗费 Token 且效率极低**。  
+
+有时候一些**简单而高效**的 skills 用起来反而更顺心，比较有名的就是 [Matt Pocock](https://github.com/mattpocock/skills) 的这一套。打开仓库可以发现有数十个 skills，但实际上我并不需要这么多，暂且先安装 engineering (工程化) 和 productivity (生产力) 两方面的:  
+
+```bash
+# https://github.com/mattpocock/skills - commit hash: 9603c1cc8118d08bc1b3bf34cf714f62178dea3b
+npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/engineering --skill '*' --agent pi -y --copy
+npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/productivity --skill '*' --agent pi -y --copy
+```
+
+进入 `./.pi/skills`，移除下列这些我暂时不需要的:  
+
+* `teach` - 用户学习用，可以生成一些课件、问答之类的。
+* `triage` - 需要结合 GitHub Issues / Pull Requests，主要用来管理 Issue 的状态，本地开发通常用不着。
+* `setup-matt-pocock-skills` - 初始化项目，主要初始化 triage 技能相关内容。
+* `implement` - 会根据规范文档或者 Issues 来执行一个 TDD 开发、测试、审查和提交流程，实际我通常是灵活组合使用各个 skills 的。
+* `resolving-merge-conflicts` - 冲突解决一般是手动来的，不太用得上。
+
+移除了 Issues 跟踪器相关的一些 Skill 后，还有下列这些 Skills 有 Issues 流程相关残留，我们需要进行魔改：  
+
+* `ask-matt` - Matt Pocock 的 skill 路由
+* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并发布到 Issues
+* `to-tickets` - (原本叫 `to-issues`) 垂直切片拆分任务 (有点 TODO 文档的意思)，同样可选发布到 Issues 
+* `wayfinder` - 针对巨大项目，调查找到解决问题的路线，围绕 Issue 跟踪器展开
+* `code-review` - 代码审查，可能会去查找 commit 消息中涉及的 Issues  
+
+<!-- TODO：继续写魔改过程 -->
+
+### 0.3. 实现自己的 Subagents 功能
+
+Pi 没有自带子 Agent 功能。  
+
+从 Pi 的[命令行文档](https://pi.dev/docs/latest/usage#cli-reference)可以看到 Pi 在命令行参数上支持非交互模式（`-p`, `--print` 选项，输出后退出），可以指定模型和供应商、可用的工具、模型思考等级以及系统提示词等。也就是说我完全可以让 Pi **通过 Bash 启动另一个非交互式的 Pi 实例来执行任务**，任务执行完成后其会把结果输出到标准输出以传递给主 Agent。  
+
+令人欣喜的是，Pi 的工具调用是默认并行的（见[文档](https://pi.dev/docs/latest/extensions#custom-tools)），也就是说可以同时派发多个 Pi 实例，这下看上去真的就有点像派发一批子 Agent 了。  
+
+
+
+
+## 1. 一些实践经验
+
+### 1.0. 优化输入，明确需求
 
 想象一下，当甲方抛给你一坨不清不白的需求且不告诉你更多细节时，你是不是只能自行发挥？但是抓耳搔腮发挥完后给甲方，甲方又给你甩脸色说没按他的来，你又只得憋住红温的脸继续改来改去 (╥﹏╥)。  
 
 最近实习的时候我也遇到过需求对齐上的问题，指导人让我写一个测试工具来测试系统中的某个模块，但是写完了才告诉我还需要考虑效率，也就是制造测试数据时需要足够快（可能要制造亿级的数据）
+
+<a id="progressive-disclosure">
+
+### 1.1. 在上下文中渐进式披露工具和知识
+
+Prompt Template > Skills 
+
+只保留必要的索引。
+
+保持上下文清晰简洁。
+
+
+### 1.2. Subagents 的使用
 
 
 
@@ -98,7 +178,7 @@ AI 擅长什么，不擅长什么
 模型自身后训练效果有强有弱，但真正决定能发挥出模型百分之多少功力的，
 
 
-SubAgents 适合什么任务？（完全独立的任务最适合，而不是并行做本质上相关联的事，如多个 sub agents 并行写一个项目的不同模块）
+SubAgents 适合什么任务？（完全独立的任务（比如代码审查，论文数据检查）最适合，而不是并行做本质上相关联的事，如多个 sub agents 并行写一个项目的不同模块）
 
 <!-- 文章可以用有说服力的数据，比如 token 耗费这一块，缓存命中这一块 -->
 
