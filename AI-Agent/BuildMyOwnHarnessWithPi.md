@@ -56,7 +56,7 @@ pi install -l npm:@gotgenes/pi-permission-system
 帮我写一下 pi-permission-system 这个插件的配置，我希望日常开发还是尽量能轻松点，少一些确认的步骤。主要管控 git reset, rm -rf 等常见危险命令以及常见敏感文件（如 .env 环境变量配置文件）和目录的访问，同时在访问工作目录以外的路径时必须进行询问（临时目录除外）。
 ```
 
-Agent 为我生成的配置在这里: [config.json](https://github.com/SomeBottle/pi-config/blob/main/.pi/extensions/pi-permission-system/config.json), 我自己只小改了一下，去掉了部分我不需要的条目。可以看到配置主要覆盖了 `path` (保护敏感文件被任何路径相关的工具访问), `external_directory` (工作目录外路径访问约束) 以及 `bash` (约束敏感命令的执行)，还是比较全面的。后续根据个人需求还可以灵活变动。  
+Agent 为我生成的配置在这里: [config.json](https://github.com/SomeBottle/pi-config/blob/0a02df04472269860f0a9364d787030314bde0e7/.pi/extensions/pi-permission-system/config.json), 我自己只小改了一下，去掉了部分我不需要的条目。可以看到配置主要覆盖了 `path` (保护敏感文件被任何路径相关的工具访问), `external_directory` (工作目录外路径访问约束) 以及 `bash` (约束敏感命令的执行)，还是比较全面的。后续根据个人需求还可以灵活变动。  
 
 * 注: pi 在一个工作目录中启动时会先询问用户是否信任目录，这个机制主要是提醒用户要**防范提示词注入攻击**（目录下的文档、Skills、pi 扩展等都有可能暗藏玄机）。即便引入上述扩展后有权限审批环节，但仍然不排除有看走眼的情况，况且开发中我们难免要用到网络工具（如 curl），而有网络就扩大了攻击面，不可掉以轻心。  
 
@@ -97,18 +97,24 @@ npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/prod
 * `teach` - 用户学习用，可以生成一些课件、问答之类的。
 * `triage` - 需要结合 GitHub Issues / Pull Requests，主要用来管理 Issue 的状态，本地开发通常用不着。
 * `setup-matt-pocock-skills` - 初始化项目，主要初始化 triage 技能相关内容。
-* `implement` - 会根据规范文档或者 Issues 来执行一个 TDD 开发、测试、审查和提交流程，实际我通常是灵活组合使用各个 skills 的。
 * `resolving-merge-conflicts` - 冲突解决一般是手动来的，不太用得上。
+* `ask-matt` - Matt Pocock 的 skill 路由，但其实用得多了就不太需要了。
+* `wayfinder` - 针对巨大项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开。大型项目通常不会用这一套了。
 
 移除了 Issues 跟踪器相关的一些 Skill 后，还有下列这些 Skills 有 Issues 流程相关残留，我们需要进行魔改：  
 
-* `ask-matt` - Matt Pocock 的 skill 路由
-* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并发布到 Issues
-* `to-tickets` - (原本叫 `to-issues`) 垂直切片拆分任务 (有点 TODO 文档的意思)，同样可选发布到 Issues 
-* `wayfinder` - 针对巨大项目，调查找到解决问题的路线，围绕 Issue 跟踪器展开
-* `code-review` - 代码审查，可能会去查找 commit 消息中涉及的 Issues  
+* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并发布到 Issues。  
+* `to-tickets` - (原本叫 `to-issues`) 垂直切片拆分任务 (有点 TODO 文档的意思)，同样可选发布到 Issues。  
+* `code-review` - 代码审查，可能会去查找 commit 消息中涉及的 Issues。  
+* `implement` - 会根据规范文档或者 Issues 来执行一个 TDD 开发、测试、审查和提交流程。
 
-<!-- TODO：继续写魔改过程 -->
+这里可以直接用 `grill-me` 来让模型拷问我们，对齐魔改需求。我比较倾向于修改为**文档驱动**的工作方式：  
+
+```text
+/skill:grill-me 我移除了 teach, triage, setup-matt-pocock-skills, resolving-merge-conflicts, ask-matt, wayfinder 这几个 Matt Pocock 的 skills，抛弃了围绕 Issues Tracker 的开发方式，转而我希望能围绕本地文档来进行。现在应该需要对 to-spec, to-tickets, implement, code-review 这几个 skills 进行修改，我们讨论一下该怎么改。
+```
+
+我和 DeepSeek V4 Pro (预览版) 对齐后产生的决策文档在这里：[MATT_SKILLS_MODIFY_PLAN.md](https://github.com/SomeBottle/pi-config/blob/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills/MATT_SKILLS_MODIFY_PLAN.md), 魔改后的 Matt Skills 在这里: [.pi/skills](https://github.com/SomeBottle/pi-config/tree/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills) 。  
 
 ### 0.3. 实现自己的 Subagents 功能
 
@@ -117,7 +123,6 @@ Pi 没有自带子 Agent 功能。
 从 Pi 的[命令行文档](https://pi.dev/docs/latest/usage#cli-reference)可以看到 Pi 在命令行参数上支持非交互模式（`-p`, `--print` 选项，输出后退出），可以指定模型和供应商、可用的工具、模型思考等级以及系统提示词等。也就是说我完全可以让 Pi **通过 Bash 启动另一个非交互式的 Pi 实例来执行任务**，任务执行完成后其会把结果输出到标准输出以传递给主 Agent。  
 
 令人欣喜的是，Pi 的工具调用是默认并行的（见[文档](https://pi.dev/docs/latest/extensions#custom-tools)），也就是说可以同时派发多个 Pi 实例，这下看上去真的就有点像派发一批子 Agent 了。  
-
 
 
 
