@@ -58,7 +58,7 @@ pi install -l npm:@gotgenes/pi-permission-system
 
 Agent 为我生成的配置在这里: [config.json](https://github.com/SomeBottle/pi-config/blob/0a02df04472269860f0a9364d787030314bde0e7/.pi/extensions/pi-permission-system/config.json), 我自己只小改了一下，去掉了部分我不需要的条目。可以看到配置主要覆盖了 `path` (保护敏感文件被任何路径相关的工具访问), `external_directory` (工作目录外路径访问约束) 以及 `bash` (约束敏感命令的执行)，还是比较全面的。后续根据个人需求还可以灵活变动。  
 
-* 注: pi 在一个工作目录中启动时会先询问用户是否信任目录，这个机制主要是提醒用户要**防范提示词注入攻击**（目录下的文档、Skills、pi 扩展等都有可能暗藏玄机）。即便引入上述扩展后有权限审批环节，但仍然不排除有看走眼的情况，况且开发中我们难免要用到网络工具（如 curl），而有网络就扩大了攻击面，不可掉以轻心。  
+* 注: pi 在一个工作目录中启动时会先询问用户是否信任目录，这个机制主要是提醒用户要**防范提示词注入攻击**（目录下的文档、skills、pi 扩展等都有可能暗藏玄机）。即便引入上述扩展后有权限审批环节，但仍然不排除有看走眼的情况，况且开发中我们难免要用到网络工具（如 curl），而有网络就扩大了攻击面，不可掉以轻心。  
 
 ### 0.1. 网络搜索
 
@@ -80,6 +80,9 @@ curl -fsSL https://cli.tavily.com/install.sh | bash
 
 [图片]
 
+
+<!-- TODO: 备用本地 web fetch-->
+
 ### 0.2. 安装和魔改 Matt Pocock 的 Skills
 
 随着模型能力越来越强，咱认为对于中小项目越来越不需要 OpenSpec, Superpowers 这类比较沉重的工作流编排 skills，繁重的约束虽然能最大程度对项目进行规范，但毫无疑问**相当耗费 Token 且效率极低**。  
@@ -92,27 +95,33 @@ npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/engi
 npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/productivity --skill '*' --agent pi -y --copy
 ```
 
+Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代码托管平台的项目的，因此他引入了 Issue Tracker (Issue 跟踪器，比如 GitHub Issues) 这个概念，多个 skills 都是围绕着 Issue 跟踪器来进行的，用 Issue 编排了需求的开发工作流（我寻思这应该算是一种 **Issue 驱动开发**的思想）。但我还是更习惯于**文档驱动**的思路，其能减少开发工作对某个平台的依赖（毕竟 Issue 跟踪器是依托于托管平台的），只要有文件系统就能进行存放，因此我想去掉一些 Issue 跟踪器相关的 skill，且对其余 skill 进行魔改简化。  
+
 进入 `./.pi/skills`，移除下列这些我暂时不需要的:  
 
 * `teach` - 用户学习用，可以生成一些课件、问答之类的。
-* `triage` - 需要结合 GitHub Issues / Pull Requests，主要用来管理 Issue 的状态，本地开发通常用不着。
+* `triage` - 需要结合 GitHub Issues / Pull Requests，主要用来管理 Issue 的分类和状态，本地开发通常用不着。
 * `setup-matt-pocock-skills` - 初始化项目，主要初始化 triage 技能相关内容。
 * `resolving-merge-conflicts` - 冲突解决一般是手动来的，不太用得上。
-* `ask-matt` - Matt Pocock 的 skill 路由，但其实用得多了就不太需要了。
-* `wayfinder` - 针对巨大项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开。大型项目通常不会用这一套了。
+* `ask-matt` - Matt Pocock 的 skill 路由，但其实用得多了就不太需要了，主打一个自由组合。
+* `wayfinder` - 针对大型项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开。个人而言，开发大型项目就通常不会用 Matt Pocock 这一套流程了。
 
-移除了 Issues 跟踪器相关的一些 Skill 后，还有下列这些 Skills 有 Issues 流程相关残留，我们需要进行魔改：  
+移除了上面这些 skill 后，还有下列这些 skills 有 Issues 跟踪器相关残留，我们需要进行魔改：  
 
-* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并发布到 Issues。  
-* `to-tickets` - (原本叫 `to-issues`) 垂直切片拆分任务 (有点 TODO 文档的意思)，同样可选发布到 Issues。  
+* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并作为大 Issue 发布到 Issues。  
+* `to-tickets` - (原本叫 `to-issues`) 根据 Spec 垂直切片拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。  
 * `code-review` - 代码审查，可能会去查找 commit 消息中涉及的 Issues。  
-* `implement` - 会根据规范文档或者 Issues 来执行一个 TDD 开发、测试、审查和提交流程。
+* `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程。
 
-这里可以直接用 `grill-me` 来让模型拷问我们，对齐魔改需求。我比较倾向于修改为**文档驱动**的工作方式：  
+其实 `setup-matt-pocock-skills` skill 是可以直接指定本地 Issue 跟踪器的（本质上是通过往 `.scratch` 目录下写 Markdown 文档来实现），但我觉得既然都要围绕文档工作了，其实没必要再抽象出一个 Issue 跟踪器这样的模块了（况且每次开发时还得在一开始使用一次 `setup-matt-pocock-skills` 来进行设置）。如果直接在涉及 Issue 跟踪器的每个 skill 中直接指定文档写入的路径，就免去了这一个设置的流程，用起来是更加方便的。  
+
+这里可以直接用 `grill-me` 来让模型拷问我们，对齐魔改需求后执行修改：  
 
 ```text
 /skill:grill-me 我移除了 teach, triage, setup-matt-pocock-skills, resolving-merge-conflicts, ask-matt, wayfinder 这几个 Matt Pocock 的 skills，抛弃了围绕 Issues Tracker 的开发方式，转而我希望能围绕本地文档来进行。现在应该需要对 to-spec, to-tickets, implement, code-review 这几个 skills 进行修改，我们讨论一下该怎么改。
 ```
+
+* Matt 这一套方法论建立于两个关键的抽象上—— Spec 和 Tickets，对应需求规范和细分的执行工作单元。无论是围绕 Issue 还是围绕文档，实际上都是这两个抽象的不同实现方式，因此就算进行了魔改，用 Spec 来明确需求意图、垂直拆分 Ticket 后执行开发的核心模型还是保留了下来。  
 
 我和 DeepSeek V4 Pro (预览版) 对齐后产生的决策文档在这里：[MATT_SKILLS_MODIFY_PLAN.md](https://github.com/SomeBottle/pi-config/blob/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills/MATT_SKILLS_MODIFY_PLAN.md), 魔改后的 Matt Skills 在这里: [.pi/skills](https://github.com/SomeBottle/pi-config/tree/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills) 。  
 
@@ -126,6 +135,8 @@ Pi 没有自带子 Agent 功能。
 
 
 
+<!-- TODO: 其他的一些原则：尽量少用 pi 扩展或者第三方包，而是多依靠 skill，pi 本身还在经常更新，代码层面 api 可能有破坏性改动-->
+
 ## 1. 一些实践经验
 
 ### 1.0. 优化输入，明确需求
@@ -133,6 +144,8 @@ Pi 没有自带子 Agent 功能。
 想象一下，当甲方抛给你一坨不清不白的需求且不告诉你更多细节时，你是不是只能自行发挥？但是抓耳搔腮发挥完后给甲方，甲方又给你甩脸色说没按他的来，你又只得憋住红温的脸继续改来改去 (╥﹏╥)。  
 
 最近实习的时候我也遇到过需求对齐上的问题，指导人让我写一个测试工具来测试系统中的某个模块，但是写完了才告诉我还需要考虑效率，也就是制造测试数据时需要足够快（可能要制造亿级的数据）
+
+<!--消除不确定性-->
 
 <a id="progressive-disclosure">
 
