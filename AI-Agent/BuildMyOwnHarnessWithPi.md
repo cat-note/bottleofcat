@@ -18,7 +18,7 @@
 
 Pi 的安装咱就不啰嗦了，直接从配置入手。和 Claude Code、Codex 等开箱即用 Agent 不同，Pi 仅提供了最基本的功能，俗称毛坯房，需要什么就自己加上什么（~~搞半天还要自己拼~~）。
 
-阅读了作者的[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)后，个人理解，Pi 的哲学简单来说就是 “*Bash and Documents are All You Need*”：只要有 Bash，Agent 就能在当前用户权限的范围下执行任何操作，复用现有的命令行程序，**甚至再启动一个它自己的实例**；而只要有 Documents (通常是 Markdown 这种结构化文档)，Agent 就能将上下文中的信息持久化到硬盘上并能够**按需**读取和更新，也能读取文档，按照文档中的指示执行操作，而且这些文档是**可以跨工具、跨 Agent，甚至是可以在 Agent 和人之间共用**的。
+阅读了作者的[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)后，个人理解，Pi 的哲学简单来说就是 “*Bash and Documents are All You Need*”：只要有 Bash，Agent 就能在当前用户权限的范围下执行任何操作，复用和组合现有的命令行程序，**甚至再启动一个它自己的实例**；而只要有 Documents (通常是 Markdown 这种结构化文档)，Agent 就能将上下文中的信息持久化到硬盘上并能够**按需**读取和更新，也能读取文档，按照文档中的指示执行操作，而且这些文档是**可以跨工具、跨 Agent，甚至是可以在 Agent 和人之间共用**的。
 
 二者组合起来有多强大呢？不妨看看 Pi 和开箱即用 Agent 的不同之处，以及符合上述哲学的解决方案：  
 
@@ -149,7 +149,7 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 本次暂且只编写脚本，不编写 skill。  
 ```
 
-测试过程中发现 OpenCode 的实现还保留了页面中的 JS 和 CSS，如果我只想要正文就显得很臃肿。因此我又和 Pi 进行了一轮对话，用 `@mozilla/readability` 和 `jsdom` 包来去除不需要的部分来返回更精简的页面内容，同时也考虑到可能确实有抓取原页面的需求，加上了 `--gross` 命令行选项来支持返回原始内容。注意，为了让 Agent **能收到语义化的反馈**，在状态码不为 2xx 时也要返回响应体内容。
+测试过程中发现 OpenCode 的实现还保留了页面中的 JS 和 CSS，如果我只想要正文就显得很臃肿。因此我又和 Pi 进行了一轮对话，用 `@mozilla/readability` 和 `jsdom` 包来去除不需要的部分来返回更精简的页面内容，同时也考虑到可能确实有抓取原页面的需求，加上了 `--gross` 命令行选项来支持返回原始内容。注意，为了让 Agent **能总是收到语义化的反馈**，在状态码不为 2xx 时也要返回响应体内容。
 
 接下来需要编写 `SKILL.md` 了，在 description (描述) 中我们需要**写清楚基本功能以及边界**：什么时候用，什么时候不适合用。元数据部分我们可以这样写:  
 
@@ -172,14 +172,19 @@ description: Supports fetching web content by sending requests directly from the
 
 [图片: 调用 skill 示例]
 
-### 0.4. 实现自己的 Subagents 功能
+### 0.4. 实现简单的 Sub-agent 功能
 
-Pi 没有自带子 Agent 功能。  
+Pi 没有自带子 Agent 功能，但我完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
 
-从 Pi 的[命令行文档](https://pi.dev/docs/latest/usage#cli-reference)可以看到 Pi 在命令行参数上支持非交互模式（`-p`, `--print` 选项，输出后退出），可以指定模型和供应商、可用的工具、模型思考等级以及系统提示词等。也就是说我完全可以让 Pi **通过 Bash 启动另一个非交互式的 Pi 实例来执行任务**，任务执行完成后其会把结果输出到标准输出以传递给主 Agent。  
+1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拦截没有显式允许的操作）；
+2. 让 Pi 通过 `tmux` 在新会话 / 窗口中启动 Pi TUI，这样用户也可以直接和子 Agent 进行交互。但是这样一来子 Agent 最终的输出就没法直接通过 STDOUT （标准输出）回传给主 Agent 了。  
 
-令人欣喜的是，Pi 的工具调用是默认并行的（见[文档](https://pi.dev/docs/latest/extensions#custom-tools)），也就是说可以同时派发多个 Pi 实例，这下看上去真的就有点像派发一批子 Agent 了。  
+能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？其实利用 `tmux` 自带的 `wait-for` 信号量同步机制就可以实现，可以写下面这个 Bash 脚本:  
 
+
+使用 tmux 来维护 Agent 终端会话，即让 pi 调用 `tmux` 命令来在新会话中启动另一个 pi 实例。tmux 是一个终端复用器（类似于 GNU Screen）
+
+<!--TODO: agent 生命周期和状态管理-->
 
 
 <!-- TODO: 其他的一些原则：尽量少用 pi 扩展或者第三方包，而是多依靠 skill，pi 本身还在经常更新，代码层面 api 可能有破坏性改动-->
@@ -205,7 +210,14 @@ Prompt Template > Skills
 保持上下文清晰简洁。
 
 
-### 1.2. Subagents 的使用
+### 1.2. Sub-agents 的使用
+
+subagents 是典型的上下文工程手段。
+
+前段时间和一位同学交流了一下，得知他其实没怎么用过 Sub-agents，而是习惯新开会话来进行独立任务。
+
+subagents 的使用时机有三种：执行任务前，执行任务中，执行任务后 （Agent 的执行单位是任务）
+
 
 
 
