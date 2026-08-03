@@ -174,12 +174,24 @@ description: Supports fetching web content by sending requests directly from the
 
 ### 0.4. 实现简单的 Sub-agent 功能
 
-Pi 没有自带子 Agent 功能，但我完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
+Pi 没有自带子 Agent 功能，但完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
 
 1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拦截没有显式允许的操作）；
 2. 让 Pi 通过 `tmux` 在新会话 / 窗口中启动 Pi TUI，这样用户也可以直接和子 Agent 进行交互。但是这样一来子 Agent 最终的输出就没法直接通过 STDOUT （标准输出）回传给主 Agent 了。  
 
-能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？其实利用 `tmux` 自带的 `wait-for` 信号量同步机制就可以实现，可以写下面这个 Bash 脚本:  
+能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？其实是可以的，为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁的可观测、可介入的子 Agent 生命周期管理流程。  
+
+#### 0.4.0. 可观测和可介入的实现
+
+可观测包含“让主 Agent 能观测到子 Agent 的运行状态”。我们可以通过 `pi --session xxx.jsonl` 来指定让子 Agent 能及时把新增的消息及时**附加**到这个 `jsonl` 文件中，这样主 Agent 就可以随时通过 `tail` 命令来查看子 Agent 运行状态。  
+
+为了让主 Agent 能读取最终子 Agent 的报告，我利用 Pi 的 `--append-system-prompt` 来告知子 Agent 产出报告：`You must write final report to {OUTPUT_PATH}.`，当主 Agent 发现 `{OUTPUT_PATH}` 文件能读取时也正好说明子 Agent 执行完成了。  
+
+
+
+#### 0.4.1. 减少子 Agent 执行阻碍
+
+
 
 
 使用 tmux 来维护 Agent 终端会话，即让 pi 调用 `tmux` 命令来在新会话中启动另一个 pi 实例。tmux 是一个终端复用器（类似于 GNU Screen）
