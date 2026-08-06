@@ -80,9 +80,6 @@ curl -fsSL https://cli.tavily.com/install.sh | bash
 
 [图片]
 
-
-<!-- TODO: 备用本地 web fetch-->
-
 ### 0.2. 安装和魔改 Matt Pocock 的 Skills
 
 随着模型能力越来越强，咱认为对于中小项目越来越不需要 OpenSpec, Superpowers 这类比较沉重的工作流编排 skills，繁重的约束虽然能最大程度对项目进行规范，但毫无疑问**相当耗费 Token 且效率极低**。  
@@ -176,27 +173,47 @@ description: Supports fetching web content by sending requests directly from the
 
 Pi 没有自带子 Agent 功能，但完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
 
-1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拦截没有显式允许的操作）；
+1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拒绝没有显式允许的操作）；
 2. 让 Pi 通过 `tmux` 在新会话 / 窗口中启动 Pi TUI，这样用户也可以直接和子 Agent 进行交互。但是这样一来子 Agent 最终的输出就没法直接通过 STDOUT （标准输出）回传给主 Agent 了。  
 
-能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？其实是可以的，为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁的可观测、可介入的子 Agent 生命周期管理流程。  
+能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁、可观测且可介入的子 Agent 工作流程与生命周期管理机制。  
+
+* Skill 中调用的是一个 shell 脚本 [`loop.sh`](https://github.com/SomeBottle/pi-config/blob/main/.pi/skills/subagent-loop/scripts/loop.sh)，大部分逻辑由脚本实现，模型每次只需要输出一行 bash 命令来执行脚本，能**显著节省输出 token 数**。反例可见 [SKILL.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md)，其让模型每步都输出大量脚本，虽然能用，但是多了很多不必要的开销。
 
 #### 0.4.0. 可观测和可介入的实现
 
-可观测包含“让主 Agent 能观测到子 Agent 的运行状态”。我们可以通过 `pi --session xxx.jsonl` 来指定让子 Agent 能及时把新增的消息及时**附加**到这个 `jsonl` 文件中，这样主 Agent 就可以随时通过 `tail` 命令来查看子 Agent 运行状态。  
+“可观测”指*主 Agent 和用户都能观测到子 Agent 的运行状态*。
 
-为了让主 Agent 能读取最终子 Agent 的报告，我利用 Pi 的 `--append-system-prompt` 来告知子 Agent 产出报告：`You must write final report to {OUTPUT_PATH}.`，当主 Agent 发现 `{OUTPUT_PATH}` 文件能读取时也正好说明子 Agent 执行完成了。  
+我们可以通过 `pi --session xxx.jsonl` 来让子 Agent 把新增的消息及时**附加**到这个会话 `jsonl` 文件中，每行一条消息 JSON，这样主 Agent 就可以随时通过 `tail` 命令来查看子 Agent 运行状态。为了让主 Agent 能读取到最终子 Agent 的报告，我利用 Pi 的 `--append-system-prompt` 来在系统提示词中告知子 Agent 产出报告文档：`You must write final report to {OUTPUT_PATH}.`，当主 Agent 发现 `{OUTPUT_PATH}` 文件存在时也正好说明子 Agent 执行完成了。  
 
+我原本的设计是让主 Agent 每隔几十秒就去读取一次 `jsonl` 会话文件的末几行来检查子 Agent 的运行状态，但是每行的 JSON 数据量可能很大（比如说 `read` 工具调用读取文档，读出的内容都会塞进一行），会严重污染主 Agent 上下文，且造成明显的缓存命中抖动。因此我将这个设计简化且内化到了 shell 脚本中，Agent 只需要调用脚本，脚本逻辑发现子 Agent 消息最后一行**多轮未变动时**就会反馈给主 Agent：“子 Agent 可能卡住了”，这个时候让用户介入即可。  
 
+也就是说**观测更多让用户来做**，主 Agent 只需要关注子 Agent 执行有没有阻塞。
 
-#### 0.4.1. 减少子 Agent 执行阻碍
+“可介入”指*用户能介入到子 Agent 中，实时观察子 Agent 并进行纠偏* (steering)。要实现这点，可以借鉴 Pi 作者的思想，用 `tmux new-session -d` 来在后台启动一个 shell 来执行 Pi，用户就可以随时通过 `tmux attach` 切换到子 Agent 了（如果主 Agent 已经运行在 tmux 会话中，可以直接用 `Ctrl+b` 配合 `(`、`)` 来在 Agent 间来回切换）。  
 
+#### 0.4.1. 减少 Agent 执行阻碍
 
+`pi-permission-system` 扩展需要用户介入批准一些有风险的命令执行，但对于子 Agent 这显然是个阻碍。因此我启动子 Agent 时用上了 Pi 的 `--approve` 和 `--no-extensions` 选项，前者让 Pi 默认信任当前目录（主 Agent 其实已经信任了，那子 Agent 也顺理成章）；后者则指明不载入扩展（我只有权限控制这一个扩展）。这样一来就可以尽量保证子 Agent 能在无人干预的情况下从头跑到尾了。  
 
+* 注意，sub-agent 通常还是用于校对这种**读取占大头的独立任务**，尽量不要把大量的修改任务交给 sub-agent，不然这样放权有些风险。
 
-使用 tmux 来维护 Agent 终端会话，即让 pi 调用 `tmux` 命令来在新会话中启动另一个 pi 实例。tmux 是一个终端复用器（类似于 GNU Screen）
+#### 0.4.2. 生命周期管理
 
-<!--TODO: agent 生命周期和状态管理-->
+脚本 `loop.sh` 为主 Agent 提供了管理子 Agent 的逻辑，子 Agent 生命周期可以简洁概括为三个阶段：启动、运行、终止，分别对应了脚本的 `init`, `poll`, `end` 三个子命令。主 Agent 如何调用脚本，如何在三个阶段间进行状态流转，则是 skill 文档主要负责编排的内容了：  
+
+1. **启动** (`init`)：组合 `tmux` (或者 GNU Screen) 和 `pi` 命令启动 sub-agent，然后进入运行阶段；若没有 `tmux` / `screen` 则直接用 `pi --print` 来兜底，阻塞运行完成后进入终止阶段；
+2. **运行** (`poll`)：休眠一小段时间后查询子 Agent 的状态，可能是 仍在运行 / 运行完毕 / 超时 / 阻塞。若仍在运行则重复此步轮询；若运行完毕或超时则进入终止阶段；若阻塞则提醒用户；
+3. **终止** (`end`)：取出子 Agent 报告，销毁 `tmux` / `screen` 的会话，清理临时文件。  
+
+### 0.5. 编写提示词模板
+
+Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，且支持类似 shell 脚本的位置参数（如 `/explore instruction`，`instruction` 就会替换掉模板中的 `$1`）。
+
+我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
+
+实际使用中我还能根据需求的变化新增一些提示词模板，如论文审阅 `/paper-review`。和 skills 不同的是，提示词模板在**用户显式使用前是完全没有任何部分进入上下文**的，只要命名不冲突，写多少个都可以，怎么方便怎么来。    
+
 
 
 <!-- TODO: 其他的一些原则：尽量少用 pi 扩展或者第三方包，而是多依靠 skill，pi 本身还在经常更新，代码层面 api 可能有破坏性改动-->
