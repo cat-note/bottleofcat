@@ -80,48 +80,38 @@ curl -fsSL https://cli.tavily.com/install.sh | bash
 
 [图片]
 
-### 0.2. 安装和魔改 Matt Pocock 的 Skills
+### 0.2. 安装 Matt Pocock 的 Skills
 
 随着模型能力越来越强，咱认为对于中小项目越来越不需要 OpenSpec, Superpowers 这类比较沉重的工作流编排 skills，繁重的约束虽然能最大程度对项目进行规范，但毫无疑问**相当耗费 Token 且效率极低**。  
 
 有时候一些**简单而高效**的 skills 用起来反而更顺心，比较有名的就是 [Matt Pocock](https://github.com/mattpocock/skills) 的这一套。打开仓库可以发现有数十个 skills，但实际上我并不需要这么多，暂且先安装 engineering (工程化) 和 productivity (生产力) 两方面的:  
 
 ```bash
-# https://github.com/mattpocock/skills - commit hash: 9603c1cc8118d08bc1b3bf34cf714f62178dea3b
+# https://github.com/mattpocock/skills - v1.2.3
 npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/engineering --skill '*' --agent pi -y --copy
 npx skills@latest add https://github.com/mattpocock/skills/tree/main/skills/productivity --skill '*' --agent pi -y --copy
 ```
 
-Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代码托管平台的项目的，因此他引入了 Issue Tracker (Issue 跟踪器，比如 GitHub Issues) 这个概念，多个 skills 都是围绕着 Issue 跟踪器来进行的，用 Issue 编排了需求的开发工作流（我寻思这应该算是一种 **Issue 驱动开发**的思想）。但我还是更习惯于**文档驱动**的思路，其能减少开发工作对某个平台的依赖（毕竟 Issue 跟踪器是依托于托管平台的），只要有文件系统就能进行存放，因此我想去掉一些 Issue 跟踪器相关的 skill，且对其余 skill 进行魔改简化。  
+Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代码托管平台的项目的，因此他引入了 Issue Tracker (Issue 跟踪器，比如 GitHub Issues) 这个概念，多个 skills 都是围绕着 Issue 跟踪器来进行的，用 Issue 编排了需求的开发工作流（我寻思这应该算是一种 **Issue 驱动开发**的思想）。但我还是更习惯于**文档驱动**的思路，其能减少开发工作对某个平台的依赖（毕竟 Issue 跟踪器是依托于托管平台的），只要有文件系统就能进行存放。好在 `setup-matt-pocock-skills` 在初始化时可以直接指定本地 Issue 跟踪器（本质上是通过往 `.scratch` 目录下写 Markdown 文档来实现）。  
 
 进入 `./.pi/skills`，移除下列这些我暂时不需要的:  
 
 * `teach` - 用户学习用，可以生成一些课件、问答之类的。
-* `triage` - 需要结合 GitHub Issues / Pull Requests，主要用来管理 Issue 的分类和状态，本地开发通常用不着。
-* `setup-matt-pocock-skills` - 初始化项目，主要初始化 triage 技能相关内容。
+* `wait-what` - 让模型用更清晰的语言复述内容，主要是为英文定制的，完全可以用提示词模板代替。
 * `resolving-merge-conflicts` - 冲突解决一般是手动来的，不太用得上。
 * `ask-matt` - Matt Pocock 的 skill 路由，但其实用得多了就不太需要了，主打一个自由组合。
-* `writing-great-skills` - 编写 Agent Skill 的指导，并不常用。
+* `writing-for-agents` (原本叫 `writing-great-skills`) - 编写 Agent Skill 的指导，并不常用。
+* `wizard` - 生成交互式的 Bash 脚本，作为向导程序指导用户一步步完成操作，利好 HITL (Human In The Loop, 人为介入)。
+* `to-questionnaire` - 生成问题清单让另一个负责人去回答，可以和 `grill` 相关 skill 一起用。
 
-移除了上面这些 skill 后，还有下列这些 skills 有 Issues 跟踪器相关残留，我们需要进行魔改：  
+移除了上面这些 skill 后，个人理解，其余比较常用的 skills 如下:  
 
-* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并作为大 Issue 发布到 Issues。  
-* `to-tickets` - (原本叫 `to-issues`) 根据 Spec 垂直切片拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。  
-* `code-review` - 代码审查，可能会去查找 commit 消息中涉及的 Issues。  
-* `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程。
-* `wayfinder` - 针对大型项目，拆解模糊的大目标，调查找到解决问题的路线，同样围绕 Issue 跟踪器展开（主要是为了解决目标太庞大导致 `grill-with-docs` 的过程中会撑爆上下文（如触发上下文压缩而丢失信息）的问题）。
-
-其实 `setup-matt-pocock-skills` skill 是可以直接指定本地 Issue 跟踪器的（本质上是通过往 `.scratch` 目录下写 Markdown 文档来实现），但我觉得既然都要围绕文档工作了，其实没必要再抽象出一个 Issue 跟踪器这样的模块了（况且每次开发时还得在一开始使用一次 `setup-matt-pocock-skills` 来进行设置）。如果直接在涉及 Issue 跟踪器的每个 skill 中直接指定文档写入的路径，就免去了这一个设置的流程，用起来是更加方便的。  
-
-这里可以直接用 `grill-me` 来让 Agent “拷问”我们，对齐魔改需求后再执行修改：  
-
-```text
-/skill:grill-me 我移除了 teach, triage, setup-matt-pocock-skills, resolving-merge-conflicts, ask-matt, wayfinder 这几个 Matt Pocock 的 skills，抛弃了围绕 Issues Tracker 的开发方式，转而我希望能围绕本地文档来进行。现在应该需要对 to-spec, to-tickets, implement, code-review 这几个 skills 进行修改，我们讨论一下该怎么改。
-```
-
-* 被“拷问”时可以了解到，Matt 这一套方法论建立于两个关键的抽象上—— Spec 和 Tickets，对应需求约束和细分的执行工作单元，无论是围绕 Issue 还是围绕文档，实际上都是这两个抽象的不同实现方式。因此就算进行了魔改，用 Spec 来明确需求意图、垂直拆分 Ticket 后执行开发的核心模型还是需要保留下来的 ╮ (. ❛ ᴗ ❛.) ╭。  
-
-我和 DeepSeek V4 Pro (预览版) 对齐后产生的决策文档在这里：[MATT_SKILLS_MODIFY_PLAN.md](https://github.com/SomeBottle/pi-config/blob/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills/MATT_SKILLS_MODIFY_PLAN.md), 魔改后的 Matt Skills 在这里: [.pi/skills](https://github.com/SomeBottle/pi-config/tree/0a02df04472269860f0a9364d787030314bde0e7/.pi/skills) 。  
+* `grilling` (被 `grill-me` 和 `grill-with-docs` 复用) - 非常著名的 skill，优化输入，通过拷问用户各种细节点来对齐需求、消除不确定性。最近 Matt 已经对这个 skill 进行了更新，现在会形成决策树，每次问一批问题了。
+* `wayfinder` - 针对大型项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开（主要是为了解决目标庞大，要确定的东西太多，导致 `grilling` 的过程中会撑爆上下文的问题，如触发上下文压缩而丢失信息）。
+* `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并作为大 Issue 发布到 Issue Tracker。  
+* `to-tickets` - (原本叫 `to-issues`) 根据 Spec **垂直切片**拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。垂直切片指的是拆分成**较小但端到端完整**的实现任务，也就是每个小任务对应一个完整的小功能（比如用户消息系统中的“已读”功能）。
+* `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程（咱觉着 AI 时代 TDD 是非常有效的开发范式）。
+* `code-review` - **提交后**进行代码审查，会利用 git diff 找到代码变更，使用时可以给出要比对的 commit hashes。  
 
 ### 0.3. 实现一个简单的 Web Fetch Skill
 
@@ -131,7 +121,7 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 
 能用上 Pi，环境中肯定有 Node.js，这个 Web Fetch 命令行工具自然而然也比较时候用 JS 来写了。正好 OpenCode 这里还有[开源的 Web Fetch 实现](https://github.com/anomalyco/opencode/blob/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/tool/webfetch.ts)，拿来吧你！
 
-依旧是结合 `grill-me` 来编写脚本:  
+可以结合 `grill-me` 来编写脚本:  
 
 ```text
 /skill:grill-me 我需要实现一个简单的 Web Fetch 命令行工具，接受下列三个入参:  
@@ -170,11 +160,11 @@ description: Supports fetching web content by sending requests directly from the
 
 [图片: 调用 skill 示例]
 
-### 0.4. 实现简单的 Sub-agent 功能
+### 0.4. 实现简单的 Sub-agents 功能
 
-Pi 没有自带子 Agent 功能，但完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
+Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Bash 启动另一个 Pi 实例来执行任务**。作者在[博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/#toc_18)中给出了两种方案：  
 
-1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拒绝没有显式允许的操作）；
+1. 让 Pi 通过 `pi --print` 来启动另一个 Pi 进程，等待其输出结果，但这样无法观察到中间过程（只关注结果，看不到子 Agent 执行情况，之前安装的 `pi-permission-system` 也会直接拒绝没有显式允许的操作）；
 2. 让 Pi 通过 `tmux` 在新会话 / 窗口中启动 Pi TUI，这样用户也可以直接和子 Agent 进行交互。但是这样一来子 Agent 最终的输出就没法直接通过 STDOUT （标准输出）回传给主 Agent 了。  
 
 能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁、可观测且可介入的子 Agent 工作流程与生命周期管理机制。  
@@ -191,29 +181,63 @@ Pi 没有自带子 Agent 功能，但完全可以让 Pi **通过 Bash 启动另�
 
 也就是说**观测更多让用户来做**，主 Agent 只需要关注子 Agent 执行有没有阻塞。
 
-“可介入”指*用户能介入到子 Agent 中，实时观察子 Agent 并进行纠偏* (steering)。要实现这点，可以借鉴 Pi 作者的思想，用 `tmux new-session -d` 来在后台启动一个 shell 来执行 Pi，用户就可以随时通过 `tmux attach` 切换到子 Agent 了（如果主 Agent 已经运行在 tmux 会话中，可以直接用 `Ctrl+b` 配合 `(`、`)` 来在 Agent 间来回切换）。  
+“可介入”指*用户能介入到子 Agent 中，实时观察子 Agent 并进行纠偏* (steering)。要实现这点，可以借鉴 Pi 作者的思想，用 `tmux new-session -d` 来在后台启动一个 shell 来执行 Pi，用户就可以随时通过 `tmux attach` 切换到子 Agent 了（如果主 Agent 已经运行在 tmux 会话中，可以直接用 `Ctrl+b` 配合 `(`、`)` 来实现在 Agent 间来回切换）。  
 
 #### 0.4.1. 减少 Agent 执行阻碍
 
 `pi-permission-system` 扩展需要用户介入批准一些有风险的命令执行，但对于子 Agent 这显然是个阻碍。因此我启动子 Agent 时用上了 Pi 的 `--approve` 和 `--no-extensions` 选项，前者让 Pi 默认信任当前目录（主 Agent 其实已经信任了，那子 Agent 也顺理成章）；后者则指明不载入扩展（我只有权限控制这一个扩展）。这样一来就可以尽量保证子 Agent 能在无人干预的情况下从头跑到尾了。  
 
-* 注意，sub-agent 通常还是用于校对这种**读取占大头的独立任务**，尽量不要把大量的修改任务交给 sub-agent，不然这样放权有些风险。
+* 注意，子 agent 通常还是用于校对这种**读取占大头的独立任务**，尽量不要把大量的修改任务交给子 agent，不然这样放权有风险。
 
 #### 0.4.2. 生命周期管理
 
 脚本 `loop.sh` 为主 Agent 提供了管理子 Agent 的逻辑，子 Agent 生命周期可以简洁概括为三个阶段：启动、运行、终止，分别对应了脚本的 `init`, `poll`, `end` 三个子命令。主 Agent 如何调用脚本，如何在三个阶段间进行状态流转，则是 skill 文档主要负责编排的内容了：  
 
-1. **启动** (`init`)：组合 `tmux` (或者 GNU Screen) 和 `pi` 命令启动 sub-agent，然后进入运行阶段；若没有 `tmux` / `screen` 则直接用 `pi --print` 来兜底，阻塞运行完成后进入终止阶段；
+1. **启动** (`init`)：组合 `tmux` (或者 GNU Screen) 和 `pi` 命令启动子 agent，然后进入运行阶段；若没有 `tmux` / `screen` 则直接用 `pi --print` 来兜底，阻塞运行完成后进入终止阶段；
 2. **运行** (`poll`)：休眠一小段时间后查询子 Agent 的状态，可能是 仍在运行 / 运行完毕 / 超时 / 阻塞。若仍在运行则重复此步轮询；若运行完毕或超时则进入终止阶段；若阻塞则提醒用户；
 3. **终止** (`end`)：取出子 Agent 报告，销毁 `tmux` / `screen` 的会话，清理临时文件。  
+
+#### 0.4.3. 进阶：支持并发分派多个子 Agent
+
+这个 skill 写出来虽然很简洁 (100 行不到)，但最明显的不足之处就是——**不支持并发多个子 Agent 同时工作**。像是在进行探索 (explore) 任务的时候，我们可能还是有并发分派多个子 Agent 去探索不同模块的需求的。  
+
+为了实现这一功能，首先得考虑如何重新设计脚本和 skill，让主 Agent 能管理多个子 Agent。我的思路如下:  
+
+1. 引入**组** (group) 这个组织单位，每一次分派的多个子 Agent 都归属于同一个组中；
+2. 为了降低复杂度，主 Agent 每一次**只维护一个组的生命周期**。用户如果尝试启动其他组，必须结束当前组的子 Agent 并进行清理再继续；
+3. 每次轮询 poll 时列出所有子 Agent 的运行状态，根据一组内所有子 Agent 的状态来进行状态转移。  
+
+另一个点就是主 Agent 怎么去收集子 Agent 的结果，目前主流的实现有两种方案:  
+
+1. “**总-分-总**”式：主 Agent 分派子 Agent -> 子 Agent 并发进行 -> 等待**所有**子 Agent 执行完成后主 Agent 获取结果进行汇总（有点像 Map-Reduce / Fork-Join 模式，先分叉处理再收集结果）；
+2. **事件驱动**式：主 Agent 分派子 Agent 后可以继续进行其他**不依赖于子 Agent 结果**的任务，每一个子 Agent 执行完成时会产生事件通知主 Agent，主 Agent 就可以抽空来收集结果。  
+
+第一种方式可靠但会直接阻塞住主 Agent，阻塞时间取决于最慢的子 Agent；而第二种实现上比较复杂，费这么大力不如直接写个 Pi 扩展了。我决定采用一个投机式的折中方案：主 Agent 进行分派后可以继续执行其余无关任务，执行过程中会进行一些工具调用，这时就可以**穿插**子 Agent 状态的轮询，对于已经完成的子 Agent，主 Agent 能自主决定什么时候获取子 Agent 的结果报告。  
+
+按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告、清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/scripts/loop.sh) 。   
+
+[图片: sub-agent 使用示例]
+
+#### 0.4.4. 折腾的尽头是...
+
+写这 0.4 节咱主要是为了尝试能不能用脚本结合 skill 来在 Pi 作者的方向上去实现 sub-agents 功能，结果还真给整出来了，且对于指令遵循能力强的模型（比如 DeepSeek V4 Flash GA）真的完全够用了。  
+
+但终究有些特性是难以实现的，比如在主 Agent 审批子 Agent 的权限，而不是默认放权。如果有这种需求的话还是别花时间造轮子了，老老实实用已经有人维护的 sub-agents 扩展吧：  
+
+```bash
+# gotgenes/pi-subagents 和 gotgenes/pi-permission-system 是同一个维护者，pi-permission-system 对 pi-subagents 还设计了一些权限项
+# -l 选项会将这个包安装到项目级别，这里是为了方便配置备份
+pi install -l npm:@gotgenes/pi-subagents
+```
 
 ### 0.5. 编写提示词模板
 
 Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，且支持类似 shell 脚本的位置参数（如 `/explore instruction`，`instruction` 就会替换掉模板中的 `$1`）。
 
-我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
+我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
 
 实际使用中我还能根据需求的变化新增一些提示词模板，如论文审阅 `/paper-review`。和 skills 不同的是，提示词模板在**用户使用前是完全没有任何部分进入上下文**的，只要命名不冲突，写多少个都可以，怎么方便怎么来。    
+
 
 <!-- TODO: 其他的一些原则：尽量少用 pi 扩展或者第三方包，而是多依靠 skill，pi 本身还在经常更新，代码层面 api 可能有破坏性改动-->
 
