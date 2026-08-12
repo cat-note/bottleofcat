@@ -109,7 +109,7 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 * `grilling` (被 `grill-me` 和 `grill-with-docs` 复用) - 非常著名的 skill，优化输入，通过拷问用户各种细节点来对齐需求、消除不确定性。最近 Matt 已经对这个 skill 进行了更新，现在会形成决策树，每次问一批问题了。
 * `wayfinder` - 针对大型项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开（主要是为了解决目标庞大，要确定的东西太多，导致 `grilling` 的过程中会撑爆上下文的问题，如触发上下文压缩而丢失信息）。
 * `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并作为大 Issue 发布到 Issue Tracker。  
-* `to-tickets` - (原本叫 `to-issues`) 根据 Spec **垂直切片**拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。垂直切片指的是拆分成**较小但端到端完整**的实现任务，也就是每个小任务对应一个完整的小功能（比如用户消息系统中的“已读”功能）。
+* `to-tickets` - (原本叫 `to-issues`) 根据 Spec **垂直切片**拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。垂直切片指的是拆分成**较小但端到端完整**的实现任务，也就是每个小任务对应一个完整的小功能实现（比如用户消息系统中的“已读”功能）。
 * `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程（咱觉着 AI 时代 TDD 是非常有效的开发范式）。
 * `code-review` - **提交后**进行代码审查，会利用 git diff 找到代码变更，使用时可以给出要比对的 commit hashes。  
 
@@ -119,7 +119,7 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 
 但是，curl / wget 也并不是最优解，虽然比较符合 pi 的复用命令行工具的哲学，但 curl 抓取到的 HTML 可能存在**大量冗余信息**（如页头、页脚以及大量的 HTML 标签），会**显著占用模型上下文，浪费 token**，当我只想要正文内容时这并不是一个很好的实践。因此我觉着还是要写个命令行工具来提取出去冗余的 Markdown 或纯文本，搭配 skill 来供 Agent 使用。  
 
-能用上 Pi，环境中肯定有 Node.js，这个 Web Fetch 命令行工具自然而然也比较时候用 JS 来写了。正好 OpenCode 这里还有[开源的 Web Fetch 实现](https://github.com/anomalyco/opencode/blob/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/tool/webfetch.ts)，拿来吧你！
+能用上 Pi，环境中肯定有 Node.js，这个 Web Fetch 命令行工具自然而然也比较适合用 JS 来写了。正好 OpenCode 这里还有[开源的 Web Fetch 实现](https://github.com/anomalyco/opencode/blob/0a601cf334b9a83cc2854108a2b860f25e6e7e8e/packages/opencode/src/tool/webfetch.ts)，拿来吧你！
 
 可以结合 `grill-me` 来编写脚本:  
 
@@ -169,7 +169,7 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 
 能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁、可观测且可介入的子 Agent 工作流程与生命周期管理机制。  
 
-* Skill 中调用的是一个 shell 脚本 [`loop.sh`](https://github.com/SomeBottle/pi-config/blob/main/.pi/skills/subagent-loop/scripts/loop.sh)，大部分逻辑由脚本实现，模型每次只需要输出一行 bash 命令来执行脚本，能**显著节省输出 token 数**。反例可见 [SKILL.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md)，其让模型每步都输出大量脚本，虽然能用，但是多了很多不必要的开销。
+* Skill 中调用的是一个 shell 脚本 [`loop.sh`](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/scripts/loop.sh)，大部分逻辑由脚本实现，模型每次只需要输出一行 bash 命令来执行脚本，能**显著节省输出 token 数**。反例可见 [SKILL.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md)，其让模型每步都输出大量脚本，虽然能用，但是多了很多不必要的开销。
 
 #### 0.4.0. 可观测和可介入的实现
 
@@ -194,7 +194,7 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 脚本 `loop.sh` 为主 Agent 提供了管理子 Agent 的逻辑，子 Agent 生命周期可以简洁概括为三个阶段：启动、运行、终止，分别对应了脚本的 `init`, `poll`, `end` 三个子命令。主 Agent 如何调用脚本，如何在三个阶段间进行状态流转，则是 skill 文档主要负责编排的内容了：  
 
 1. **启动** (`init`)：组合 `tmux` (或者 GNU Screen) 和 `pi` 命令启动子 agent，然后进入运行阶段；若没有 `tmux` / `screen` 则直接用 `pi --print` 来兜底，阻塞运行完成后进入终止阶段；
-2. **运行** (`poll`)：休眠一小段时间后查询子 Agent 的状态，可能是 仍在运行 / 运行完毕 / 超时 / 阻塞。若仍在运行则重复此步轮询；若运行完毕或超时则进入终止阶段；若阻塞则提醒用户；
+2. **运行** (`poll`)：休眠一小段时间后查询子 Agent 的状态，可能是 仍在运行 / 运行完毕（有报告了） / 超时 / 阻塞。若仍在运行则重复此步轮询；若运行完毕或超时则进入终止阶段；若阻塞则提醒用户；
 3. **终止** (`end`)：取出子 Agent 报告，销毁 `tmux` / `screen` 的会话，清理临时文件。  
 
 #### 0.4.3. 进阶：支持并发分派多个子 Agent
@@ -209,23 +209,24 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 
 另一个点就是主 Agent 怎么去收集子 Agent 的结果，目前主流的实现有两种方案:  
 
-1. “**总-分-总**”式：主 Agent 分派子 Agent -> 子 Agent 并发进行 -> 等待**所有**子 Agent 执行完成后主 Agent 获取结果进行汇总（有点像 Map-Reduce / Fork-Join 模式，先分叉处理再收集结果）；
+1. “**总-分-总**”式：主 Agent 分派子 Agent -> 子 Agent 并发进行 -> 等待**所有**子 Agent 执行完成后主 Agent 获取结果进行汇总（有点像 Map-Reduce / Fork-Join 模式，先分治再收集结果）；
 2. **事件驱动**式：主 Agent 分派子 Agent 后可以继续进行其他**不依赖于子 Agent 结果**的任务，每一个子 Agent 执行完成时会产生事件通知主 Agent，主 Agent 就可以抽空来收集结果。  
 
 第一种方式可靠但会直接阻塞住主 Agent，阻塞时间取决于最慢的子 Agent；而第二种实现上比较复杂，费这么大力不如直接写个 Pi 扩展了。我决定采用一个投机式的折中方案：主 Agent 进行分派后可以继续执行其余无关任务，执行过程中会进行一些工具调用，这时就可以**穿插**子 Agent 状态的轮询，对于已经完成的子 Agent，主 Agent 能自主决定什么时候获取子 Agent 的结果报告。  
 
-按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告、清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/scripts/loop.sh) 。   
+按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告，清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/scripts/loop.sh) 。   
 
 [图片: sub-agent 使用示例]
 
 #### 0.4.4. 折腾的尽头是...
 
-写这 0.4 节咱主要是为了尝试能不能用脚本结合 skill 来在 Pi 作者的方向上去实现 sub-agents 功能，结果还真给整出来了，且对于指令遵循能力强的模型（比如 DeepSeek V4 Flash GA）真的完全够用了。  
+写这 0.4 节咱主要是为了尝试能不能用脚本结合 skill 来在 Pi 作者的方向上去实现 sub-agents 功能，结果还真给整出来了，且对于 Agent 能力稳定的模型（比如 DeepSeek V4 Flash GA）真的完全够用了。  
 
 但终究有些特性是难以实现的，比如在主 Agent 审批子 Agent 的权限，而不是默认放权。如果有这种需求的话还是别花时间造轮子了，老老实实用已经有人维护的 sub-agents 扩展吧：  
 
 ```bash
-# gotgenes/pi-subagents 和 gotgenes/pi-permission-system 是同一个维护者，pi-permission-system 对 pi-subagents 还设计了一些权限项
+# gotgenes/pi-subagents 和 gotgenes/pi-permission-system 是同一个维护者，
+# pi-permission-system 对 pi-subagents 还设计了一些权限项
 # -l 选项会将这个包安装到项目级别，这里是为了方便配置备份
 pi install -l npm:@gotgenes/pi-subagents
 ```
@@ -234,7 +235,7 @@ pi install -l npm:@gotgenes/pi-subagents
 
 Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，且支持类似 shell 脚本的位置参数（如 `/explore instruction`，`instruction` 就会替换掉模板中的 `$1`）。
 
-我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
+我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/c841803abcef9783a0994b643df955f10ed55ec9/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
 
 实际使用中我还能根据需求的变化新增一些提示词模板，如论文审阅 `/paper-review`。和 skills 不同的是，提示词模板在**用户使用前是完全没有任何部分进入上下文**的，只要命名不冲突，写多少个都可以，怎么方便怎么来。    
 
@@ -245,17 +246,35 @@ Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，
 
 接下来写写我使用了半年 Coding Agent 所体会到的一些经验。
 
-### 1.0. 优化输入，明确需求
+### 1.0. 明确需求，优化输入
+
+#### 1.0.0. 消除输入的不确定性
 
 想象一下，当甲方抛给你一坨不清不白的需求且不告诉你更多细节时，你是不是只能自行发挥？但是抓耳搔腮发挥完后给甲方，甲方又给你甩脸色说没按他的来，你又只得憋住红温的脸继续改来改去 (╥﹏╥)。最近实习的时候我就遇到过需求对齐上的问题，指导人让我写一个测试工具来测试系统中的某个模块，但是我第一版写完后他才告诉我还需要考虑效率，也就是制造和移除测试数据时需要足够快（可能要制造亿级的数据），我只得返工进行大改。
 
 模型也是一样，面对一个需求的时候不一定会考虑得那么周到，我们不能假设模型会像我们一样去理解需求。为什么不能？因为我们掌握的信息和模型所掌握的信息存在偏差，**我们所认为理所当然的领域知识（如特定业务场景下的）对模型来说可能是未知、不确定的**。而作为概率模型，对于不确定的点它不一定会提出疑问，而可能会进行猜测，结果就会导致最终构建出来的成果看上去像个样，但具体到细节反而和我们所理解的大相径庭。  
 
-因此关键点就是：**在输入阶段就尽量和模型对齐需求，越详细越好**。否则就算中途通过对话去纠偏 (steering) ，模型多少还是会受前面残留的上下文的影响。
+因此关键点就是：**在输入阶段就尽量和模型对齐需求，越充分、结构化，越好**。否则就算中途通过对话去纠偏 (steering) ，模型多少还是会受前面残留的上下文的影响。关于“越充分、结构化，越好”：  
 
-一个神器就是 Matt Pocock 的 **grill-me** skill，主打**尽量消除不确定性**，让模型来主动~~拷打~~询问它觉着不清楚的要点。纵使需求给得再详细，总会有些我们认为理应如此的信息是没有提供的，grill-me 很大程度上弥补了这一点缺陷。待需求对齐后再开始执行任务，能让最终成果能更加接近我们的验收标准。  
+1. 不吝啬言语，描述上可以写清楚任务需求，补充一些已知的环境约束（比如依赖在 WSL 中，那就需要在输入中提到）、出入参信息（可以给出少数样本, few-shot）和任务最终的目标（产出什么，产出到哪里）等。
+2. 除了“要做什么”，还可以补充“**不要做什么**”，明确任务的边界（不然可能遇到模型做完脚本后“顺手”帮你改些别的东西的情况）。
+3. 尽量结构化，不要挤在一坨，对于较繁杂的需求提示词可以写成 Markdown 文档再让 Agent 读取。
+
+除此之外还可以让模型主动“暴露”不清晰的地方，一个神器就是 Matt Pocock 的 **grill-me** skill，主打**尽量消除不确定性**，让模型来主动~~拷打~~询问它觉着不清楚的要点。纵使需求给得再详细，总会有些我们认为理应如此的信息是没有提供的，grill-me 很大程度上弥补了这一点缺陷。待需求对齐后再开始执行任务，能让最终成果能更加接近我们的验收标准。  
 
 > 说来 grill-me 其实每次只问一个问题，可能最终会拷问用户上百个问题，一方面会给用户整红温，另一方面则是效率不够高。好在 Matt Pocock 已经在 8 月更新了 [grilling skill](https://github.com/mattpocock/skills/blob/cdef59f6e311b6c5918d7c49630b6e3ca5593ca2/skills/productivity/grilling/SKILL.md) (grill-me 是 grilling 的一个别名)，现在其会指导模型形成一棵问题决策树，按轮来进行提问了。  
+
+#### 1.0.1. 不要一口气吃成胖子
+
+不要把提示词写成任务大杂烩，比如：  
+
+```text
+帮我优化一下 A 接口的查询性能，顺便检查一下 B 接口有没有并发安全问题，再把模块 C 整体的日志格式统一一下，同时看看所有接口的异常处理是否合理。
+```
+
+这句提示词一次性包含了 4 个相对比较独立的任务，虽然对于现在 Agent 能力强的模型要在一个会话中完成这些任务是完全可行的，但这难免会造成
+
+<!-- 对于粒度较大的单个任务，在消除不确定性后，可以进一步拆分成较小的可执行、可验证的小粒度任务 -->
 
 <a id="progressive-disclosure">
 
@@ -269,16 +288,16 @@ Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，
 
 为了简化初始上下文，**渐进式披露** (Progressive Disclosure) 的思想非常重要：*最初只提供最必要的信息，仅在需要的时候才在上下文中载入额外信息*（如工具定义）。Agent Skills 就是典型的符合这种思想的规范，最开始仅有必要的索引（如名字和描述）信息会被加入上下文，仅当用户显式指定或者模型认为要使用时才把相应 skill 文档载入。  
 
-然而 skills 多了的话，依旧会占用一些上下文空间，有没有**在引入前完全不占用上下文**的呢？可以借鉴 Pi 作者的文档 + Bash 思想，我们能直接把任务指示和调用工具的方法写成简短文档，需要用的时候让模型去读取即可。这里“让模型去读取”的实现也是比较多样的，很多 Agent 客户端支持通过 `@FILE` 语法把文件载入上下文，也有像 Pi 这样支持提示词模板，可以直接把文档转换为斜杠命令的；最朴素的方法当然是直接通过对话让模型去读取某个文档了。  
+然而 skills 多了的话，依旧会占用一些上下文空间，有没有**在引入前完全不占用上下文**的呢？可以借鉴 Pi 作者的文档 + Bash 思想，我们能直接把任务指示和调用工具的方法写成简短文档，需要用的时候让模型去读取即可。这里“让模型去读取”的实现也是比较多样的：很多 Agent 客户端支持通过 `@FILE` 语法把文件载入上下文；也有像 Pi 这样支持提示词模板，可以直接把文档转换为斜杠命令的；最朴素的方法当然是直接通过对话让模型去读取某个文档了。  
 
 无论是 skill 还是提示词模板，本质上都是文档 (Documents)，都在告诉模型如何调用工具 (Bash)、怎样在状态间进行流转，归根到底还是应了那句话: *Bash and Documents are All You Need*!  
 
 再看回 MCP，近来一些 Agent 客户端其实已经支持了渐进式的 MCP 工具发现 (Progressive Discovery)，同时支持更细粒度的工具分组，每次只用载入某一组工具的详细信息，但是 skill 这类靠文档定义的方式依旧优势明显:  
 
-1. 不像 MCP 那样要被协议的条条框框所约束，可自由定制，文档方式定义的粒度也很自由，可以灵活变更，**充分复用现有的命令行工具生态**；
+1. 不像 MCP 那样要被协议的条条框框所约束，可自由定制和组合，文档方式定义的粒度也很自由，可以灵活变更，**充分复用现有的命令行工具生态**；
 2. 使用 MCP 必须要 Agent 客户端支持，而文档 + Bash 只要环境依赖支持，几乎可以直接贯通于整个 AI Agent 生态。
 
-当然 MCP 依旧还有使用场景，比如可以提供开箱即用的工具接口，不需要像本地执行那样还要安装依赖，对于比较重量级的应用来说如果在每台调用端都准备一整套依赖也是不现实的...blablabla...但话又说回来了，我为什么不能为这种应用搭配一个 CLI 工具呢，就像 tavily 的 `tvly` 一样，不需要多少依赖，一样可以用文档描述用法让模型进行远程调用（实际上也确实有人写了把 MCP 封装成命令行 CLI 的工具: [openclaw/mcporter](https://github.com/openclaw/mcporter)）。**我所能想到的，MCP 最大的优势**，大概在于“能及时把最新的接口告知 Agent”：如果远程接口发生了破坏性变更，而用户 CLI 工具还没有更新，就无法成功调用了；而 MCP 服务每次可以把最新的接口模式定义递交给 Agent（说得不通俗一点就是有“标准化的能力发现和同步机制”）。 
+当然 MCP 依旧还有使用场景，比如可以提供开箱即用的工具接口，不需要像本地执行那样还要安装依赖，对于比较重量级的应用来说如果在每台调用端都准备一整套依赖也是不现实的...blablabla...但话又说回来了，我为什么不能为这种应用搭配一个 CLI 工具呢，就像 tavily 的 `tvly` 一样，不需要多少依赖，一样可以用文档描述用法让模型进行远程调用（实际上也确实有人写了把 MCP 封装成命令行 CLI 的工具: [openclaw/mcporter](https://github.com/openclaw/mcporter)）。**我所能想到的，MCP 最大的优势**，大概在于“能及时把最新的接口告知 Agent”：如果远程接口发生了破坏性变更，而用户 CLI 工具还没有更新，就无法成功调用了；而 MCP 服务每次可以把最新的接口模式定义递交给 Agent（说得不通俗一点就是有“标准化的能力发现和同步机制”）。另外就是 **CLI 不可用的场景**下，也就只能使用 MCP 来调用外部能力了。
 
 总的来说日常编码绝大多数场景其实 Bash + 文档就足够了，且符合渐进式披露的思想，能尽量保持上下文简洁，开销通常更低。就 token 使用效率 (Token Efficiency，可以理解成每个 token 对 Agent 任务执行成功概率的边际贡献，即新加入上下文的 token 是否能尽量提升任务成功的概率而不是降低) 来说显然是 **文档 / 提示词模板 > Skills >> MCP** 的。
 
@@ -287,14 +306,27 @@ Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，
 
 Sub-agents（子 Agent）是典型的上下文管理手段。
 
-个人认为，上下文工程 (Context Engineering) 中很重要的一点就是尽量减少不必要的干扰，让**模型上下文大部分信息和当前执行的任务相关**，保持简洁。
+个人认为，上下文工程 (Context Engineering) 中很重要的一点就是尽量减少不必要的干扰，让**模型上下文大部分信息和当前执行的任务相关**，保持简洁。比如在代码仓库诊断 bug 时通常要先扫描仓库代码来理清项目结构和模块依赖关系，这个过程如果在主上下文中进行，会有巨量冗余的内容进入上下文，且在后续修复任务中可能只会修改某几行代码，其余的根本没用上，产生了极大的浪费；更糟的是，过分繁杂的上下文可能会干扰模型对指令的遵循效果，亦或者是很容易触发上下文压缩导致信息丢失，最终致使任务执行结果变差。  
 
-前段时间和一位同学交流了一下，得知他其实没怎么用过 Sub-agents，而是习惯新开会话来进行独立任务。
+前段时间和一位同学交流了一下，得知他编码完成后比较习惯新开一个会话来执行独立任务（如进行代码审查），而确实若下一个任务和当前主 Agent 任务没有直接依赖关系，新开一个会话来进行是不错的实践。Sub-agents 基本原理其实也就是新开一个独立的、隔离于主 Agent 的上下文，在其中执行独立的任务，最终**只把报告回传给主 Agent**，这样主 Agent 的上下文中就不会受到子任务的干扰。  
 
-subagents 的使用时机有三种：执行任务前，执行任务中，执行任务后 （Agent 的执行单位是任务）
+个人认为，使用 sub-agents 的时机有三种：主 Agent 执行任务前、执行任务中以及执行任务后（Agent 的执行单位是任务），以编码任务为例：  
+
+1. **执行任务前**: 通常是进行探索性的**独立**任务。比如上述的代码仓库扫描，可以生成报告用作主任务的**补充**信息。
+2. **执行任务中**：可以并发执行相互**独立**的编码任务。比如主 Agent 写主要代码，子 Agent 来补充单元测试（但如果用 TDD 开发其实没必要这样做）。
+3. **执行任务后**：可以作为第三方视角来执行**独立**的代码审查任务，进行交叉检查。
+
+尤其值得一提的是“执行任务中”的情况，我觉着还是应该尽量把编码任务放到主 Agent 执行：子 Agent 执行任务的效果**取决于主 Agent 是怎么构造子 Agent 的上下文的**，也就是主 Agent 决定了子 Agent 的局部视野（能看到什么信息），可能经过这一层转述，和原本的指令间发生了偏移，产出的内容不一定是符合验收标准的。且就算要用，也尽量用于编写完全不相关（边界明确）、独立于其他 Agent 任务的模块，否则这种局部视野极有可能因模型对模块边界划分不清，导致多个 Agent 的修改互相冲突，最终堆出一坨💩山。  
+
+因此，Sub-agents 还是更加适合**在主 Agent 执行任务前、后**使用，适合子 Agent 的这些任务都有类似的特性:  
+
+1. 我们**更关注其结论**，中间过程大量信息是冗余、主 Agent 用不到（和主任务无关）的；
+2. 不依赖于主任务（耦合度低），独立性强且边界清晰。
+
+最后再提一嘴个人觉得最糟糕的 sub-agents 实践：让并发的子 Agent 之间相互通信。要解决共享带来的并发竞态问题不说，子 Agent 相互通信往往意味着要让他们再次转述其认为重要的信息，也就会产生局部视野的局部视野，进一步加剧了边界的撕裂以及与主 Agent 的偏差，也显然打破了子 Agent 执行任务的隔离性。不会真有人这样做吧？！
 
 
-<!-- 个人认为，上下文工程 (Context Engineering) 中很重要的一点就是尽量减少不必要的干扰，让模型上下文大部分信息和当前执行的任务相关，保持简洁。   -->
+<!-- ----------------------------------------------------------------------   -->
 
 
 
@@ -304,19 +336,7 @@ subagents 的使用时机有三种：执行任务前，执行任务中，执行�
 
 输入侧：
 
-初始需求描述越清晰越好，不要吝啬自己的言语，减少给模型妄想的空间
-输入时最好不仅说你要做什么，还要说明模型不要做什么（不要做什么这里可以加上 few shot），对发散性比较强的模型（比如 DeepSeek V4 预览版），保险起见，一些比较细节的约束也可以再重申（比如分表时的规则）
-
 不要一口气吃成胖子，每次执行的任务粒度不要太大，慢就是快（合理拆分任务再开始）
-
-上下文尽量干净，越复杂的上下文越扰乱模型发挥（慎用 MCP，工具自身就占用了很多上下文，尽量用渐进式披露的 Skills 或者 Prompt Templates，亦或者可以显式让模型阅读文档，更省 Token（有的 Agent 支持 @ 引入文件））。  
-https://mariozechner.at/posts/2025-11-02-what-if-you-dont-need-mcp/#toc_0
-* 无论是 SubAgents 还是 MCP，这个作者主打 bash is all you need
-* 还有就是多写文档，用文档来写模型指示、驱动工具（比如类似 skills 的工具调用方式），用文档（artifact）来传递上下文（PLAN, AGENTS, TODO, 以及 SubAgents 的提示词）；让模型按需来读取和组合。
-
-上面这两点对所有 Coding Agent 都是通用的，因为 Pi 这种基础的毛坯房就全部都支持。
-
-* 为什么显式让模型阅读文档 / Prompt Templates 更省 token，因为他们和 Skills 的不同之处在于，Prompt Templates 和显式让模型阅读文档是在加载前不会占用一点上下文，而 Coding Agent 虽然实现不同，但至少会把 Skills 的名称、描述这两个元数据塞入上下文。
 
 AI 擅长什么，不擅长什么
 
