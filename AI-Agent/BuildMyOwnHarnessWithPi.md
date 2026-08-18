@@ -241,7 +241,7 @@ Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，
 
 ## 1. 一些实践经验
 
-接下来写写我使用了半年 Coding Agent 所体会到的一些经验。
+接下来写写咱使用了半年 Coding Agent 所体会到的一些经验，主要就输入、执行和输出三方面来写。  
 
 ### 1.0. 明确需求，优化输入
 
@@ -380,32 +380,31 @@ Sub-agents（子 Agent）是典型的上下文管理手段。
 
 ### 1.4. 少用 PowerShell
 
-[图片: 搞怪表情包，无语，典型的 Unix 思维]
+[图片: 搞怪表情包，PowerShell 流汗，无语，典型的 Unix Shell 思维]
 
-在 Windows 上使用 AI Agent 时有一个老生常谈的问题：对大模型来说其 “shell 母语” 更多是 Bash（多半是 Agent 后训练不充足，用到 PowerShell 的用例可能较少）。因此就可能出现模型按 Bash 思路来生成，频繁把命令、转义斜杠写错，甚至让 Agent 原地打转半天的情况。浪费 token 是一方面，更严重的是可能在某些情况下对重要数据造成不可逆转的影响。下面这几个是**最近一两个月的** issue，说明惨案还在不断上演:  
+在 Windows 上使用 AI Agent 时有一个老生常谈的问题：对大模型来说其 “shell 母语” 更多是 Unix 系的，比如 Bash（多半是 Agent 后训练不充足，用到 PowerShell 的用例可能较少）。因此就可能出现模型按 Bash 思路来生成，频繁把命令、转义写错，甚至让 Agent 原地打转半天的情况。浪费 token 是一方面，更严重的是可能在某些情况下对重要数据造成不可逆转的影响。下面这几个是**最近几个月的** issue，说明惨案还在不断上演:  
 
 * https://github.com/openai/codex/issues/32684
 
-    Agent 自作主张用 `$home` 拼接了临时目录 `isolated-codex-home` 的路径，然后清理这个临时目录。然鹅 PowerShell 中变量名是大小写不敏感的，也就是说相当于前一次在尝试给 `$HOME` 赋值，这是 PowerShell 不允许的（只读变量）。但是赋值错误是不会停止执行的，紧随其后的 `Remove-Item $home -Recurse -Force` 语句还是执行了，杯具了！   
+    Agent 自作主张用 `$home` 存储了临时目录 `isolated-codex-home` 的路径，然后清理这个临时目录。然鹅 PowerShell 中**变量名是大小写不敏感**的，也就是说相当于前一次在尝试给 `$HOME` 赋值，这是 PowerShell 不允许的（只读变量）。但是赋值错误是不会停止执行的，紧随其后的 `Remove-Item $home -Recurse -Force` 语句还是执行了，因而删除了用户目录，杯具了！   
 
-* https://github.com/openai/codex/issues/34512
+* https://github.com/anthropics/claude-code/issues/56603
 
-    Agent 在 PowerShell 中误用 Bash 中的 `\` 转义符（PowerShell 中其实是反引号 `` ` ``）。假设删除路径是 `C:\Build\Smoke Test\run-42`，路径中有空格，Agent 可能会这样调用: `cmd.exe /c "echo \"C:\Temp\smoke test\""`
+    Agent 在 PowerShell 中误用 Bash 中的 `\` 转义符（PowerShell 中其实是反引号 `` ` ``）。推测其生成了 `cmd /c "rd /s /q \"D:\★zRC With Claude\.claude\worktrees\foo\""` 这个 PowerShell 命令，但是 PowerShell 不认 `\` 转义，到达 `cmd.exe` 层时就变成了 `rd /s /q \"D:\★zRC With Claude\.claude\worktrees\foo\"`，相当于 `rd /s /q \ D:\★zRC With Claude\.claude\worktrees\foo\`。而单独的一个 `\` 表示**当前盘的根目录**，`rd /s /q` 类似于 `rm -rf`，因此这句命令就这样造成了灾难性的删盘操作。
 
-> 看社区讨论，现在各模型对 PowerShell 7 的支持似乎要好一些，但 Windows 系统预装的还是 PowerShell 5.1 来着。  
+因此在 Windows 上至少得装个 Git Bash，或者让 Agent 在 WSL 中运行，尽量降低模型在生成 shell 命令时出错的概率。
+
+> 现在各模型对 PowerShell 7 (pwsh) 的支持似乎要好一些，但 Windows 系统大多预装的还是 PowerShell 5 来着。  
+
+## 2. 总结
+
+人无法脱离不确定性，大模型更难以脱离，因此 AI Agent 虽然在大多时候是非常强大的工具，但若我们驾驭的方式不当，也可能造成不菲的损失。
 
 <!-- ----------------------------------------------------------------------   -->
 
-
-
-AI 擅长什么，不擅长什么
-
-大模型不值得相信，尤其是编辑文档时必须要人为审阅，尤其是更新需求文档的时候，小心一不小心给你全覆盖了。
 
 人都无法脱离不确定性，大模型更难以脱离不确定性，所以 Harness 肯定在很长一段时间内都是有用的，
 
 <!-- 文章可以用有说服力的数据，比如 token 耗费这一块，缓存命中这一块 -->
 
 项目级 AGENTS.md
-
-<!-- 在 Windows 上尽量不要用 PowerShell -->
