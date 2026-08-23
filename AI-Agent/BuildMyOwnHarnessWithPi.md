@@ -161,7 +161,7 @@ description: Supports fetching web content by sending requests directly from the
 4. 告诉模型如何查看帮助信息；
 5. 说明限制。
 
-这个 skill 的完成体在这里: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/e431f475fe3fa2b8e8cd86032921d5dec47fdd0c/.pi/skills/web-fetch/SKILL.md)。  
+这个 skill 的完成体在这里: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/f42c1f0b91fe67fc7651c69e84e4dd7582806f4a/.pi/skills/web-fetch/SKILL.md)。  
 
 <video style="max-width:100%" controls>
     <source src="./videos/skill_web_fetch.mp4" type="video/mp4">
@@ -182,7 +182,7 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
     <source src="./videos/skill_subagent_loop.mp4" type="video/mp4">
 </video>
 
-> 这个示例中用了 `/explore` 这个提示词模板，其中显式说明了要使用 `subagent-loop` 这个 skill。  
+> 这个示例中用了 `/explore` 这个提示词模板，其中显式说明了要使用 `subagent-loop` 这个 skill。演示中通过 `Ctrl+b` 配合 `(`、`)` 来在 tmux 会话间进行了切换，效果类似在 Agent 之间进行切换。  
 
 #### 0.4.0. 可观测和可介入的实现
 
@@ -227,7 +227,7 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 
 第一种方式可靠但会直接阻塞住主 Agent，阻塞时间取决于最慢的子 Agent；而第二种实现上比较复杂，费这么大力不如直接写个 Pi 扩展了。我决定采用一个投机式的折中方案：主 Agent 进行分派后可以继续执行其余无关任务，执行过程中会进行一些工具调用，这时就可以**穿插**子 Agent 状态的轮询，对于已经完成的子 Agent，主 Agent 能自主决定什么时候获取子 Agent 的结果报告。  
 
-按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告，清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/scripts/loop.sh) 。   
+按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告，清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/f42c1f0b91fe67fc7651c69e84e4dd7582806f4a/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/f42c1f0b91fe67fc7651c69e84e4dd7582806f4a/.pi/skills/subagent-loop/scripts/loop.sh) 。   
 
 #### 0.4.4. 折腾的尽头是...
 
@@ -246,7 +246,7 @@ pi install -l npm:@gotgenes/pi-subagents
 
 Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，且支持类似 shell 脚本的位置参数（如 `/explore instruction`，`instruction` 就会替换掉模板中的 `$1`）。
 
-我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/34d494614ee8f42843230c9a31ba568834cbd6af/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/c841803abcef9783a0994b643df955f10ed55ec9/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
+我写了两个比较常用的提示词模板: [explore.md](https://github.com/SomeBottle/pi-config/blob/f42c1f0b91fe67fc7651c69e84e4dd7582806f4a/.pi/prompts/explore.md), [make-plan.md](https://github.com/SomeBottle/pi-config/blob/f42c1f0b91fe67fc7651c69e84e4dd7582806f4a/.pi/prompts/make-plan.md)。其中 `/explore` 用于复用 subagent-loop skill 来启动 sub-agent 来执行代码仓库探索任务；`/make-plan` 则是根据上下文产出带 TODO 列表的任务计划文档。  
 
 后续使用中我还能根据需求的变化新增一些提示词模板，如论文审阅 `/paper-review`、让模型复述内容的 `/wait-what` 等。和 skills 不同的是，提示词模板在**用户使用前是完全没有任何部分进入上下文**的，只要命名不冲突，写多少个都可以，怎么方便怎么来。    
 
@@ -254,7 +254,7 @@ Pi 支持提示词模板，可以通过斜杠命令 (slash command) 来展开，
 
 接下来写写咱使用了半年 Coding Agent 所体会到的一些经验，主要就输入、执行和输出三阶段来写。  
 
-**TL;DR**: 核心原则是，上下文中披露和持续存在的信息应该**和当前执行的任务强相关**。
+**TL;DR**: 核心原则是，上下文中披露和持续存在的信息应该**和当前执行的任务强相关**，并在 Agent 执行任务时**给予清晰的反馈**。
 
 ### 1.0. 明确需求，优化输入
 
@@ -340,7 +340,7 @@ TTS 播放 → 输出音量/音素信号 → 驱动 Live2D 嘴型 → 播放结�
 
 直到最近，还可能会遇到这样的贴子：  
 
-“谁说 DeepSeek API 省钱了，我发了一句‘你好’就花了几毛钱！”  
+“谁说~~梁文谷时间的~~ DeepSeek API 省钱了，我发了一句‘你好’就花了几毛钱！”  
 
 这其实很可能是因为 Coding Agent 的**初始上下文开销就不菲**。点名批评 MCP (Model Context Protocol)，虽然协议本身没有明确指定工具何时在上下文披露，但很多 Agent 客户端的实现都会把发现的 MCP 工具的描述和出入参结构定义一股脑塞进上下文，即使我们一次会话可能最多只用到了其中一两个工具。
 
@@ -409,9 +409,9 @@ Agent 在执行任务时，作为循环中的一步，**清晰的反馈**是非�
             add
             am
     ```
-    这里 "See 'git --help'", "The most similar commands are..." 就都是很有帮助的恢复信息。  
+    这里 `See 'git --help'`, `The most similar commands are...` 就都是很有帮助的恢复信息。  
 
-顺带一提，TDD (Test-Driven Development, 测试驱动开发) 就是非常典型的反馈驱动模式：其先写出必然执行失败的测试用例 (RED)，然后编写必要代码让测试用例通过 (GREEN)，最后再进行重构 (REFACTOR)。在 RED-GREEN 这个过程中，每一个测试用例执行失败都会给出执行状态、详细的错误信息以及可能的恢复信息（断言），模型收到反馈后会根据这些信息调整下一次编码的行为，直至最后验收通过才算初步开发完成。 
+顺带一提，TDD (Test-Driven Development, 测试驱动开发) 就是非常典型的反馈应用案例：其先写出必然执行失败的测试用例 (RED)，然后编写必要代码让测试用例通过 (GREEN)，最后再进行重构 (REFACTOR)。在 RED-GREEN 这个过程中，每一个测试用例执行失败都会给出执行状态、详细的错误信息以及可能的恢复信息（断言），模型收到反馈后会根据这些信息调整下一次编码的行为，直至最后验收通过才算初步开发完成。 
 
 TDD 流程完成后，测试用例会作为回归测试的一部分持久存留在代码仓库中，即后续代码发生修改后也会利用测试来检查现存的正常功能是否被破坏。回归测试带来的反馈能尽可能保证 Agent **在后续的开发中不会破坏现有功能**。
 
