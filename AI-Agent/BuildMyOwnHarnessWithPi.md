@@ -8,7 +8,8 @@
 
 因此，如何约束模型行为，制定条条框框去规范模型的工具调用和决策流程就成了一门学问，大佬们将其凝炼成了一个词 “Harness”，字面意思就是 “控制并利用”，非常直白。同一个模型，不同的人能用出不同的花样，很大程度上就是取决于 Harness Engineering。
 
-[图片]
+![agentic harness](./images/agentic_harness.jpeg)  
+> 很形象的一张图，出处可能是 [X - Anton Razzhigaev](https://x.com/AbstractDL/status/2074235052934762990)，推测为 AIGC。    
 
 正好最近咱尝试上手了 [Pi](https://pi.dev/)，也看到了 Pi Coding Agent 作者的[一篇博客文章](https://mariozechner.at/posts/2025-11-30-pi-coding-agent/)，感觉其中的一些观点很值得借鉴。Pi 的极简 Harness 思路（提供最基础的 Agent 循环，状态、会话和上下文管理以及工具调用等能力，其余按需扩展）非常戳我，于是我准备在折腾 Pi 的同时开这样一篇笔记，记录在 Pi 配置上的一些想法的同时，也沉淀一下自己在运用 AI 编码过程中的一些实践经验。  
 
@@ -78,7 +79,9 @@ curl -fsSL https://cli.tavily.com/install.sh | bash
 
 安装 Skills 时也主打一个**按需引入**，比如 Tavily 实际上提供了 6 个 skill，但我最常用的主要是 `tavily-search` 和 `tavily-extract`，因此只引入这两个。Skills 的元数据依旧会占用少数上下文，skill 数量越多（尤其是语义相近的 skill 越多），上下文也会越混乱，干扰模型做出决策。  
 
-[图片]
+<video style="max-width:100%" controls>
+    <source src="./videos/web_search.mp4" type="video/mp4">
+</video>
 
 ### 0.2. 安装 Matt Pocock 的 Skills
 
@@ -110,7 +113,7 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 * `wayfinder` - 针对大型项目，拆解模糊的大目标，调查找到解决问题的路线，围绕 Issue 跟踪器展开（主要是为了解决目标庞大，要确定的东西太多，导致 `grilling` 的过程中会撑爆上下文的问题，如触发上下文压缩而丢失信息）。
 * `to-spec` - (原本叫 `to-prd`) 把对话内容转换为规范和需求文档，并作为大 Issue 发布到 Issue Tracker。  
 * `to-tickets` - (原本叫 `to-issues`) 根据 Spec **垂直切片**拆分任务 (有点 TODO 文档的意思)，即把规范文档大 Issue 拆分成多个小 Issue。垂直切片指的是拆分成**较小但端到端完整**的实现任务，也就是每个小任务对应一个完整的小功能实现（比如用户消息系统中的“已读”功能）。
-* `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程（咱觉着 AI 时代 TDD 是非常有效的开发范式）。
+* `implement` - 可以根据规范文档或者拆分得到的 Issue 来执行一个 TDD 开发、测试、审查和提交流程（咱觉着 AI 时代 **TDD (测试驱动开发) 是非常有效的开发范式**，其能提供清晰的反馈给模型）。
 * `code-review` - **提交后**进行代码审查，会利用 git diff 找到代码变更，使用时可以给出要比对的 commit hashes。  
 
 ### 0.3. 实现一个简单的 Web Fetch Skill
@@ -139,6 +142,8 @@ Matt Pocock 的这批 skills 在设计的时候是为了维护 GitHub 这类代�
 
 测试过程中发现 OpenCode 的实现还保留了页面中的 JS 和 CSS，如果我只想要正文就显得很臃肿。因此我又和 Pi 进行了一轮对话，用 `@mozilla/readability` 和 `jsdom` 包来去除不需要的部分来返回更精简的页面内容，同时也考虑到可能确实有抓取原页面的需求，加上了 `--gross` 命令行选项来支持返回原始内容。注意，为了让 Agent **能总是收到语义化的反馈**，在状态码不为 2xx 时也要返回响应体内容。
 
+另外这个脚本没有处理代理环境变量（如 `HTTP_PROXY`、`HTTPS_PROXY`），我也一并让 Pi 帮忙加上了，毕竟因为网络环境的限制，很多时候我们需要通过代理来访问站点。
+
 接下来需要编写 `SKILL.md` 了，在 description (描述) 中我们需要**写清楚基本功能以及边界**：什么时候用，什么时候不适合用。元数据部分我们可以这样写:  
 
 ```markdown
@@ -158,7 +163,9 @@ description: Supports fetching web content by sending requests directly from the
 
 这个 skill 的完成体在这里: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/e431f475fe3fa2b8e8cd86032921d5dec47fdd0c/.pi/skills/web-fetch/SKILL.md)。  
 
-[图片: 调用 skill 示例]
+<video style="max-width:100%" controls>
+    <source src="./videos/skill_web_fetch.mp4" type="video/mp4">
+</video>
 
 ### 0.4. 实现简单的 Sub-agents 功能
 
@@ -170,6 +177,12 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 能不能又能和子 Agent 交互、又能让主 Agent 拿到输出结果呢？为此我尝试写了一个简单的 [subagent-loop skill](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.md) (中文版: [SKILL.zh-CN.md](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/SKILL.zh-CN.md)) 来制定一套简洁、可观测且可介入的子 Agent 工作流程与生命周期管理机制。  
 
 * Skill 中调用的是一个 shell 脚本 [`loop.sh`](https://github.com/SomeBottle/pi-config/blob/976f6faeb1a30beef1756e94ca52ed414b3b25fe/.pi/skills/subagent-loop/scripts/loop.sh)，大部分逻辑由脚本实现，模型每次只需要输出一行 bash 命令来执行脚本，能**显著节省输出 token 数**。反例可见 [SKILL.md](https://github.com/SomeBottle/pi-config/blob/6fb2b9319ff5268514030546d8caed51ca419303/.pi/skills/subagent-loop/SKILL.md)，其让模型每步都输出大量脚本，虽然能用，但是多了很多不必要的开销。
+
+<video style="max-width:100%" controls>
+    <source src="./videos/skill_subagent_loop.mp4" type="video/mp4">
+</video>
+
+> 这个示例中用了 `/explore` 这个提示词模板，其中显式说明了要使用 `subagent-loop` 这个 skill。  
 
 #### 0.4.0. 可观测和可介入的实现
 
@@ -215,8 +228,6 @@ Pi 没有自带子 Agent (Sub-agents) 功能，但完全可以让 Pi **通过 Ba
 第一种方式可靠但会直接阻塞住主 Agent，阻塞时间取决于最慢的子 Agent；而第二种实现上比较复杂，费这么大力不如直接写个 Pi 扩展了。我决定采用一个投机式的折中方案：主 Agent 进行分派后可以继续执行其余无关任务，执行过程中会进行一些工具调用，这时就可以**穿插**子 Agent 状态的轮询，对于已经完成的子 Agent，主 Agent 能自主决定什么时候获取子 Agent 的结果报告。  
 
 按照如上思路，我移除了 `loop.sh` 脚本的 `end` 子命令，转而新增了 `get` 和 `clean` 命令分别用于获取单个子 Agent 报告，清理进程和文件。Skill 这边我主要修改了 STEP-1 和 STEP-2 两节，显式说明了子 Agent 状态对应的处理方式以及主 Agent 如何从 STEP-1 进行转移。详见: [SKILL.md](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/SKILL.md), [loop.sh](https://github.com/SomeBottle/pi-config/blob/ad03c3e047827f84f60d6a85b97ecf925590b5d8/.pi/skills/subagent-loop/scripts/loop.sh) 。   
-
-[图片: sub-agent 使用示例]
 
 #### 0.4.4. 折腾的尽头是...
 
@@ -389,7 +400,7 @@ Sub-agents（子 Agent）是典型的上下文管理手段。
 
 ### 1.4. 避免使用 PowerShell
 
-[图片: 搞怪表情包，PowerShell 流汗，无语，典型的 Unix Shell 思维]
+![无语，典型的 Unix Shell 思维](./images/unix_shell_mind.jpg)  
 
 在 Windows 上使用 AI Agent 时有一个老生常谈的问题：对大模型来说其 “shell 母语” 更多是 Unix 系的，比如 Bash（多半是 Agent 后训练不充足，用到 PowerShell 的用例可能较少）。因此就可能出现模型按 Bash 思路来生成，频繁把命令、转义写错，甚至让 Agent 原地打转半天的情况。浪费 token 是一方面，更严重的是可能在某些情况下对重要数据造成不可逆转的影响。下面这几个是**最近几个月的** issue，说明惨案还在不断上演:  
 
@@ -408,3 +419,5 @@ Sub-agents（子 Agent）是典型的上下文管理手段。
 ## 2. 总结
 
 人都无法脱离不确定性，大模型更难以脱离，因此 AI Agent 虽然在大多时候是非常强大的工具，但若我们驾驭的方式不当，不仅产出的效果不好，也可能造成不菲的损失。咱认为纵使模型自身 Agent 能力再强，Harness 这一套机制也是不会被淘汰掉的。这篇小记反反复复磨了好一段时间，算是把咱个人的体会（能表达出来的、比较重要的部分）都写上来了，真心希望能帮助到大家吧（；´д｀）ゞ  
+
+咱们下一篇文章再会~ (∠・ω< )⌒★  
