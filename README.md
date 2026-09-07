@@ -36,6 +36,7 @@ The notes here will be synchronized with my [blog](https://somebottle.cnblogs.co
 23. [【小记】在 Google Colab 等平台上运行 GPU 容器](./Containerization/GPUApptainerOnGoogleColab.md)  
 24. [【小记】解决 LAN 中不同单播互通子网间 LocalSend 的发现问题](./Networking/LocalSendSwitch.md)  
 25. [【小记】上手 Pi，记录一下我的 AI 编码实践](./AI-Agent/BuildMyOwnHarnessWithPi.md)  
+26. [【小记】图片托管从又拍云迁移到腾讯云（兼容图片处理参数）](./Tinkering/MigrateFromUpyunToEO.md)  
 
 ## Reading Notes
 
